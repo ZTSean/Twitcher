@@ -4,14 +4,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Customized Style -->
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!-- Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Bootstrap Datepicker -->
+    <link rel="stylesheet" type="text/css" href="../css/css_datepicker/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/css_datepicker/bootstrap-datepicker.standalone.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <!-- Material Design Lite -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 
 <body>
@@ -30,39 +42,221 @@
             </div>
         </header>
         <main class="mdl-layout__content">
+            <!-- Main Page -->
             <section class="mdl-layout__tab-panel is-active" id="main_page">
                 <div class="page-content">
-                    <!-- Your content goes here -->
                     <div class="mdl-grid">
-                    	<div class="mdl-cell mdl-cell--1-col">1</div>
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-cell mdl-cell--2-col">Attributes</div>
+                        <div class="mdl-cell mdl-cell--8-col">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-secondary">All</button>
+                                <button type="button" class="btn btn-secondary">Peak Viewer</button>
+                                <button type="button" class="btn btn-secondary">Avg Viewer</button>
+                                <button type="button" class="btn btn-secondary">Peak Channels</button>
+                                <button type="button" class="btn btn-secondary">Game Rank</button>
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
                     </div>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-secondary">Left</button>
-                        <button type="button" class="btn btn-secondary">Middle</button>
-                        <button type="button" class="btn btn-secondary">Right</button>
+                    <div class="mdl-grid">
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-cell mdl-cell--2-col">Games</div>
+                        <div class="mdl-cell mdl-cell--8-col">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-secondary">All</button>
+                                <button type="button" class="btn btn-secondary">Overwatch</button>
+                                <button type="button" class="btn btn-secondary">Destiny</button>
+                                <button type="button" class="btn btn-secondary">Destiny 2</button>
+                                <button type="button" class="btn btn-secondary">CS-GO</button>
+                                <button type="button" class="btn btn-secondary">PlayUnknown:BattleGrounds</button>
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-cell mdl-cell--2-col">Time Span</div>
+                        <div class="mdl-cell mdl-cell--4-col">
+                            <div class="input-group date" data-provide="datepicker">
+                                <span class="input-group-addon">From</span>
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--4-col">
+                            <div class="input-group date" data-provide="datepicker">
+                                <span class="input-group-addon">To</span>
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                    
+                    <!-- Game Trend Heat Map -->
+                    <div>
+                        <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--9-col"></div>
+                        <!-- Info box-->
+                        <div class="mdl-cell mdl-cell--3-col"></div>
+                        </div>
+                    </div>
+
+                    <!-- Game Opportunity Bubble Chart -->
+                    <div>
+                        <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--9-col"></div>
+                        <!-- Bubble Chart Options-->
+                        <div class="mdl-cell mdl-cell--3-col"></div>
+                        </div>
                     </div>
                 </div>
             </section>
+            <!-- Detailed Page for Overwatch -->
             <section class="mdl-layout__tab-panel" id="overwatch_detail">
                 <div class="page-content">
                     <!-- Your content goes here -->
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--1-col"></div>
+                        <div class="mdl-cell mdl-cell--2-col">
+                            <b>Star Plot</b>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-cell mdl-cell--3-col">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                                <input type="radio" class="mdl-radio__button" name="options" value="1" checked>
+                                <span class="mdl-radio__label">Single Day Display</span>
+                            </label>
+                        </div>
+                        <div class="mdl-cell mdl-cell--7-col">
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-cell mdl-cell--2-col">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                                <input type="radio" class="mdl-radio__button" name="options">
+                                <span class="mdl-radio__label">Time Span</span>
+                            </label>
+                        </div>
+                        <div class="mdl-cell mdl-cell--4-col">
+                            <div class="input-group date" data-provide="datepicker">
+                                <span class="input-group-addon">From</span>
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--4-col">
+                            <div class="input-group date" data-provide="datepicker">
+                                <span class="input-group-addon">To</span>
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--1-col"></div>
+                        <div class="mdl-cell mdl-cell--2-col">
+                            <b>Comparative Chart</b>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-cell mdl-cell--2-col">Time Span</div>
+                        <div class="mdl-cell mdl-cell--4-col">
+                            <div class="input-group date" data-provide="datepicker">
+                                <span class="input-group-addon">From</span>
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--4-col">
+                            <div class="input-group date" data-provide="datepicker">
+                                <span class="input-group-addon">To</span>
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-cell mdl-cell--2-col">Left Line</div>
+                        <div class="mdl-cell mdl-cell--8-col">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-secondary">Peak Viewer</button>
+                                <button type="button" class="btn btn-secondary">Avg Viewer</button>
+                                <button type="button" class="btn btn-secondary">Peak Channels</button>
+                                <button type="button" class="btn btn-secondary">Game Rank</button>
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+                    <div class="mdl-grid">
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-cell mdl-cell--2-col">Right Line</div>
+                        <div class="mdl-cell mdl-cell--8-col">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-secondary">Peak Viewer</button>
+                                <button type="button" class="btn btn-secondary">Avg Viewer</button>
+                                <button type="button" class="btn btn-secondary">Peak Channels</button>
+                                <button type="button" class="btn btn-secondary">Game Rank</button>
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
                 </div>
+
+                <!-- Star Plot -->
+                <div></div>
+
+                <!--  Comparative Chart -->
+                <div></div>
             </section>
+            <!-- Detailed Page for Destiny -->
             <section class="mdl-layout__tab-panel" id="destiny_detail">
                 <div class="page-content">
                     <!-- Your content goes here -->
                 </div>
             </section>
+            <!-- Detailed Page for Destiny 2 -->
             <section class="mdl-layout__tab-panel" id="destiny2_detail">
                 <div class="page-content">
                     <!-- Your content goes here -->
                 </div>
             </section>
+            <!-- Detailed Page for CS-GO -->
             <section class="mdl-layout__tab-panel" id="csgo_detail">
                 <div class="page-content">
                     <!-- Your content goes here -->
                 </div>
             </section>
+            <!-- Detailed Page for PlayUknown: BattleGrounds -->
             <section class="mdl-layout__tab-panel" id="pubg_detail">
                 <div class="page-content">
                     <!-- Your content goes here -->
