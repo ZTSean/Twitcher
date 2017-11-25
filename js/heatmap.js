@@ -18,17 +18,150 @@ function meanAndStd(array) {
     return [avg, std]
 }
 
-function DataProcessing(error, gdata) {
-	// detect whether it reads csv file correctly
-	if (error) throw error;
+function plotAllHeatmap(data, g_heatmaps, dataField) {
+    // initialization ---------------------------------------------
+    var colorLow = 'green',
+        colorMed = 'yellow',
+        colorHigh = 'red',
+        colorLine = "#9966ff",
+        colorUnavailable = "#ebebe0";
 
-    //final variables 
-    document.body.style.backgroundColor = "white";
+    var domainRange = [];
+
+
+    var colorScale = d3.scale.linear()
+        .domain(domainRange)
+        .range([colorLow, colorMed, colorHigh]);
+
+    // draw the heatmap data by data
+    g_heatmaps.data(data)
+        .enter().append("rect")
+        .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding; })
+        .attr("y", function(d) { return startH + d.col * LH; })
+        .attr("width", function(d) { return w; })
+        .attr("height", function(d) { return h; })
+        .style("fill", function(d) {
+            if (d[dataField] == -1) {
+                return colorUnavailable;
+            }
+            return colorScale(d[dataField]);
+        });
+}
+
+// format data read from csv
+function formatData(data) {
+    // Data structure
+    // Dimension 1: games
+    // Dimension 2: data attributes json
+    // Dimension 3: single data entry -> json
+
+    // Consistent with header in csv file
+    // data entries:
+    // 1. date
+    // 2. average_viewers
+    // 3. peak_viewers
+    // 4. peak_channels
+    // 5. peak_players
+    // 6. game_rank_total
+    // 7. game_rank_esports
+    // 8. game_updates,esports_schedule
+    dataFields = ["date",
+        "average_viewers",
+        "peak_viewers",
+        "peak_channels",
+        "peak_players",
+        "game_rank_total",
+        "game_rank_esports",
+        "game_updates",
+        "esports_schedule"
+    ]
+
+    var prdData = [];
+
+    for (var i = 0; i < data.length; i++) {
+        var data_single_game = [];
+        for (var j = 0; j < data[i].length; j++) {
+            try {
+                data_single_game.push({
+                    "date": data[i][j]["date"],
+                    "average_viewers": parseInt(data[i][j]['average_viewers']),
+                    "peak_viewers": parseInt(data[i][j]['peak_viewers']),
+                    "peak_channels": parseInt(data[i][j]['peak_channels']),
+                    "peak_players": parseInt(data[i][j]['peak_players']),
+                    "game_rank_total": parseInt(data[i][j]['game_rank_total']),
+                    "game_rank_esports": parseInt(data[i][j]['game_rank_esports']),
+                    "game_updates": data[i][j]['game_updates'],
+                    "esports_schedule": data[i][j]['esports_schedule']
+                });
+            } catch (e) {
+                console.log(e);
+            }
+
+        }
+        //console.log(line)
+        prdData.push(data_single_game);
+    }
+
+    console.log(prdData);
+    return {
+        "min_avg_viewers": "data": prdData
+    };
+}
+
+// single game data
+function plotAllEventline(data, g_eventlines) {
+
+}
+
+function dataProcessing(error, data) {
+    // detect whether it reads csv file correctly
+    if (error) throw error;
+    console.log(data)
+
+    data_all_games = data;
+
+    div_heatmap = document.getElementById("heatmap");
+
+    d3.select("#heatmap").selectAll("svg")
+        .data(data)
+        .enter() // no matching with data
+        .append("svg")
+        .attr("width", function() { return div_heatmap.offsetWidth; })
+        .append('g')
+        .attr("width", function() { return div_heatmap.offsetWidth; })
+        .attr("class", "heatmap_figure");
+
+    var g_heatmaps = d3.select("#heatmap").selectAll("svg").selectAll(".heatMap_figure");
+    //console.log(g_heatmaps); // #heatmap->svg->g:heatmap_figure
+
+    d3.select("#heatmap").selectAll("svg")
+        .data(data) // all previously matched data
+        .append('g')
+        .attr("class", "eventline_figure");
+
+    var g_eventlines = d3.select("#heatmap").selectAll("svg").selectAll(".eventline_figure");
+    //console.log(g_eventlines); // #heatmap->svg->g:eventline_figure
+
+    data = formatData(data);
+
+    dataField = "peak_viewers"; // defaul field to show
+    plotAllEventline(data, g_eventlines, dataField);
+    plotAllHeatmap(data, g_heatmaps, dataField);
+}
+
+// ==================================================
+function dataProcessing2(error, gdata) {
+    // detect whether it reads csv file correctly
+    if (error) throw error;
+
+    data_all_games = gdata;
+
     //start and end data of general dataset
     var StartTime = new Date("2016/9/8");
     var EndTime = new Date("2017/9/8");
 
     var HmapLength = 3 * 366;
+    var heatMapWidth = document.getElementById("");
 
     var games = ["Overwatch", "CSGO", "PUBG", "Destiny", "Destiny2"];
     var gameColors = ["#5F8316", "#98CA32", "#B3BF0D", "#F7D302", "#DAC134"];
@@ -44,7 +177,7 @@ function DataProcessing(error, gdata) {
     var HMfont = "Helvetica";
 
     function prepareDataForHeatmap(gData, attribute) {
-    	// when the end time is earlier than start time: swap
+        // when the end time is earlier than start time: swap
         if (SETime < SSTime) {
             var temp = SSTime;
             SSTime = SETime;
@@ -70,11 +203,13 @@ function DataProcessing(error, gdata) {
             for (i = startPt; i <= endPt; i++) {
                 var temp = parseInt(gData[j][i][attribute]);
                 if (temp != -1) { numArray.push(temp); }
-                line.push({ 
-                	value: temp, 
-                	row: i, col: j, 
-                	x: startPt + i, 
-                	date: gData[j][i]["Date"] });
+                line.push({
+                    value: temp,
+                    row: i,
+                    col: j,
+                    x: startPt + i,
+                    date: gData[j][i]["Date"]
+                });
             }
             //console.log(line)
             prdData.push(line);
@@ -260,18 +395,18 @@ function DataProcessing(error, gdata) {
                         /* var x2 = d.row * w + labelWidth + TandGPadding + w;
                        var startRect = savedX1;
                        var widthRect = Math.abs(x2-savedX1);
-                       	if (savedX1 > x2){
-							startRect = x2;
-                       	}
+                        if (savedX1 > x2){
+                            startRect = x2;
+                        }
                         svg.append("rect")
-                        	.attr("class","selection")
+                            .attr("class","selection")
                             .attr("x", startRect)
                             .attr("y", startH)
                             .attr("width", widthRect)
                             .attr("height", totalH-startH)
                             .style("fill",colorLine)
                             .style("fill-opacity",0.1); 
-						*/
+                        */
                         clickHold = 1;
                         updateInfoBoxHMap(d, 2);
 
@@ -372,10 +507,30 @@ function DataProcessing(error, gdata) {
 
 // ============================================================
 // data processing
-queue()
-    .defer(d3.csv, "data/Overwatch.csv")
-    .defer(d3.csv, "data/CSGO.csv")
-    .defer(d3.csv, "data/PUBG.csv")
-    .defer(d3.csv, "data/Destiny.csv")
-    .defer(d3.csv, "data/Destiny2.csv")
-    .awaitAll(dataProcessing); //only function name is needed
+// 
+fileNames = ["overwatch", "csgo", "pubg", "destiny", "destiny2"]
+data_all_games = []; // data of all games: initialized by loadData()
+
+function loadData() {
+    queue()
+        .defer(d3.csv, "../data/Overwatch.csv")
+        .defer(d3.csv, "../data/CSGO.csv")
+        .defer(d3.csv, "../data/PUBG.csv")
+        .defer(d3.csv, "../data/Destiny.csv")
+        .defer(d3.csv, "../data/Destiny2.csv")
+        .awaitAll(dataProcessing); //only function name is needed
+}
+
+if (data_all_games.length == 0) {
+    // data haven't been loaded yet
+    loadData();
+} else {
+    // call dataProcessing directly
+    // data has been loaded
+    dataProcessing(null, data_all_games);
+}
+
+
+d3.csv("../data/Overwatch.csv", function(data) {
+    console.log(data);
+})
