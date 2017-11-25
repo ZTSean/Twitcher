@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Customized Style -->
+    <!-- Customized Style & JS-->
     <link rel="stylesheet" href="./css/main.css">
+    <script src="./js/vis.js"></script>
     <!-- Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
     <!-- Latest compiled and minified CSS -->
@@ -49,13 +50,12 @@
                     <div class="mdl-grid">
                         <div class="mdl-layout-spacer"></div>
                         <div class="mdl-cell mdl-cell--2-col">Attributes</div>
-                        <div class="mdl-cell mdl-cell--8-col">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-secondary">All</button>
-                                <button type="button" class="btn btn-secondary">Peak Viewer</button>
-                                <button type="button" class="btn btn-secondary">Avg Viewer</button>
-                                <button type="button" class="btn btn-secondary">Peak Channels</button>
-                                <button type="button" class="btn btn-secondary">Game Rank</button>
+                        <div class="mdl-cell mdl-cell--8-col" id="mainpage_attributes">
+                            <div class="btn-group" role="group">
+                                <button type="button" id="button_main_peak_viewers" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="peak_viewers">Peak Viewer</button>
+                                <button type="button" id="button_main_average_viewers" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="average_viewers">Avg Viewer</button>
+                                <button type="button" id="button_main_peak_channels" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="peak_channels">Peak Channels</button>
+                                <button type="button" id="button_main_rank_total" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="game_rank_total">Game Rank</button>
                             </div>
                         </div>
                         <div class="mdl-layout-spacer"></div>
@@ -98,25 +98,47 @@
                         </div>
                         <div class="mdl-layout-spacer"></div>
                     </div>
-                    
                     <!-- Game Trend Heat Map -->
                     <div>
                         <div class="mdl-grid">
-                        <div class="mdl-cell mdl-cell--9-col">
-                            <div id="heatmap"></div>
-
-                        </div>
-                        <!-- Info box-->
-                        <div class="mdl-cell mdl-cell--3-col"></div>
+                            <div class="mdl-cell mdl-cell--9-col">
+                                <div id="heatmap"></div>
+                            </div>
+                            <!-- Info box-->
+                            <div class="mdl-cell mdl-cell--3-col">
+                                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                    <thead>
+                                        <tr>
+                                            <th class="mdl-data-table__cell--non-numeric">Information Box</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric">Don Aubrey</td>
+                                            <td>25</td>
+                                            <td>49021</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric">Sophia Carson</td>
+                                            <td>32</td>
+                                            <td>10258</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric">Steve Moreno</td>
+                                            <td>29</td>
+                                            <td>12359</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-
                     <!-- Game Opportunity Bubble Chart -->
                     <div>
                         <div class="mdl-grid">
-                        <div class="mdl-cell mdl-cell--9-col"></div>
-                        <!-- Bubble Chart Options-->
-                        <div class="mdl-cell mdl-cell--3-col"></div>
+                            <div class="mdl-cell mdl-cell--9-col"></div>
+                            <!-- Bubble Chart Options-->
+                            <div class="mdl-cell mdl-cell--3-col"></div>
                         </div>
                     </div>
                 </div>
@@ -212,11 +234,11 @@
                         <div class="mdl-layout-spacer"></div>
                         <div class="mdl-cell mdl-cell--2-col">Left Line</div>
                         <div class="mdl-cell mdl-cell--8-col">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-secondary">Peak Viewer</button>
-                                <button type="button" class="btn btn-secondary">Avg Viewer</button>
-                                <button type="button" class="btn btn-secondary">Peak Channels</button>
-                                <button type="button" class="btn btn-secondary">Game Rank</button>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-secondary" data-field="peak_viewers">Peak Viewer</button>
+                                <button type="button" class="btn btn-secondary" data-field="average_viewers">Avg Viewer</button>
+                                <button type="button" class="btn btn-secondary" data-field="peak_channels">Peak Channels</button>
+                                <button type="button" class="btn btn-secondary" data-field="game_rank_total">Game Rank</button>
                             </div>
                         </div>
                         <div class="mdl-layout-spacer"></div>
@@ -235,10 +257,8 @@
                         <div class="mdl-layout-spacer"></div>
                     </div>
                 </div>
-
                 <!-- Star Plot -->
                 <div></div>
-
                 <!--  Comparative Chart -->
                 <div></div>
             </section>
@@ -268,7 +288,6 @@
             </section>
         </main>
     </div>
-
     <script type="text/javascript" src="./js/heatmap.js"></script>
 </body>
 

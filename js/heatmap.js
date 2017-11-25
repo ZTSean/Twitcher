@@ -18,7 +18,7 @@ function meanAndStd(array) {
     return [avg, std]
 }
 
-function plotAllHeatmap(data, g_heatmaps, dataField) {
+function plotAllHeatmap(data, games, svg_heatmaps, dataField) {
     // initialization ---------------------------------------------
     var colorLow = 'green',
         colorMed = 'yellow',
@@ -26,26 +26,58 @@ function plotAllHeatmap(data, g_heatmaps, dataField) {
         colorLine = "#9966ff",
         colorUnavailable = "#ebebe0";
 
-    var domainRange = [];
+    // draw heatmap for each graph
+    for (var i = 0; i < data.length; i++) {
+        var domainRange = [data[i]["min_" + dataField] == NaN ? -100: data[i]["min_" + dataField], data[i]["max_" + dataField] == NaN? 100:data[i]["max_" + dataField]];
+        console.log("domain:" + data[i]["min_" + dataField] + " " + data[i]["max_" + dataField]);
 
+        var colorScale = d3.scale.linear()
+            .domain(domainRange)
+            .range([colorLow, colorMed, colorHigh]);
 
-    var colorScale = d3.scale.linear()
-        .domain(domainRange)
-        .range([colorLow, colorMed, colorHigh]);
+        // calculate single data entry rect width
+        div_heatmap = document.getElementById("heatmap");
+        heatmapLength = data[i]["data"].length;
+        data_height = 50;
+        data_width = div_heatmap.offsetWidth / heatmapLength;
 
-    // draw the heatmap data by data
-    g_heatmaps.data(data)
-        .enter().append("rect")
-        .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding; })
-        .attr("y", function(d) { return startH + d.col * LH; })
-        .attr("width", function(d) { return w; })
-        .attr("height", function(d) { return h; })
-        .style("fill", function(d) {
-            if (d[dataField] == -1) {
-                return colorUnavailable;
-            }
-            return colorScale(d[dataField]);
-        });
+        // draw the heatmap data by data
+        // create new that does not match with data
+        svg_heatmaps.selectAll(".heatmap_figure_" + games[i]).selectAll("rect")
+            .data(data[i]["data"])
+            .enter().append("rect")
+            .attr("x", function(d) { return d.col * data_width; })
+            .attr("y", 0)
+            .attr("width", function(d) { return data_width; })
+            .attr("height", function(d) { return data_height; })
+            .style("fill", function(d) {
+                if (d[dataField] == NaN || d[dataField] == -1) {
+                    return colorUnavailable;
+                }
+                return colorScale(d[dataField]);
+            });
+
+        // update those existed rect
+        var gs = svg_heatmaps.selectAll(".heatmap_figure_" + games[i]).selectAll("rect")
+            .data(data[i]["data"])
+
+        gs.attr("x", function(d) { return d.col * data_width; })
+            .attr("y", 0)
+            .attr("width", function(d) { return data_width; })
+            .attr("height", function(d) { return data_height; })
+            .style("fill", function(d) {
+                if (d[dataField] == NaN || d[dataField] == -1) {
+                    return colorUnavailable;
+                }
+                return colorScale(d[dataField]);
+            });
+    }
+
+}
+
+// single game data
+function plotAllEventline(data, g_eventlines) {
+    
 }
 
 // format data read from csv
@@ -79,74 +111,127 @@ function formatData(data) {
     var prdData = [];
 
     for (var i = 0; i < data.length; i++) {
-        var data_single_game = [];
+        var data_single_game = { "data": [] };
+        min_avg_viewers = Number.MAX_VALUE;
+        min_peak_viewers = Number.MAX_VALUE;
+        min_peak_channels = Number.MAX_VALUE;
+        min_peak_players = Number.MAX_VALUE;
+        min_game_rank_total = Number.MAX_VALUE;
+        min_game_rank_esports = Number.MAX_VALUE;
+
+        max_avg_viewers = Number.MIN_VALUE;
+        max_peak_viewers = Number.MIN_VALUE;
+        max_peak_channels = Number.MIN_VALUE;
+        max_peak_players = Number.MIN_VALUE;
+        max_game_rank_total = Number.MIN_VALUE;
+        max_game_rank_esports = Number.MIN_VALUE;
+
         for (var j = 0; j < data[i].length; j++) {
-            try {
-                data_single_game.push({
-                    "date": data[i][j]["date"],
-                    "average_viewers": parseInt(data[i][j]['average_viewers']),
-                    "peak_viewers": parseInt(data[i][j]['peak_viewers']),
-                    "peak_channels": parseInt(data[i][j]['peak_channels']),
-                    "peak_players": parseInt(data[i][j]['peak_players']),
-                    "game_rank_total": parseInt(data[i][j]['game_rank_total']),
-                    "game_rank_esports": parseInt(data[i][j]['game_rank_esports']),
-                    "game_updates": data[i][j]['game_updates'],
-                    "esports_schedule": data[i][j]['esports_schedule']
-                });
-            } catch (e) {
-                console.log(e);
-            }
+            //try {
+
+
+            dataEntry = {
+                "date": new Date(data[i][j]["date"]),
+                "game_updates": data[i][j]['game_updates'],
+                "esports_schedule": data[i][j]['esports_schedule'],
+                "row": i, // used to locate heatmap pos
+                "col": j, // used to locate heatmap pos
+            };
+
+
+            average_viewers = parseInt(data[i][j]['average_viewers']);
+            peak_viewers = parseInt(data[i][j]['peak_viewers']);
+            peak_channels = parseInt(data[i][j]['peak_channels']);
+            peak_players = parseInt(data[i][j]['peak_players']);
+            game_rank_total = parseInt(data[i][j]['game_rank_total']);
+            game_rank_esports = parseInt(data[i][j]['game_rank_esports']);
+
+            min_avg_viewers = average_viewers == -1 ? min_avg_viewers : Math.min(min_avg_viewers, average_viewers);
+            min_peak_viewers = peak_viewers == -1 ? min_peak_viewers : Math.min(min_peak_viewers, peak_viewers);
+            min_peak_channels = peak_channels == -1 ? min_peak_channels : Math.min(min_peak_channels, peak_channels);
+            min_peak_players = peak_players == -1 ? min_peak_players : Math.min(min_peak_players, peak_players);
+            min_game_rank_total = game_rank_total == -1 ? min_game_rank_total : Math.min(min_game_rank_total, game_rank_total);
+            min_game_rank_esports = game_rank_total == -1 ? min_game_rank_esports : Math.min(min_game_rank_esports, game_rank_total);
+
+            max_avg_viewers = average_viewers == -1 ? max_avg_viewers : Math.max(max_avg_viewers, average_viewers);
+            max_peak_viewers = peak_viewers == -1 ? max_peak_viewers : Math.max(max_peak_viewers, peak_viewers);
+            max_peak_channels = peak_channels == -1 ? max_peak_channels : Math.max(max_peak_channels, peak_channels);
+            max_peak_players = peak_players == -1 ? max_peak_players : Math.max(max_peak_players, peak_players);
+            max_game_rank_total = game_rank_total == -1 ? max_game_rank_total : Math.max(max_game_rank_total, game_rank_total);
+            max_game_rank_esports = game_rank_total == -1 ? max_game_rank_esports : Math.max(max_game_rank_esports, game_rank_total);
+
+            dataEntry["average_viewers"] = average_viewers;
+            dataEntry["peak_viewers"] = peak_viewers;
+            dataEntry["peak_channels"] = peak_channels;
+            dataEntry["peak_players"] = peak_players;
+            dataEntry["game_rank_total"] = game_rank_total;
+            dataEntry["game_rank_esports"] = game_rank_esports;
+
+            data_single_game["data"].push(dataEntry);
+            //} catch (e) {
+            //    console.log(e);
+            //}
 
         }
-        //console.log(line)
+
+        data_single_game["min_avg_viewers"] = min_avg_viewers;
+        data_single_game["max_avg_viewers"] = max_avg_viewers;
+        data_single_game["min_peak_viewers"] = min_peak_viewers;
+        data_single_game["max_peak_viewers"] = max_peak_viewers;
+        data_single_game["min_peak_channels"] = min_peak_channels;
+        data_single_game["max_peak_channels"] = max_peak_channels;
+        data_single_game["min_peak_players"] = min_peak_players;
+        data_single_game["max_peak_players"] = max_peak_players;
+        data_single_game["min_game_rank_total"] = min_game_rank_total;
+        data_single_game["max_game_rank_total"] = max_game_rank_total;
+        data_single_game["min_game_rank_esports"] = min_game_rank_esports;
+        data_single_game["max_game_rank_esports"] = max_game_rank_esports;
+
         prdData.push(data_single_game);
     }
 
-    console.log(prdData);
-    return {
-        "min_avg_viewers": "data": prdData
-    };
+    return prdData;
 }
 
-// single game data
-function plotAllEventline(data, g_eventlines) {
 
-}
 
 function dataProcessing(error, data) {
     // detect whether it reads csv file correctly
     if (error) throw error;
-    console.log(data)
 
-    data_all_games = data;
+    var gameColors = ["#5F8316", "#98CA32", "#B3BF0D", "#F7D302", "#DAC134"];
 
     div_heatmap = document.getElementById("heatmap");
 
+    // create svg if they are not existing for each game
     d3.select("#heatmap").selectAll("svg")
-        .data(data)
+        .data(games)
         .enter() // no matching with data
         .append("svg")
         .attr("width", function() { return div_heatmap.offsetWidth; })
         .append('g')
         .attr("width", function() { return div_heatmap.offsetWidth; })
-        .attr("class", "heatmap_figure");
+        .attr("class", function(d) { return "heatmap_figure_" + d; })
 
-    var g_heatmaps = d3.select("#heatmap").selectAll("svg").selectAll(".heatMap_figure");
+    var svg_heatmaps = d3.select("#heatmap").selectAll("svg");
+    g = svg_heatmaps;
     //console.log(g_heatmaps); // #heatmap->svg->g:heatmap_figure
 
     d3.select("#heatmap").selectAll("svg")
-        .data(data) // all previously matched data
+        .data(games) // all previously matched data
         .append('g')
-        .attr("class", "eventline_figure");
+        .attr("class", function(d) { return "eventline_figure_" + d; })
 
-    var g_eventlines = d3.select("#heatmap").selectAll("svg").selectAll(".eventline_figure");
+    var svg_eventlines = d3.select("#heatmap").selectAll("svg");
     //console.log(g_eventlines); // #heatmap->svg->g:eventline_figure
 
+    // parse data from pure string to corresponding data type
     data = formatData(data);
+    data_all_games = data;
 
-    dataField = "peak_viewers"; // defaul field to show
-    plotAllEventline(data, g_eventlines, dataField);
-    plotAllHeatmap(data, g_heatmaps, dataField);
+    dataField = "peak_viewers"; // default field to show
+    plotAllEventline(data, games, svg_eventlines, dataField);
+    plotAllHeatmap(data, games, svg_heatmaps, dataField);
 }
 
 // ==================================================
@@ -513,12 +598,48 @@ data_all_games = []; // data of all games: initialized by loadData()
 
 function loadData() {
     queue()
-        .defer(d3.csv, "../data/Overwatch.csv")
-        .defer(d3.csv, "../data/CSGO.csv")
-        .defer(d3.csv, "../data/PUBG.csv")
-        .defer(d3.csv, "../data/Destiny.csv")
-        .defer(d3.csv, "../data/Destiny2.csv")
+        .defer(d3.csv, "../data2/Overwatch.csv")
+        .defer(d3.csv, "../data2/CSGO.csv")
+        .defer(d3.csv, "../data2/PUBG.csv")
+        .defer(d3.csv, "../data2/Destiny.csv")
+        .defer(d3.csv, "../data2/Destiny2.csv")
         .awaitAll(dataProcessing); //only function name is needed
+}
+
+// initializations -------------------------------------------------
+var mainpage_attributes_activebutton;
+var games = ["overwatch", "csgo", "pubg", "destiny", "destiny2"];
+
+
+$("#mainpage_attributes button").click(active);
+
+var d;
+
+function active(e) {
+    id = $(e.target.parentElement).attr("id");
+    datafield = $(e.target.parentElement).attr("data-field");
+    if (mainpage_attributes_activebutton != null) {
+        document.getElementById(mainpage_attributes_activebutton).style['background-color'] = '#eee';
+        document.getElementById(mainpage_attributes_activebutton).style['color'] = '#000';
+    }
+    document.getElementById(id).style['background-color'] = 'green';
+    document.getElementById(id).style['color'] = 'white';
+
+    mainpage_attributes_activebutton = id;
+
+    // replot all games
+    d3.select("#heatmap").selectAll("svg")
+        .data(games)
+        .enter() // no matching with data
+        .append("svg")
+        .attr("width", function() { return div_heatmap.offsetWidth; })
+        .append('g')
+        .attr("width", function() { return div_heatmap.offsetWidth; })
+        .attr("class", function(d) { return "heatmap_figure_" + d; })
+
+    var svg_heatmaps = d3.select("#heatmap").selectAll("svg");
+
+    plotAllHeatmap(data_all_games, games, svg_heatmaps, datafield);
 }
 
 if (data_all_games.length == 0) {
@@ -528,9 +649,7 @@ if (data_all_games.length == 0) {
     // call dataProcessing directly
     // data has been loaded
     dataProcessing(null, data_all_games);
+
+    // peak viewers as default in mainpage
+    $("button_main_peak_viewers").click();
 }
-
-
-d3.csv("../data/Overwatch.csv", function(data) {
-    console.log(data);
-})
