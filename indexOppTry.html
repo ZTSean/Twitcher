@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="multiline.css">
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <script src="http://d3js.org/queue.v1.min.js"></script>
+    <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+</head>
+
+<body>
+    <div class="chart-wrapper" id="chart-line1"></div>
+    <script type="text/javascript">
+    function DataProcessing(error, gdata) {
+
+        var StartTime = new Date("2016/9/8");
+        var EndTime = new Date("2017/9/8");
+
+        var SSTimeOC = new Date("2016/9/8");
+        var SETimeOC = new Date("2017/9/8");
+
+        function prepareDataForOppChart(start, end) {
+            if (SETimeOC < SSTimeOC) {
+                var temp = SSTimeOC;
+                SSTimeOC = SETimeOC;
+                SETimeOC = temp;
+            }
+            if (SETimeOC > EndTime) { SETimeOC = EndTime; }
+            if (SSTimeOC < StartTime) { SSTimeOC = StartTime }
+
+            var startPt = parseInt((SSTimeOC - StartTime) / 86400000);
+            var endPt = parseInt((SETimeOC - StartTime) / 86400000);
+            var opp = [];
+            for (i = startPt; i <= endPt; i++) {
+                opp.push({
+                    date: new Date(gdata[0][i]["Date"]),
+                    OWPV: parseInt(gdata[0][i]["Peak Viewers"]),
+                    OWC: parseInt(gdata[0][i]["Peak Channels"]),
+                    CSGOPV: parseInt(gdata[1][i]["Peak Viewers"]),
+                    CSGOC: parseInt(gdata[1][i]["Peak Channels"]),
+                    PUBGPV: parseInt(gdata[2][i]["Peak Viewers"]),
+                    PUBGC: parseInt(gdata[2][i]["Peak Channels"]),
+                    DPV: parseInt(gdata[3][i]["Peak Viewers"]),
+                    DC: parseInt(gdata[3][i]["Peak Channels"]),
+                    D2PV: parseInt(gdata[4][i]["Peak Viewers"]),
+                    D2C: parseInt(gdata[4][i]["Peak Channels"]),
+                })
+               /* opp.push({
+                    date: new Date(gdata[0][i]["Date"]),
+                    OWPV: parseFloat(gdata[0][i]["Peak Viewers"]),
+                    OWC: parseInt(gdata[0][i]["Peak Channels"]),
+                    CSGOPV: parseInt(gdata[1][i]["Peak Viewers"]),
+                    CSGOC: parseInt(gdata[1][i]["Peak Channels"]),
+                    PUBGPV: parseInt(gdata[2][i]["Peak Viewers"]),
+                    PUBGC: parseInt(gdata[2][i]["Peak Channels"]),
+                    DPV: parseInt(gdata[3][i]["Peak Viewers"]),
+                    DC: parseInt(gdata[3][i]["Peak Channels"]),
+                    D2PV: parseInt(gdata[4][i]["Peak Viewers"]),
+                    D2C: parseInt(gdata[4][i]["Peak Channels"]),
+                })*/
+                /*opp.push({
+                    id: games[num],
+                    x: i,
+                    values: {
+                        date: new Date(gdata[num][i]["Date"]),
+                        viewer: nViewers,
+                        channel: nChannels
+                    }
+                })*/
+                ;
+            }
+            return opp;
+        }
+
+        data = prepareDataForOppChart(SSTimeOC,SETimeOC);
+        var chart = makeLineChart(data, 'date', {
+            'Overwatch': { column: 'OWPV' },
+            'CSGO': { column: 'CSGOPV' },
+            'PUBG': { column: 'PUBGPV' },
+            'Destiny': { column: 'DPV' },
+            'Destiny2': { column: 'D2PV' }
+        });
+        chart.bind("#chart-line1");
+        chart.render();
+    }
+
+    queue()
+        .defer(d3.csv, "data/Overwatch.csv") //0 
+        .defer(d3.csv, "data/CSGO.csv") //1
+        .defer(d3.csv, "data/PUBG.csv") //2
+        .defer(d3.csv, "data/Destiny.csv") //3
+        .defer(d3.csv, "data/Destiny2.csv") //4
+        .awaitAll(DataProcessing); //only function name is needed
+    </script>
+    <script src="multiline.js" charset="utf-8"></script>
+</body>
+
+</html>

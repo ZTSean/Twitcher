@@ -167,7 +167,7 @@ function DataProcessing(error, gdata) {
                 .attr("width", function(d) { return w; })
                 .attr("height", function(d) { return h; })
                 .style("fill", function(d) {
-                    if (d.value == -1) {
+                    if ((d.value == -1) || (d.value == 0)) {
                         return colorUnavailable;
                     }
                     return colorScale(d.value);
