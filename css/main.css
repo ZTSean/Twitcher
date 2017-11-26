@@ -1,3 +1,7 @@
+table {
+  width: 100%;
+}
+
 .mdl-layout__header-row {
     -webkit-justify-content: center;
 }
@@ -8,7 +12,7 @@
   display: inline-block;
   vertical-align: middle;
   
-  button{
+  button {
     background-color: #eee;
     display: inline-block;
     float: left;

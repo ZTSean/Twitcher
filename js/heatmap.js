@@ -18,7 +18,7 @@ function meanAndStd(array) {
     return [avg, std]
 }
 
-function plotAllHeatmap(data, games, svg_heatmaps, dataField) {
+function plotAllHeatmap(data, games, data_field) {
     // initialization ---------------------------------------------
     var colorLow = 'green',
         colorMed = 'yellow',
@@ -28,8 +28,8 @@ function plotAllHeatmap(data, games, svg_heatmaps, dataField) {
 
     // draw heatmap for each graph
     for (var i = 0; i < data.length; i++) {
-        var domainRange = [data[i]["min_" + dataField] == NaN ? -100: data[i]["min_" + dataField], data[i]["max_" + dataField] == NaN? 100:data[i]["max_" + dataField]];
-        console.log("domain:" + data[i]["min_" + dataField] + " " + data[i]["max_" + dataField]);
+        var domainRange = [data[i]["min_" + data_field] == NaN ? -100 : data[i]["min_" + data_field], data[i]["max_" + data_field] == NaN ? 100 : data[i]["max_" + data_field]];
+        //console.log("domain:" + data[i]["min_" + data_field] + " " + data[i]["max_" + data_field]);
 
         var colorScale = d3.scale.linear()
             .domain(domainRange)
@@ -37,47 +37,192 @@ function plotAllHeatmap(data, games, svg_heatmaps, dataField) {
 
         // calculate single data entry rect width
         div_heatmap = document.getElementById("heatmap");
-        heatmapLength = data[i]["data"].length;
+        heatmap_length = data[i]["data"].length;
         data_height = 50;
-        data_width = div_heatmap.offsetWidth / heatmapLength;
+        data_width = div_heatmap.offsetWidth / heatmap_length;
 
         // draw the heatmap data by data
         // create new that does not match with data
-        svg_heatmaps.selectAll(".heatmap_figure_" + games[i]).selectAll("rect")
-            .data(data[i]["data"])
+        var rects = d3.select("#heatmap").selectAll("svg").filter(".heatmap_figure_" + games[i]).selectAll("rect")
+
+        rects.data(data[i]["data"])
             .enter().append("rect")
             .attr("x", function(d) { return d.col * data_width; })
             .attr("y", 0)
             .attr("width", function(d) { return data_width; })
             .attr("height", function(d) { return data_height; })
             .style("fill", function(d) {
-                if (d[dataField] == NaN || d[dataField] == -1) {
+                if (d[data_field] == NaN || d[data_field] == -1) {
                     return colorUnavailable;
                 }
-                return colorScale(d[dataField]);
+                return colorScale(d[data_field]);
             });
 
         // update those existed rect
-        var gs = svg_heatmaps.selectAll(".heatmap_figure_" + games[i]).selectAll("rect")
-            .data(data[i]["data"])
-
-        gs.attr("x", function(d) { return d.col * data_width; })
+        rects.data(data[i]["data"])
+            .attr("x", function(d) { return d.col * data_width; })
             .attr("y", 0)
             .attr("width", function(d) { return data_width; })
             .attr("height", function(d) { return data_height; })
             .style("fill", function(d) {
-                if (d[dataField] == NaN || d[dataField] == -1) {
+                if (d[data_field] == NaN || d[data_field] == -1) {
                     return colorUnavailable;
                 }
-                return colorScale(d[dataField]);
+                return colorScale(d[data_field]);
             });
+
+        // TODO: add animation
     }
 
 }
 
 // single game data
-function plotAllEventline(data, g_eventlines) {
-    
+function plotAllEventline(data, games, data_field) {
+    // initialization
+    var r = 5;
+    var line_width = 3;
+    var line_color;
+    var circle_color = "black";
+    var yPos = 25;
+    var isCircle = false;
+
+
+    // draw eventline for each graph
+    for (var i = 0; i < data.length; i++) {
+
+        // Initialization based on each game data ----------------------------
+        // calculate single game event
+        div_heatmap = document.getElementById("heatmap");
+        eventline_length = data[i]["data"].length;
+        var data_width = div_heatmap.offsetWidth / eventline_length;
+
+        // Event handler -----------------------------------------------------
+        // Create Event Handlers for mouse hover on the single event datum
+        function handleMouseOverEventCircle(d, i) {
+
+            // Use D3 to select element, change color and size
+            d3.select(this).attr({
+                fill: "purple",
+                r: r * 4
+            });
+
+            // TODO: update info box
+        }
+
+        function handleMouseOutEventCircle(d, i) {
+            var count = 0;
+            if (d["game_updates"] != undefined && d["game_updates"].length != 0) count++;
+            if (d["esports_schedule"] != undefined && d["esports_schedule"].length != 0) count++;
+
+            // Use D3 to select element, change color back to normal
+            d3.select(this).attr({
+                fill: circle_color,
+                r: r * count
+            });
+        }
+
+        function handleMouseOverEventRect(d, i) {
+
+            // Use D3 to select element, change color and size
+            d3.select(this).attr({
+                fill: "purple",
+                y: yPos - 2 * r,
+                height: r * 4
+            });
+
+            // TODO: update info box
+        }
+
+        function handleMouseOutEventRect(d, i) {
+            var count = 0;
+            if (d["game_updates"] != undefined && d["game_updates"].length != 0) count++;
+            if (d["esports_schedule"] != undefined && d["esports_schedule"].length != 0) count++;
+
+            // Use D3 to select element, change color back to normal
+            d3.select(this).attr({
+                fill: "black",
+                y: yPos - count * r / 2,
+                height: count * r
+            });
+        }
+
+        // ------------------------------------------------------------------
+
+        var svg_eventline = d3.select("#heatmap").selectAll("svg").filter(".eventline_figure_" + games[i])
+        svg_eventline.selectAll("line")
+            .data([1])
+            .enter()
+            .append("line")
+            .attr("x1", 0)
+            .attr("y1", yPos)
+            .attr("x2", div_heatmap.offsetWidth)
+            .attr("y2", yPos)
+            .attr("stroke-width", line_width)
+            .attr("stroke", "black");
+
+
+        if (isCircle) {
+            // draw circles for events of each date ---------------------------- Circle version
+            var circles = svg_eventline.selectAll("circle")
+                .data(data[i]["data"]);
+
+            circles.exit().remove();
+
+            circles.enter()
+                .append("circle")
+                .filter(function(d) { // filter out those data without events
+                    return (d["esports_schedule"] != undefined && d["esports_schedule"].length != 0) ||
+                        (d["game_updates"] != undefined && d["game_updates"].length != 0);
+                })
+                .attr("r", function(d) {
+                    var count = 0;
+                    if (d["game_updates"] != undefined && d["game_updates"].length != 0) count++;
+                    if (d["esports_schedule"] != undefined && d["esports_schedule"].length != 0) count++;
+                    return count * r;
+                })
+                .attr("cx", function(d) { return data_width * d.col; })
+                .attr("cy", function(d) { return yPos; })
+
+                // handle mouse hover & out events
+                .on("mouseover", handleMouseOverEventCircle)
+                .on("mouseout", handleMouseOutEventCircle);
+        } else {
+            // draw rectangle for events of each date ---------------------------- Rectangle version
+            var rects = svg_eventline.selectAll("rect")
+                .data(data[i]["data"]);
+
+            rects.exit().remove();
+
+            rects.enter()
+                .append("rect")
+                .filter(function(d) { // filter out those data without events
+                    return (d["esports_schedule"] != undefined && d["esports_schedule"].length != 0) ||
+                        (d["game_updates"] != undefined && d["game_updates"].length != 0);
+                })
+
+                .attr("x", function(d) { return d.col * data_width; })
+                .attr("y", function(d) {
+                    var count = 0;
+                    if (d["game_updates"] != undefined && d["game_updates"].length != 0) count++;
+                    if (d["esports_schedule"] != undefined && d["esports_schedule"].length != 0) count++;
+                    return yPos - count * r / 2;
+                })
+                .attr("width", function(d) { return data_width; })
+                .attr("height", function(d) {
+                    var count = 0;
+                    if (d["game_updates"] != undefined && d["game_updates"].length != 0) count++;
+                    if (d["esports_schedule"] != undefined && d["esports_schedule"].length != 0) count++;
+                    return count * r;
+                })
+
+                // handle mouse hover & out events
+                .on("mouseover", handleMouseOverEventRect)
+                .on("mouseout", handleMouseOutEventRect);
+
+
+            // TODO: add animation
+        }
+    }
 }
 
 // format data read from csv
@@ -204,35 +349,32 @@ function dataProcessing(error, data) {
     div_heatmap = document.getElementById("heatmap");
 
     // create svg if they are not existing for each game
-    d3.select("#heatmap").selectAll("svg")
-        .data(games)
-        .enter() // no matching with data
-        .append("svg")
+    var groups = d3.select("#heatmap").selectAll("div").data(games).enter()
+        .append("div") // no matching with groups
+        .attr("class", function(d) { return "heatmap_groups_" + d });
+
+    console.log(groups);
+    groups.append("svg")
         .attr("width", function() { return div_heatmap.offsetWidth; })
-        .append('g')
+        .attr("height", 50)
+        .attr("class", function(d) { return "eventline_figure_" + d; })
+    groups.append("svg")
         .attr("width", function() { return div_heatmap.offsetWidth; })
+        .attr("height", 50)
         .attr("class", function(d) { return "heatmap_figure_" + d; })
 
-    var svg_heatmaps = d3.select("#heatmap").selectAll("svg");
-    g = svg_heatmaps;
-    //console.log(g_heatmaps); // #heatmap->svg->g:heatmap_figure
-
-    d3.select("#heatmap").selectAll("svg")
-        .data(games) // all previously matched data
-        .append('g')
-        .attr("class", function(d) { return "eventline_figure_" + d; })
-
-    var svg_eventlines = d3.select("#heatmap").selectAll("svg");
-    //console.log(g_eventlines); // #heatmap->svg->g:eventline_figure
 
     // parse data from pure string to corresponding data type
     data = formatData(data);
     data_all_games = data;
 
     dataField = "peak_viewers"; // default field to show
-    plotAllEventline(data, games, svg_eventlines, dataField);
-    plotAllHeatmap(data, games, svg_heatmaps, dataField);
+    plotAllEventline(data, games, dataField);
+    plotAllHeatmap(data, games, dataField);
 }
+
+// Events handler -----------------------------------
+
 
 // ==================================================
 function dataProcessing2(error, gdata) {
@@ -639,7 +781,7 @@ function active(e) {
 
     var svg_heatmaps = d3.select("#heatmap").selectAll("svg");
 
-    plotAllHeatmap(data_all_games, games, svg_heatmaps, datafield);
+    plotAllHeatmap(data_all_games, games, datafield);
 }
 
 if (data_all_games.length == 0) {
