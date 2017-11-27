@@ -9,7 +9,8 @@ d3.starPlot = function() {
       labelMargin = 20,
       includeGuidelines = true,
       includeLabels = true,
-      accessors = [],
+      properties = [],
+      scales = [],
       labels = [],
       title = nop,
 
@@ -17,7 +18,7 @@ d3.starPlot = function() {
       datum,
       radius = width / 2,
       origin = [radius, radius],
-      radii = accessors.length,
+      radii = properties.length,
       radians = 2 * Math.PI / radii,
       scale = d3.scale.linear()
         .domain([0, 100])
@@ -40,7 +41,7 @@ d3.starPlot = function() {
 
   function drawGuidelines() {
     var r = 0;
-    accessors.forEach(function(d, i) {
+    properties.forEach(function(d, i) {
       var l, x, y;
 
       l = radius;
@@ -59,9 +60,8 @@ d3.starPlot = function() {
 
   function drawLabels() {
     var r = 0;
-    accessors.forEach(function(d, i) {
+    properties.forEach(function(d, i) {
       var l, x, y;
-
       l = radius;
       x = (l + labelMargin) * Math.cos(r);
       y = (l + labelMargin) * Math.sin(r);
@@ -88,9 +88,10 @@ d3.starPlot = function() {
 
     var pathData = [];
     var r = Math.PI / 2;
-    accessors.forEach(function(d) {
+    properties.forEach(function(d, i) {
+      var userScale = scales[i] || scales[0];
       pathData.push([
-        scale(d(datum)),
+        scale(userScale(datum[d]["percent"])),
         r
       ])
       r += radians;
@@ -109,15 +110,82 @@ d3.starPlot = function() {
       .style('text-anchor', 'middle')
   }
 
+  function drawInteraction() {
+    var path = d3.svg.line.radial();
+
+    // `*Interaction` variables are used to build the interaction layer.
+    // `*Extent` variables are used to compute (and return) the x,y
+    // positioning of the attribute extents. `*Value` variables are used
+    // for the attribute values.
+    var rInteraction = Math.PI / 2;
+    var rExtent = 0;
+    properties.forEach(function(d, i) {
+      var lInteraction, xInteraction, yInteraction;
+      var lExtent, xExtent, yExtent;
+
+      lInteraction = radius;
+      xInteraction = lInteraction * Math.cos(rInteraction);
+      yInteraction = lInteraction * Math.sin(rInteraction);
+
+      lExtent = radius + labelMargin;
+      xExtent = lExtent * Math.cos(rExtent) + origin[0] + margin.left;
+      yExtent = lExtent * Math.sin(rExtent) + origin[1] + margin.top;
+
+      var userScale = scales[i] || scales[0];
+      lValue = scale(userScale(datum[d]["percent"]));
+      x = lValue * Math.cos(rExtent) + origin[0] + margin.left;
+      y = lValue * Math.sin(rExtent) + origin[1] + margin.top;
+
+      var halfRadians = radians / 2;
+      var pathData = [
+        [0, rInteraction - halfRadians],
+        [lInteraction, rInteraction - halfRadians],
+        [lInteraction, rInteraction + halfRadians]
+      ];
+
+      var datumToBind = {
+        xExtent: xExtent,
+        yExtent: yExtent,
+        x: x,
+        y: y,
+        key: properties[i],
+        datum: datum
+      };
+
+      g.append('path')
+        .datum(datumToBind)
+        .attr('class', 'star-interaction')
+        .attr('transform', 'translate(' + origin[0] + ',' + origin[1] + ')')
+        .attr('d', path(pathData) + 'Z');
+
+      rInteraction += radians;
+      rExtent += radians;
+    })
+  }
+
   function nop() {
     return;
   }
 
-  chart.accessors = function(_) {
-    if (!arguments.length) return accessors;
-    accessors = _;
-    radii = accessors.length;
+  chart.interaction = function() {
+    drawInteraction();
+  };
+
+  chart.properties = function(_) {
+    if (!arguments.length) return properties;
+    properties = _;
+    radii = properties.length;
     radians = 2 * Math.PI / radii;
+    return chart;
+  };
+
+  chart.scales = function(_) {
+    if (!arguments.length) return scales;
+    if (Array.isArray(_)) {
+      scales = _;
+    } else {
+      scales = [_];
+    }
     return chart;
   };
 

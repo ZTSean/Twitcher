@@ -1,0 +1,410 @@
+<!DOCTYPE>
+<meta charset="utf-8">
+<style>
+body {
+    width: 960px;
+    margin: auto;
+    font-family: Arial;
+}
+
+#target {
+    margin: 40px 0;
+}
+
+.wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.chart {
+    margin-bottom: 40px;
+}
+
+.star-title {
+    font-size: 14px;
+}
+
+.star-label {
+    font-size: 11px;
+    pointer-events: none;
+}
+
+.star-origin {
+    fill: #333;
+}
+
+.star-axis {
+    stroke: #ccc;
+    stroke-width: 2px;
+    stroke-dasharray: 4 5;
+}
+
+.star-path {
+    stroke: #444;
+    stroke-width: 2px;
+    fill: #709CB1;
+    fill-opacity: 0.6;
+}
+
+.star-interaction {
+    opacity: 0;
+}
+
+.interaction {
+    pointer-events: none;
+}
+
+.interaction.label {
+    position: absolute;
+    font-size: 11px;
+    text-shadow: 0 1px 0 #FFF, 0 -1px 0 #FFF, 1px 0 #FFF, -1px 0 #FFF;
+}
+
+.interaction.circle {
+    fill: #444;
+    fill-opacity: 0.6;
+    stroke: #444;
+}
+</style>
+
+<body>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://d3js.org/queue.v1.min.js"></script>
+    <script src="d3-starPlot.js"></script>
+    <script>
+    function DataProcessing(error, gdata) {
+        var StartTime = new Date("2016/9/8");
+        var EndTime = new Date("2017/9/8");
+        var SSTimeS = new Date("2016/9/8");
+        var SETimeS = new Date("2016/10/8");
+        var star = d3.starPlot();
+
+        var byProperty = function(prop) {
+            return function(a, b) {
+                if (typeof a[prop] == "number") {
+                    return (a[prop] - b[prop]);
+                } else {
+                    return ((a[prop] < b[prop]) ? -1 : ((a[prop] > b[prop]) ? 1 : 0));
+                }
+            };
+        };
+
+        function scaleHelper(property, gameNumber, number) {
+            var toSort = [];
+            for (var j = 0; j < gdata[gameNumber].length; j++) {
+                toSort.push(parseInt(gdata[gameNumber][j][property]));
+            }
+            var sorted = toSort.sort(function(a, b) { return a - b });
+            var start = 0; // the first number in the array with value != 0 or -1 
+            for (var i = 0; i < sorted.length; i++) {
+                if ((sorted[i] != 0) && (sorted[i] != -1)) {
+                    if (start == 0) {
+                        start = i;
+                    }
+                    if (number <= sorted[i]) {
+                        return (i - start + 1) / (sorted.length - start);
+                    }
+                }
+            }
+            return 0;
+        }
+
+
+        function starDataHelper(ary, property, gameNum) {
+            var sum = 0;
+            var nzeron = 0;
+            for (var i = 0; i < ary.length; i++) {
+                if ((ary[i] != [0]) && (ary[i] != -1)) {
+                    nzeron = nzeron + 1;
+                    sum += ary[i];
+                }
+            }
+            var avg = 0;
+            if (nzeron != 0) {
+                avg = parseInt(sum / nzeron);
+            }
+            var percent = scaleHelper(property, gameNum, avg);
+            return [avg, percent];
+        }
+
+        //0-Overwatch, 1-CSGO, 2-PUBG, 3-Destiny, 4-Destiny2
+        function prepareData(gameNumber) {
+            if (SETimeS < SSTimeS) {
+                var temp = SSTimeS;
+                SSTimeS = SETimeS;
+                SETimeS = temp;
+            }
+            if (SETimeS > EndTime) { SETimeS = EndTime; }
+            if (SSTimeS < StartTime) { SSTimeS = StartTime; }
+
+            var startPt = parseInt((SSTimeS - StartTime) / 86400000);
+            var endPt = parseInt((SETimeS - StartTime) / 86400000);
+            var endPt2 = endPt; //end point for bar chart
+            if (startPt == endPt) {
+                var dayend = (SETimeS.setMonth(SETimeS.getMonth() + 1));
+                if (dayend > EndTime) {
+                    dayend = EndTime;
+                }
+                endPt2 = parseInt((dayend - StartTime) / 86400000);
+            }
+
+            data = gdata[gameNumber];
+            starTempData = []
+            barChartData = []
+            //overwatch
+            if (gameNumber == 0) {
+                for (var i = startPt; i <= endPt2; i++) {
+                    var temp = {
+                        date: data[i]["Date"],
+                        AverageViewers: parseInt(data[i]["Average Viewers"]),
+                        PeakViewers: parseInt(data[i]["Peak Viewers"]),
+                        PeakChannels: parseInt(data[i]["Peak Channels"]),
+                        info: {
+                            updates: data[i]["Game Updates"],
+                            events: data[i]["Events"],
+                            competitiveSeasons: data[i]["Competitive Seasons"],
+                            esports: data[i]["Esports Schedule"]
+                        }
+                    };
+                    barChartData.push(temp);
+                    if (i <= endPt) {
+                        starTempData.push(temp);
+                    }
+                }
+
+                var ary1 = starTempData.map(function(o) { return o.AverageViewers; });
+                var dt1 = starDataHelper(ary1, "Average Viewers", gameNumber);
+                var ary2 = starTempData.map(function(o) { return o.PeakViewers; });
+                var dt2 = starDataHelper(ary2, "Peak Viewers", gameNumber);
+                var ary3 = starTempData.map(function(o) { return o.PeakChannels; });
+                var dt3 = starDataHelper(ary3, "Peak Channels", gameNumber);
+                starData = {
+                    AverageViewers: { avg: dt1[0], percent: dt1[1] },
+                    PeakViewers: { avg: dt2[0], percent: dt2[1] },
+                    PeakChannels: { avg: dt3[0], percent: dt3[1] }
+                }
+
+                var scale = d3.scale.linear()
+                    .domain([0, 1])
+                    .range([0, 100]);
+
+                var scales = [scale];
+
+                star.properties([
+                        'AverageViewers',
+                        'PeakViewers',
+                        'PeakChannels',
+                    ])
+                    .scales(scales)
+                    .labels([
+                        'Average Viewers',
+                        'Peak Viewers',
+                        'Peak Channels',
+                    ])
+                    .title(function(d) { return "Overwatch"; });
+            }
+
+            //CSGO
+            if ((gameNumber == 1) || (gameNumber == 2)) {
+                for (var i = startPt; i <= endPt2; i++) {
+                    var temp = {
+                        date: data[i]["Date"],
+                        AverageViewers: parseInt(data[i]["Average Viewers"]),
+                        PeakViewers: parseInt(data[i]["Peak Viewers"]),
+                        PeakChannels: parseInt(data[i]["Peak Channels"]),
+                        PeakPlayers: parseInt(data[i]["Peak Players"]),
+                        info: {
+                            updates: data[i]["Game Updates"],
+                            esports: data[i]["Esports Schedule"]
+                        }
+                    };
+                    barChartData.push(temp);
+                    if (i <= endPt) {
+                        starTempData.push(temp);
+                    }
+                }
+
+                var ary1 = starTempData.map(function(o) { return o.AverageViewers; });
+                var dt1 = starDataHelper(ary1, "Average Viewers", gameNumber);
+                var ary2 = starTempData.map(function(o) { return o.PeakViewers; });
+                var dt2 = starDataHelper(ary2, "Peak Viewers", gameNumber);
+                var ary3 = starTempData.map(function(o) { return o.PeakChannels; });
+                var dt3 = starDataHelper(ary3, "Peak Channels", gameNumber);
+                var ary4 = starTempData.map(function(o) { return o.PeakPlayers; });
+                var dt4 = starDataHelper(ary4, "Peak Players", gameNumber);
+                starData = {
+                    AverageViewers: { avg: dt1[0], percent: dt1[1] },
+                    PeakViewers: { avg: dt2[0], percent: dt2[1] },
+                    PeakChannels: { avg: dt3[0], percent: dt3[1] },
+                    PeakPlayers: { avg: dt4[0], percent: dt4[1] }
+                }
+
+                var scale = d3.scale.linear()
+                    .domain([0, 1])
+                    .range([0, 100]);
+
+                var scales = [scale];
+
+                star.properties([
+                        'AverageViewers',
+                        'PeakViewers',
+                        'PeakChannels',
+                        'PeakPlayers'
+                    ])
+                    .scales(scales)
+                    .labels([
+                        'Average Viewers',
+                        'Peak Viewers',
+                        'Peak Channels',
+                        'Peak Players'
+                    ])
+                    .title(function(d) {
+                        if (gameNumber == 1) {
+                            return "CSGO";
+                        }
+                        if (gameNumber == 2) {
+                            return "PUBG";
+                        }
+                    });
+            }
+
+            //destiny and destiny 2
+            if ((gameNumber == 4) || (gameNumber == 3)) {
+                for (var i = startPt; i <= endPt2; i++) {
+                    var temp = {
+                        date: data[i]["Date"],
+                        AverageViewers: parseInt(data[i]["Average Viewers"]),
+                        PeakViewers: parseInt(data[i]["Peak Viewers"]),
+                        PeakChannels: parseInt(data[i]["Peak Channels"]),
+                        info: {
+                            updates: data[i]["Game Updates"],
+                        }
+                    };
+                    barChartData.push(temp);
+                    if (i <= endPt) {
+                        starTempData.push(temp);
+                    }
+                }
+
+                var ary1 = starTempData.map(function(o) { return o.AverageViewers; });
+                var dt1 = starDataHelper(ary1, "Average Viewers", gameNumber);
+                var ary2 = starTempData.map(function(o) { return o.PeakViewers; });
+                var dt2 = starDataHelper(ary2, "Peak Viewers", gameNumber);
+                var ary3 = starTempData.map(function(o) { return o.PeakChannels; });
+                var dt3 = starDataHelper(ary3, "Peak Channels", gameNumber);
+
+                starData = {
+                    AverageViewers: { avg: dt1[0], percent: dt1[1] },
+                    PeakViewers: { avg: dt2[0], percent: dt2[1] },
+                    PeakChannels: { avg: dt3[0], percent: dt3[1] },
+                }
+
+                var scale = d3.scale.linear()
+                    .domain([0, 1])
+                    .range([0, 100]);
+
+                var scales = [scale];
+
+                star.properties([
+                        'AverageViewers',
+                        'PeakViewers',
+                        'PeakChannels',
+                    ])
+                    .scales(scales)
+                    .labels([
+                        'Average Viewers',
+                        'Peak Viewers',
+                        'Peak Channels',
+                    ])
+                    .title(function(d) {
+                        if (gameNumber == 3) {
+                            return "Destiny";
+                        }
+                        if (gameNumber == 4) {
+                            return "Destiny2";
+                        }
+                    });
+            }
+            return [starData, barChartData];
+        }
+
+        function plotStar(gameData) {
+            var margin = {
+                top: 32,
+                right: 50,
+                bottom: 20,
+                left: 50
+            };
+            var width = 1000 - margin.left - margin.right;
+            var height = 1000 - margin.top - margin.bottom;
+            var labelMargin = 8;
+
+
+            star.margin(margin)
+                .labelMargin(labelMargin);
+            var wrapper = d3.select('#target').append('div')
+                .attr('class', 'wrapper');
+            var svg = wrapper.append('svg')
+                .attr('class', 'chart')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', width + margin.top + margin.bottom)
+
+            var starG = svg.append('g')
+                .datum(gameData)
+                .call(star)
+                .call(star.interaction)
+
+            var interactionLabel = wrapper.append('div')
+                .attr('class', 'interaction label')
+
+            var circle = svg.append('circle')
+                .attr('class', 'interaction circle')
+                .attr('r', 5)
+
+            var interaction = wrapper.selectAll('.interaction')
+                .style('display', 'none');
+
+            svg.selectAll('.star-interaction')
+                .on('mouseover', function(d) {
+                    svg.selectAll('.star-label')
+                        .style('display', 'none')
+
+                    interaction
+                        .style('display', 'block')
+
+                    circle
+                        .attr('cx', d.x)
+                        .attr('cy', d.y)
+
+                    $interactionLabel = $(interactionLabel.node());
+                    interactionLabel
+                        .text(d.key + ': ' + d.datum[d.key]["avg"])
+                        .style('left', d.xExtent - ($interactionLabel.width() / 2))
+                        .style('top', d.yExtent - ($interactionLabel.height() / 2))
+                })
+                .on('mouseout', function(d) {
+                    interaction
+                        .style('display', 'none')
+
+                    svg.selectAll('.star-label')
+                        .style('display', 'block')
+                });
+        }
+
+        
+        data = prepareData(4);
+        plotStar(data[0]);
+    }
+
+
+    queue()
+        .defer(d3.csv, "data/Overwatch.csv") //0 
+        .defer(d3.csv, "data/CSGO.csv") //1
+        .defer(d3.csv, "data/PUBG.csv") //2
+        .defer(d3.csv, "data/Destiny.csv") //3
+        .defer(d3.csv, "data/Destiny2.csv") //4
+        .awaitAll(DataProcessing); //only function name is needed
+    </script>
+    <div id='target'></div>
+</body>
