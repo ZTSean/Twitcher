@@ -67,7 +67,8 @@ function DataProcessing(error, gdata) {
                     x: startPt + i,
                     date: gData[j][i]["Date"],
                     gameUpdates: gData[j][i]["Game Updates"],
-                    esportsSchedule: gData[j][i]["Esports Schedule"]
+                    esportsSchedule: gData[j][i]["Esports Schedule"],
+                    game: games[j]
                 });
             }
             //console.log(line)
@@ -106,14 +107,148 @@ function DataProcessing(error, gdata) {
 
     function updateInfoBoxHMap(infoData, settings) {
         var info = gdata[infoData.col][infoData.x];
-        divInfobox = document.getElementById("infobox");
-        console.log(infoData);
+        var divInfobox = d3.select("#infobox");
+
+        if (settings == -1) {
+            // state -1 : mouse out
+            // remove all previous data
+            divInfobox.selectAll("div.state_0").remove();
+        } else if (settings == 0) {
+            // state 0 : no clickhold -> show the information of rect that mouse is hovering on
+
+            // if previous div is not the same
+            /*
+            var divState = divInfobox.selectAll("div.state_0").data([infoData], function(d) { return d.game + "_" + d.col + "_" + d.row + "_state_0"; });
+
+            divState.exit().remove();
+            var content = divState.enter()
+                .append("div")
+                .style("padding", "10px")
+                .attr("class", "state_0 mdl-shadow--2dp")
+
+            content.append("p")
+                .text(function(d) { return "Game: " + d.game; })
+            content.append("p")
+                .text(function(d) { return "Date: " + (d.date != undefined && d.date.length > 0 ? d.date : ""); })
+
+            content.append("p")
+                .text(function(d) { return "Value: " + (d.value != undefined && d.value > 0 ? d.value + "" : "N/A"); })
+
+            content.append("p")
+                .text(function(d) { return "Esports Schedule: " + (d.esportsSchedule != undefined && d.esportsSchedule.length > 0 ? d.esportsSchedule : ""); });
+            */
+
+            divInfobox.selectAll("div.state_0").remove();
+
+            divInfobox.append("div")
+                .style("padding", "10px")
+                .attr("class", "state_0 mdl-shadow--2dp");
+
+            var content = divInfobox.selectAll("div.state_0");
+            content.append("p").text("Info:")
+            content.append("p").text("Game: " + infoData.game)
+            content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
+            content.append("p").text("Value: " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
+            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
+
+        } else if (settings == 1) {
+            // state 1: 1 clickhold -> show the information of the clicked rect
+            // if previous div is not the same
+            /*
+            var divState = divInfobox.selectAll("div.state_1").data([infoData], function(d) { return d.game + "_" + d.col + "_" + d.row + "_state_1"; });
+
+            divState.exit().remove();
+            var content = divState.enter()
+                .append("div")
+                .style("padding", "10px")
+                .attr("class", "state_1 mdl-shadow--2dp")
+
+            content.append("p")
+                .text(function(d) { return "Game: " + d.game; })
+            content.append("p")
+                .text(function(d) { return "Date: " + (d.date != undefined && d.date.length > 0 ? d.date : ""); })
+
+            content.append("p")
+                .text(function(d) { return "Value: " + (d.value != undefined && d.value > 0 ? d.value + "" : "N/A"); })
+
+            content.append("p")
+                .text(function(d) { return "Esports Schedule: " + (d.esportsSchedule != undefined && d.esportsSchedule.length > 0 ? d.esportsSchedule : ""); });
+            */
+            divInfobox.selectAll("div.state_2").remove();
+            divInfobox.selectAll("div.state_1").remove();
+            divInfobox.selectAll("div.state_0").remove();
+
+            divInfobox.append("div")
+                .style("padding", "10px")
+                .attr("class", "state_1 mdl-shadow--2dp");
+
+            var content = divInfobox.selectAll("div.state_1");
+            content.append("p").text("First Selection:")
+            content.append("p").text("Game: " + infoData.game)
+            content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
+            content.append("p").text("Value: " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
+            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
+
+
+        } else if (settings == 2) {
+            // state 2: 1 clickhold -> show the information of the second clicked rect
+            // // if previous div is not the same
+            /*
+            var divState = divInfobox.selectAll("div.state_2").data([infoData], function(d) { return d.game + "_" + d.col + "_" + d.row + "_state_2"; });
+
+            divState.exit().remove();
+
+            if (divState.empty()) {
+                var content = divState.enter()
+                .append("div")
+                .style("padding", "10px")
+                .attr("class", "state_2 mdl-shadow--2dp");
+
+            content.append("p")
+                .text(function(d) { return "Game: " + d.game; })
+            content.append("p")
+                .text(function(d) { return "Date: " + (d.date != undefined && d.date.length > 0 ? d.date : ""); })
+                
+            content.append("p")
+                .text(function(d) { return "Value: " + (d.value != undefined && d.value > 0 ? d.value + "" : "N/A"); })
+                
+            content.append("p")
+                .text(function(d) { return "Esports Schedule: " + (d.esportsSchedule != undefined && d.esportsSchedule.length > 0 ? d.esportsSchedule : ""); });
         
+            }
+            */
 
-        if (settings == 1) {
+            divInfobox.selectAll("div.state_2").remove();
 
+            divInfobox.append("div")
+                .style("padding", "10px")
+                .attr("class", "state_2 mdl-shadow--2dp");
+
+            var content = divInfobox.selectAll("div.state_2");
+            content.append("p").text("Second Selection:")
+            content.append("p").text("Game: " + infoData.game)
+            content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
+            content.append("p").text("Value: " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
+            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
+
+        } else if (settings == 4) {
+            // state 4: mouse over event circle
+            divInfobox.selectAll("div.state_0").remove();
+
+            divInfobox.append("div")
+                .style("padding", "10px")
+                .attr("class", "state_0 mdl-shadow--2dp");
+
+            var content = divInfobox.selectAll("div.state_0");
+            content.append("p").text("Event Detail:")
+            content.append("p").text("Game: " + infoData.game)
+            content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
+            content.append("p").text("Game Updates: " + (infoData.gameUpdates != undefined && infoData.gameUpdates.length > 0 ? infoData.gameUpdates : ""))
+            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
+
+        
         }
-        
+
     }
 
     function plotHeatmap(gameData) {
@@ -184,7 +319,7 @@ function DataProcessing(error, gdata) {
             // create eventline if not exist -----------
             // create horizontal line for eventline if not exist
             svg.selectAll(".heatmap_eventline_" + games[i])
-                .data([gameData[i][0]])
+                .data([gameData[i][0]], function(d) { return d.col + ':' + d.row; })
                 .enter()
                 .append("line")
                 .attr("x1", labelWidth + TandGPadding + heatmapMargin.left)
@@ -195,8 +330,30 @@ function DataProcessing(error, gdata) {
                 .attr("stroke", colorEventline);
 
 
-            // create event bubble or rect if not exist
-            var eventlineBubbles = svg.selectAll(".heatmap_event_" + games[i]).data(gameData[i])
+            // create event bubble or rect if not exist ---------------------------------
+            var eventlineBubbles = svg.selectAll(".heatmap_event_" + games[i]).data(gameData[i], function(d) { return d.col + ':' + d.row; });
+
+            function handleEventHover(d, i) {
+                // Use D3 to select element, change color and size
+                d3.select(this)
+                    .attr("r", eventBubbleRadius * 4)
+                    .style("fill", "black");
+
+                updateInfoBoxHMap(d, 4);
+            }
+
+            function handleEventOut(d, i) {
+                var count = 0;
+                if (d.gameUpdates != undefined && d.gameUpdates.length > 0) count++;
+                if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
+
+                // Use D3 to select element, change color back to normal
+                d3.select(this)
+                    .attr("r", eventBubbleRadius * count)
+                    .style("fill", colorEventBubble);
+
+                updateInfoBoxHMap(d, 0);
+            }
 
             // remove previous events
             eventlineBubbles.exit().remove();
@@ -219,23 +376,8 @@ function DataProcessing(error, gdata) {
                 .style("fill", colorEventBubble)
 
                 // handle hover event
-                .on("mouseover", function(d, i) {
-                    // Use D3 to select element, change color and size
-                    d3.select(this)
-                        .attr("r", eventBubbleRadius * 4)
-                        .style("fill", "black");
-                })
-
-                .on("mouseout", function(d, i) {
-                    var count = 0;
-                    if (d.gameUpdates != undefined && d.gameUpdates.length > 0) count++;
-                    if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
-
-                    // Use D3 to select element, change color back to normal
-                    d3.select(this)
-                        .attr("r", eventBubbleRadius * count)
-                        .style("fill", colorEventBubble);
-                });
+                .on("mouseover", handleEventHover)
+                .on("mouseout", handleEventOut);
 
 
             // update bubbles
@@ -254,29 +396,14 @@ function DataProcessing(error, gdata) {
                 .style("fill", colorEventBubble)
 
                 // handle hover event
-                .on("mouseover", function(d) {
-                    // Use D3 to select element, change color and size
-                    d3.select(this)
-                        .attr("r", eventBubbleRadius * 4)
-                        .style("fill", "black");
-                })
-
-                .on("mouseout", function(d) {
-                    var count = 0;
-                    if (d.gameUpdates != undefined && d.gameUpdates.length != 0) count++;
-                    if (d.esportsSchedule != undefined && d.esportsSchedule.length != 0) count++;
-
-                    // Use D3 to select element, change color back to normal
-                    d3.select(this)
-                        .attr("r", eventBubbleRadius * count)
-                        .style("fill", colorEventBubble);
-                });
+                .on("mouseover", handleEventHover)
+                .on("mouseout", handleEventOut);
 
 
 
             // create heatmap if not exist
             svg.selectAll(".heatmap_rect_" + games[i])
-                .data(gameData[i])
+                .data(gameData[i], function(d) { return d.col + ':' + d.row; })
                 .enter()
                 .append("rect")
                 .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding + heatmapMargin.left; })
@@ -383,20 +510,20 @@ function DataProcessing(error, gdata) {
                             .style("fill", colorLine)
                             .text(d.date);
                         /* var x2 = d.row * w + labelWidth + TandGPadding + w;
-                       var startRect = savedX1;
-                       var widthRect = Math.abs(x2-savedX1);
-                        if (savedX1 > x2){
-                            startRect = x2;
-                        }
-                        svg.append("rect")
-                            .attr("class","selection")
-                            .attr("x", startRect)
-                            .attr("y", startH)
-                            .attr("width", widthRect)
-                            .attr("height", totalH-startH)
-                            .style("fill",colorLine)
-                            .style("fill-opacity",0.1); 
-                        */
+                           var startRect = savedX1;
+                           var widthRect = Math.abs(x2-savedX1);
+                            if (savedX1 > x2){
+                                startRect = x2;
+                            }
+                            svg.append("rect")
+                                .attr("class","selection")
+                                .attr("x", startRect)
+                                .attr("y", startH)
+                                .attr("width", widthRect)
+                                .attr("height", totalH-startH)
+                                .style("fill",colorLine)
+                                .style("fill-opacity",0.1); 
+                            */
                         clickHold = 1;
                         updateInfoBoxHMap(d, 2);
 
@@ -482,7 +609,7 @@ function DataProcessing(error, gdata) {
                 .attr("class", "gameLabel")
                 .attr("dy", ".30em")
                 .attr("x", (labelWidth + TandGPadding) / 2)
-                .attr("y", i * LH + h / 2 + eLh)
+                .attr("y", i * LH + h / 2 + eLh + heatmapMargin.top)
                 .attr("fill-opacity", 0.95)
                 .attr("class", "heatmap_text_" + games[i])
                 .text(games[i])
@@ -496,7 +623,7 @@ function DataProcessing(error, gdata) {
                 .attr("class", "gameLabel")
                 .attr("dy", ".30em")
                 .attr("x", (labelWidth + TandGPadding) / 2)
-                .attr("y", i * LH + h / 2 + eLh)
+                .attr("y", i * LH + h / 2 + eLh + heatmapMargin.top)
                 .attr("fill-opacity", 0.95)
                 .text(games[i])
                 .style('fill', gameColors[i])
