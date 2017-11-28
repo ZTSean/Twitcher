@@ -20,6 +20,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
     <!-- Material Design Lite -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <!-- D3.js -->
@@ -48,28 +49,13 @@
                 <div class="page-content">
                     <div class="mdl-grid">
                         <div class="mdl-layout-spacer"></div>
-                        <div class="mdl-cell mdl-cell--2-col">Attributes</div>
+                        <div class="mdl-cell mdl-cell--2-col"><h6 class="mdl-typography--title">Attributes</h6></div>
                         <div class="mdl-cell mdl-cell--8-col" id="mainpage_attributes">
                             <div class="btn-group" role="group">
                                 <button type="button" id="button_main_peak_viewers" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="peak_viewers">Peak Viewer</button>
                                 <button type="button" id="button_main_average_viewers" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="average_viewers">Avg Viewer</button>
                                 <button type="button" id="button_main_peak_channels" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="peak_channels">Peak Channels</button>
                                 <button type="button" id="button_main_rank_total" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="game_rank_total">Game Rank</button>
-                            </div>
-                        </div>
-                        <div class="mdl-layout-spacer"></div>
-                    </div>
-                    <div class="mdl-grid">
-                        <div class="mdl-layout-spacer"></div>
-                        <div class="mdl-cell mdl-cell--2-col">Games</div>
-                        <div class="mdl-cell mdl-cell--8-col">
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-secondary">All</button>
-                                <button type="button" class="btn btn-secondary">Overwatch</button>
-                                <button type="button" class="btn btn-secondary">Destiny</button>
-                                <button type="button" class="btn btn-secondary">Destiny 2</button>
-                                <button type="button" class="btn btn-secondary">CS-GO</button>
-                                <button type="button" class="btn btn-secondary">PlayUnknown:BattleGrounds</button>
                             </div>
                         </div>
                         <div class="mdl-layout-spacer"></div>
@@ -105,30 +91,9 @@
                             </div>
                             <!-- Info box-->
                             <div class="mdl-cell mdl-cell--3-col">
-                                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                                    <thead>
-                                        <tr>
-                                            <th class="mdl-data-table__cell--non-numeric">Information Box</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="mdl-data-table__cell--non-numeric">Don Aubrey</td>
-                                            <td>25</td>
-                                            <td>49021</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="mdl-data-table__cell--non-numeric">Sophia Carson</td>
-                                            <td>32</td>
-                                            <td>10258</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="mdl-data-table__cell--non-numeric">Steve Moreno</td>
-                                            <td>29</td>
-                                            <td>12359</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div id="infobox">
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>

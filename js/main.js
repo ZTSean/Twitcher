@@ -6,7 +6,7 @@ function DataProcessing(error, gdata) {
     var EndTime = new Date("2017/9/8");
 
     //var HmapLength = 3 * 366;
-    var width = document.getElementById("heatmap").offsetWidth;
+    var divHeatmapLength = document.getElementById("heatmap").offsetWidth;
 
     var games = ["Overwatch", "CSGO", "PUBG", "Destiny", "Destiny2"]; // corresponding to the order of the file being processed in the queue
     var gameColors = ["#5F8316", "#98CA32", "#B3BF0D", "#F7D302", "#DAC134"];
@@ -60,11 +60,11 @@ function DataProcessing(error, gdata) {
             for (i = startPt; i <= endPt; i++) {
                 var temp = parseInt(gData[j][i][attribute]);
                 if (temp != -1) { numArray.push(temp); }
-                line.push({ 
-                    value: temp, 
-                    row: i, 
-                    col: j, 
-                    x: startPt + i, 
+                line.push({
+                    value: temp,
+                    row: i,
+                    col: j,
+                    x: startPt + i,
                     date: gData[j][i]["Date"],
                     gameUpdates: gData[j][i]["Game Updates"],
                     esportsSchedule: gData[j][i]["Esports Schedule"]
@@ -106,7 +106,14 @@ function DataProcessing(error, gdata) {
 
     function updateInfoBoxHMap(infoData, settings) {
         var info = gdata[infoData.col][infoData.x];
-        //console.log(info);
+        divInfobox = document.getElementById("infobox");
+        console.log(infoData);
+        
+
+        if (settings == 1) {
+
+        }
+        
     }
 
     function plotHeatmap(gameData) {
@@ -122,22 +129,25 @@ function DataProcessing(error, gdata) {
 
         var nBloc = gameData[0].length
 
+        var heatmapMargin = { top: 50, right: 30, bottom: 30, left: 5 }
+
         //height of each row in the heatmap
         //width of each column in the heatmap
-        
+
         var h = 50, //rect height
             eLh = 50, //event line height
             LH = h + eLh, //total height for each game
             labelWidth = h, //width of the game label
+            width = divHeatmapLength, // width of whole graph
             TandGPadding = 70, //space between text and graph
-            HmapLength = Math.max(0, width - labelWidth - TandGPadding),
+            HmapLength = Math.max(0, width - labelWidth - TandGPadding - heatmapMargin.left - heatmapMargin.right),
             w = HmapLength / nBloc, //rect width
             totalH = LH * gameData.length, //total height of the map
-            dateH = 0; //start height for date text
+            dateH = 5; //start height for date text
+        var height = LH * gameData.length + heatmapMargin.top + heatmapMargin.bottom; // height of whole graph
         var eventlineWidth = 3;
         var eventBubbleRadius = 5;
 
-        console.log(nBloc);
         // -----------------------------------------------------
 
         var colorLow = 'green',
@@ -148,7 +158,6 @@ function DataProcessing(error, gdata) {
             colorEventline = "#9966ff",
             colorEventBubble = "purple";
 
-        var height = LH * gameData.length;
 
         console.log(HmapAvg);
         console.log(HmapStd);
@@ -167,9 +176,6 @@ function DataProcessing(error, gdata) {
 
         var svg = d3.select("#heatmap").select("svg");
 
-        console.log(svg)
-
-
         var clickHold = -1;
         //var savedX1 = -1;
 
@@ -177,21 +183,21 @@ function DataProcessing(error, gdata) {
         for (i = 0; i < games.length; i++) {
             // create eventline if not exist -----------
             // create horizontal line for eventline if not exist
-            svg.selectAll(".heatmap_eventline_"+games[i])
+            svg.selectAll(".heatmap_eventline_" + games[i])
                 .data([gameData[i][0]])
                 .enter()
                 .append("line")
-                .attr("x1", labelWidth + TandGPadding)
-                .attr("y1", function(d) { return eLh/2 + d.col * LH;})
+                .attr("x1", labelWidth + TandGPadding + heatmapMargin.left)
+                .attr("y1", function(d) { return eLh / 2 + d.col * LH + heatmapMargin.top; })
                 .attr("x2", labelWidth + TandGPadding + HmapLength)
-                .attr("y2", function(d) { return eLh/2 + d.col * LH;})
+                .attr("y2", function(d) { return eLh / 2 + d.col * LH + heatmapMargin.top; })
                 .attr("stroke-width", eventlineWidth)
                 .attr("stroke", colorEventline);
-            
+
 
             // create event bubble or rect if not exist
-            var eventlineBubbles = svg.selectAll(".heatmap_event_"+games[i]).data(gameData[i])
-            
+            var eventlineBubbles = svg.selectAll(".heatmap_event_" + games[i]).data(gameData[i])
+
             // remove previous events
             eventlineBubbles.exit().remove();
 
@@ -208,14 +214,34 @@ function DataProcessing(error, gdata) {
                     if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
                     return count * eventBubbleRadius;
                 })
-                .attr("cx", function(d) { return labelWidth + TandGPadding + w * d.col; })
-                .attr("cy", function(d) { return eLh/2 + d.col * LH; })
-                .style("fill", colorEventBubble);
+                .attr("cx", function(d) { return labelWidth + TandGPadding + w * d.col + heatmapMargin.left; })
+                .attr("cy", function(d) { return eLh / 2 + d.col * LH + heatmapMargin.top; })
+                .style("fill", colorEventBubble)
+
+                // handle hover event
+                .on("mouseover", function(d, i) {
+                    // Use D3 to select element, change color and size
+                    d3.select(this)
+                        .attr("r", eventBubbleRadius * 4)
+                        .style("fill", "black");
+                })
+
+                .on("mouseout", function(d, i) {
+                    var count = 0;
+                    if (d.gameUpdates != undefined && d.gameUpdates.length > 0) count++;
+                    if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
+
+                    // Use D3 to select element, change color back to normal
+                    d3.select(this)
+                        .attr("r", eventBubbleRadius * count)
+                        .style("fill", colorEventBubble);
+                });
+
 
             // update bubbles
             eventlineBubbles.filter(function(d) { // filter out those data without events
                     return (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) ||
-                        (d.gameUpdates != undefined && d.gameUpdates.length != 0);
+                        (d.gameUpdates != undefined && d.gameUpdates.length > 0);
                 })
                 .attr("r", function(d) {
                     var count = 0;
@@ -223,19 +249,38 @@ function DataProcessing(error, gdata) {
                     if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
                     return count * eventBubbleRadius;
                 })
-                .attr("cx", function(d) { return labelWidth + TandGPadding + w * d.row; })
-                .attr("cy", function(d) { return eLh/2 + d.col * LH; })
-                .style("fill", colorEventBubble);
+                .attr("cx", function(d) { return labelWidth + TandGPadding + w * d.row + heatmapMargin.left; })
+                .attr("cy", function(d) { return eLh / 2 + d.col * LH + heatmapMargin.top; })
+                .style("fill", colorEventBubble)
+
+                // handle hover event
+                .on("mouseover", function(d) {
+                    // Use D3 to select element, change color and size
+                    d3.select(this)
+                        .attr("r", eventBubbleRadius * 4)
+                        .style("fill", "black");
+                })
+
+                .on("mouseout", function(d) {
+                    var count = 0;
+                    if (d.gameUpdates != undefined && d.gameUpdates.length != 0) count++;
+                    if (d.esportsSchedule != undefined && d.esportsSchedule.length != 0) count++;
+
+                    // Use D3 to select element, change color back to normal
+                    d3.select(this)
+                        .attr("r", eventBubbleRadius * count)
+                        .style("fill", colorEventBubble);
+                });
 
 
 
             // create heatmap if not exist
-            svg.selectAll(".heatmap_rect_"+games[i])
+            svg.selectAll(".heatmap_rect_" + games[i])
                 .data(gameData[i])
                 .enter()
                 .append("rect")
-                .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding; })
-                .attr("y", function(d) { return eLh + d.col * LH; })
+                .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding + heatmapMargin.left; })
+                .attr("y", function(d) { return eLh + d.col * LH + heatmapMargin.top; })
                 .attr("width", function(d) { return w; })
                 .attr("height", function(d) { return h; })
                 .attr("class", "heatmap_rect_" + games[i])
@@ -248,10 +293,10 @@ function DataProcessing(error, gdata) {
 
 
             // update heatmap
-            var heatmapRects = svg.selectAll(".heatmap_rect_"+games[i])
+            var heatmapRects = svg.selectAll(".heatmap_rect_" + games[i])
                 .data(gameData[i], function(d) { return d.col + ':' + d.row; })
-                .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding; })
-                .attr("y", function(d) { return eLh + d.col * LH; })
+                .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding + heatmapMargin.left; })
+                .attr("y", function(d) { return eLh + d.col * LH + heatmapMargin.top; })
                 .attr("width", function(d) { return w; })
                 .attr("height", function(d) { return h; })
                 .style("fill", function(d) {
@@ -264,16 +309,16 @@ function DataProcessing(error, gdata) {
                 .on("mouseover", function(d) {
                     svg.append("line")
                         .attr("class", "mol")
-                        .attr("x1", d.row * w + labelWidth + TandGPadding)
-                        .attr("y1", 0)
-                        .attr("x2", d.row * w + labelWidth + TandGPadding + w / 2)
-                        .attr("y2", totalH)
+                        .attr("x1", d.row * w + labelWidth + TandGPadding + heatmapMargin.left)
+                        .attr("y1", heatmapMargin.top)
+                        .attr("x2", d.row * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
+                        .attr("y2", totalH + heatmapMargin.top)
                         .attr("stroke-width", 2)
                         .attr("stroke", "#9966ff")
                         .attr("stroke-opacity", 0.8);
                     svg.append("text")
-                        .attr("y", dateH)
-                        .attr("x", d.row * w + labelWidth + TandGPadding + w / 2)
+                        .attr("y", heatmapMargin.top - dateH)
+                        .attr("x", d.row * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                         .attr("class", "hover")
                         .attr("text-anchor", "middle")
                         .attr("font-family", "Helvetica")
@@ -298,16 +343,16 @@ function DataProcessing(error, gdata) {
                     if (clickHold == -1) {
                         svg.append("line")
                             .attr("class", "cl")
-                            .attr("x1", d.row * w + labelWidth + TandGPadding)
-                            .attr("y1", 0)
-                            .attr("x2", d.row * w + labelWidth + TandGPadding + w / 2)
-                            .attr("y2", totalH)
+                            .attr("x1", d.row * w + labelWidth + TandGPadding + heatmapMargin.left)
+                            .attr("y1", heatmapMargin.top)
+                            .attr("x2", d.row * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
+                            .attr("y2", totalH + heatmapMargin.top)
                             .attr("stroke-width", 2)
                             .attr("stroke", colorLine)
                             .attr("stroke-opacity", 0.8);
                         svg.append("text")
-                            .attr("y", dateH)
-                            .attr("x", d.row * w + labelWidth + TandGPadding + w / 2)
+                            .attr("y", heatmapMargin.top - dateH)
+                            .attr("x", d.row * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("class", "click")
                             .attr("text-anchor", "middle")
                             .attr("font-family", HMfont)
@@ -322,15 +367,15 @@ function DataProcessing(error, gdata) {
                         svg.append("line")
                             .attr("class", "cl")
                             .attr("x1", d.row * w + labelWidth + TandGPadding)
-                            .attr("y1", 0)
-                            .attr("x2", d.row * w + labelWidth + TandGPadding + w / 2)
-                            .attr("y2", totalH)
+                            .attr("y1", heatmapMargin.top)
+                            .attr("x2", d.row * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
+                            .attr("y2", totalH + heatmapMargin.top)
                             .attr("stroke-width", 2)
                             .attr("stroke", colorLine)
                             .attr("stroke-opacity", 0.8);
                         svg.append("text")
-                            .attr("y", 0)
-                            .attr("x", d.row * w + labelWidth + TandGPadding + w / 2)
+                            .attr("y", heatmapMargin.top - dateH)
+                            .attr("x", d.row * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("class", "click")
                             .attr("text-anchor", "middle")
                             .attr("font-family", HMfont)
@@ -364,17 +409,17 @@ function DataProcessing(error, gdata) {
 
                         svg.append("line")
                             .attr("class", "cl")
-                            .attr("x1", d.row * w + labelWidth + TandGPadding)
-                            .attr("y1", 0)
-                            .attr("x2", d.row * w + labelWidth + TandGPadding + w / 2)
-                            .attr("y2", totalH)
+                            .attr("x1", d.row * w + labelWidth + TandGPadding + heatmapMargin.left)
+                            .attr("y1", heatmapMargin.top)
+                            .attr("x2", d.row * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
+                            .attr("y2", totalH + heatmapMargin.top)
                             .attr("stroke-width", 2)
                             .attr("stroke", colorLine)
                             .attr("stroke-opacity", 0.8);
 
                         svg.append("text")
-                            .attr("y", 0)
-                            .attr("x", d.row * w + labelWidth + TandGPadding + w / 2)
+                            .attr("y", heatmapMargin.top - dateH)
+                            .attr("x", d.row * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("class", "click")
                             .attr("text-anchor", "middle")
                             .attr("font-family", HMfont)
@@ -426,8 +471,8 @@ function DataProcessing(error, gdata) {
 
 
         for (i = 0; i < gameData.length; i++) {
-            
-            var text = svg.selectAll(".heatmap_text_"+games[i]).data([gameData[i][0]]);
+
+            var text = svg.selectAll(".heatmap_text_" + games[i]).data([gameData[i][0]]);
 
             // create text if the text in svg for each is not created 
             text.enter()
@@ -439,13 +484,13 @@ function DataProcessing(error, gdata) {
                 .attr("x", (labelWidth + TandGPadding) / 2)
                 .attr("y", i * LH + h / 2 + eLh)
                 .attr("fill-opacity", 0.95)
-                .attr("class", "heatmap_text_"+games[i])
+                .attr("class", "heatmap_text_" + games[i])
                 .text(games[i])
                 .style('fill', gameColors[i])
                 .style("font-size", "20px");
 
             // if the text has been created, update it
-            
+
             text.attr("text-anchor", "middle")
                 .attr("font-family", HMfont)
                 .attr("class", "gameLabel")
