@@ -44,8 +44,12 @@ function DataProcessing(error, gdata) {
             SSTime = SETime;
             SETime = temp;
         }
-        if (SETime > EndTime) { SETime = EndTime; }
-        if (SSTime < StartTime) { SSTime = StartTime }
+        if (SETime > EndTime) {
+            SETime = EndTime;
+        }
+        if (SSTime < StartTime) {
+            SSTime = StartTime
+        }
 
 
         var startPt = parseInt((SSTime - StartTime) / 86400000);
@@ -59,7 +63,9 @@ function DataProcessing(error, gdata) {
             //console.log(gData[j])
             for (i = startPt; i <= endPt; i++) {
                 var temp = parseInt(gData[j][i][attribute]);
-                if (temp != -1) { numArray.push(temp); }
+                if (temp != -1) {
+                    numArray.push(temp);
+                }
                 line.push({
                     value: temp,
                     row: i,
@@ -68,7 +74,8 @@ function DataProcessing(error, gdata) {
                     date: gData[j][i]["Date"],
                     gameUpdates: gData[j][i]["Game Updates"],
                     esportsSchedule: gData[j][i]["Esports Schedule"],
-                    game: games[j]
+                    game: games[j],
+                    attribute: attribute
                 });
             }
             //console.log(line)
@@ -108,6 +115,7 @@ function DataProcessing(error, gdata) {
     function updateInfoBoxHMap(infoData, settings) {
         var info = gdata[infoData.col][infoData.x];
         var divInfobox = d3.select("#infobox");
+        var svg = d3.select("#heatmap").select("svg");
 
         if (settings == -1) {
             // state -1 : mouse out
@@ -148,7 +156,7 @@ function DataProcessing(error, gdata) {
             content.append("p").text("Info:")
             content.append("p").text("Game: " + infoData.game)
             content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
-            content.append("p").text("Value: " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
+            content.append("p").text(infoData.attribute + ": " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
             content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
 
         } else if (settings == 1) {
@@ -186,10 +194,21 @@ function DataProcessing(error, gdata) {
             content.append("p").text("First Selection:")
             content.append("p").text("Game: " + infoData.game)
             content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
-            content.append("p").text("Value: " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
+            content.append("p").text(infoData.attribute + ": " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
             content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
 
+            // create button for reset
 
+            content.append("button")
+                .attr("class", "btn btn-secondary")
+                .text("Reset")
+                .on("click", function () {
+                    svg.select("line.cl").remove();
+                    svg.select("line.cl").remove();
+                    svg.select("text.click").remove();
+                    svg.select("text.click").remove();
+                    updateInfoBoxHMap(infoData, 3)
+                });
         } else if (settings == 2) {
             // state 2: 1 clickhold -> show the information of the second clicked rect
             // // if previous div is not the same
@@ -228,9 +247,25 @@ function DataProcessing(error, gdata) {
             content.append("p").text("Second Selection:")
             content.append("p").text("Game: " + infoData.game)
             content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
-            content.append("p").text("Value: " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
+            content.append("p").text(infoData.attribute + ": " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
             content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
 
+            content.append("button")
+                .attr("class", "btn btn-secondary")
+                .text("Reset")
+                .on("click", function () {
+                    svg.select("line.cl").remove();
+                    svg.select("line.cl").remove();
+                    svg.select("text.click").remove();
+                    svg.select("text.click").remove();
+                    updateInfoBoxHMap(infoData, 3)
+                });
+
+        } else if (settings == 3) {
+            // state 3: remove all info box
+            divInfobox.selectAll("div.state_2").remove();
+            divInfobox.selectAll("div.state_1").remove();
+            divInfobox.selectAll("div.state_0").remove();
         } else if (settings == 4) {
             // state 4: mouse over event circle
             divInfobox.selectAll("div.state_0").remove();
@@ -246,7 +281,7 @@ function DataProcessing(error, gdata) {
             content.append("p").text("Game Updates: " + (infoData.gameUpdates != undefined && infoData.gameUpdates.length > 0 ? infoData.gameUpdates : ""))
             content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
 
-        
+
         }
 
     }
@@ -264,7 +299,7 @@ function DataProcessing(error, gdata) {
 
         var nBloc = gameData[0].length
 
-        var heatmapMargin = { top: 50, right: 30, bottom: 30, left: 5 }
+        var heatmapMargin = {top: 50, right: 30, bottom: 30, left: 5}
 
         //height of each row in the heatmap
         //width of each column in the heatmap
@@ -319,19 +354,27 @@ function DataProcessing(error, gdata) {
             // create eventline if not exist -----------
             // create horizontal line for eventline if not exist
             svg.selectAll(".heatmap_eventline_" + games[i])
-                .data([gameData[i][0]], function(d) { return d.col + ':' + d.row; })
+                .data([gameData[i][0]], function (d) {
+                    return d.col + ':' + d.row;
+                })
                 .enter()
                 .append("line")
                 .attr("x1", labelWidth + TandGPadding + heatmapMargin.left)
-                .attr("y1", function(d) { return eLh / 2 + d.col * LH + heatmapMargin.top; })
+                .attr("y1", function (d) {
+                    return eLh / 2 + d.col * LH + heatmapMargin.top;
+                })
                 .attr("x2", labelWidth + TandGPadding + HmapLength)
-                .attr("y2", function(d) { return eLh / 2 + d.col * LH + heatmapMargin.top; })
+                .attr("y2", function (d) {
+                    return eLh / 2 + d.col * LH + heatmapMargin.top;
+                })
                 .attr("stroke-width", eventlineWidth)
                 .attr("stroke", colorEventline);
 
 
             // create event bubble or rect if not exist ---------------------------------
-            var eventlineBubbles = svg.selectAll(".heatmap_event_" + games[i]).data(gameData[i], function(d) { return d.col + ':' + d.row; });
+            var eventlineBubbles = svg.selectAll(".heatmap_event_" + games[i]).data(gameData[i], function (d) {
+                return d.col + ':' + d.row;
+            });
 
             function handleEventHover(d, i) {
                 // Use D3 to select element, change color and size
@@ -352,7 +395,7 @@ function DataProcessing(error, gdata) {
                     .attr("r", eventBubbleRadius * count)
                     .style("fill", colorEventBubble);
 
-                updateInfoBoxHMap(d, 0);
+                updateInfoBoxHMap(d, -1);
             }
 
             // remove previous events
@@ -361,18 +404,22 @@ function DataProcessing(error, gdata) {
             // enter: create new bubbles
             eventlineBubbles.enter()
                 .append("circle")
-                .filter(function(d) { // filter out those data without events
+                .filter(function (d) { // filter out those data without events
                     return (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) ||
                         (d.gameUpdates != undefined && d.gameUpdates.length > 0);
                 })
-                .attr("r", function(d) {
+                .attr("r", function (d) {
                     var count = 0;
                     if (d.gameUpdates != undefined && d.gameUpdates.length > 0) count++;
                     if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
                     return count * eventBubbleRadius;
                 })
-                .attr("cx", function(d) { return labelWidth + TandGPadding + w * d.col + heatmapMargin.left; })
-                .attr("cy", function(d) { return eLh / 2 + d.col * LH + heatmapMargin.top; })
+                .attr("cx", function (d) {
+                    return labelWidth + TandGPadding + w * d.col + heatmapMargin.left;
+                })
+                .attr("cy", function (d) {
+                    return eLh / 2 + d.col * LH + heatmapMargin.top;
+                })
                 .style("fill", colorEventBubble)
 
                 // handle hover event
@@ -381,18 +428,22 @@ function DataProcessing(error, gdata) {
 
 
             // update bubbles
-            eventlineBubbles.filter(function(d) { // filter out those data without events
-                    return (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) ||
-                        (d.gameUpdates != undefined && d.gameUpdates.length > 0);
-                })
-                .attr("r", function(d) {
+            eventlineBubbles.filter(function (d) { // filter out those data without events
+                return (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) ||
+                    (d.gameUpdates != undefined && d.gameUpdates.length > 0);
+            })
+                .attr("r", function (d) {
                     var count = 0;
                     if (d.gameUpdates != undefined && d.gameUpdates.length > 0) count++;
                     if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
                     return count * eventBubbleRadius;
                 })
-                .attr("cx", function(d) { return labelWidth + TandGPadding + w * d.row + heatmapMargin.left; })
-                .attr("cy", function(d) { return eLh / 2 + d.col * LH + heatmapMargin.top; })
+                .attr("cx", function (d) {
+                    return labelWidth + TandGPadding + w * d.row + heatmapMargin.left;
+                })
+                .attr("cy", function (d) {
+                    return eLh / 2 + d.col * LH + heatmapMargin.top;
+                })
                 .style("fill", colorEventBubble)
 
                 // handle hover event
@@ -400,18 +451,27 @@ function DataProcessing(error, gdata) {
                 .on("mouseout", handleEventOut);
 
 
-
             // create heatmap if not exist
             svg.selectAll(".heatmap_rect_" + games[i])
-                .data(gameData[i], function(d) { return d.col + ':' + d.row; })
+                .data(gameData[i], function (d) {
+                    return d.col + ':' + d.row;
+                })
                 .enter()
                 .append("rect")
-                .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding + heatmapMargin.left; })
-                .attr("y", function(d) { return eLh + d.col * LH + heatmapMargin.top; })
-                .attr("width", function(d) { return w; })
-                .attr("height", function(d) { return h; })
+                .attr("x", function (d) {
+                    return d.row * w + labelWidth + TandGPadding + heatmapMargin.left;
+                })
+                .attr("y", function (d) {
+                    return eLh + d.col * LH + heatmapMargin.top;
+                })
+                .attr("width", function (d) {
+                    return w;
+                })
+                .attr("height", function (d) {
+                    return h;
+                })
                 .attr("class", "heatmap_rect_" + games[i])
-                .style("fill", function(d) {
+                .style("fill", function (d) {
                     if ((d.value == -1) || (d.value == 0)) {
                         return colorUnavailable;
                     }
@@ -421,19 +481,29 @@ function DataProcessing(error, gdata) {
 
             // update heatmap
             var heatmapRects = svg.selectAll(".heatmap_rect_" + games[i])
-                .data(gameData[i], function(d) { return d.col + ':' + d.row; })
-                .attr("x", function(d) { return d.row * w + labelWidth + TandGPadding + heatmapMargin.left; })
-                .attr("y", function(d) { return eLh + d.col * LH + heatmapMargin.top; })
-                .attr("width", function(d) { return w; })
-                .attr("height", function(d) { return h; })
-                .style("fill", function(d) {
+                .data(gameData[i], function (d) {
+                    return d.col + ':' + d.row;
+                })
+                .attr("x", function (d) {
+                    return d.row * w + labelWidth + TandGPadding + heatmapMargin.left;
+                })
+                .attr("y", function (d) {
+                    return eLh + d.col * LH + heatmapMargin.top;
+                })
+                .attr("width", function (d) {
+                    return w;
+                })
+                .attr("height", function (d) {
+                    return h;
+                })
+                .style("fill", function (d) {
                     if ((d.value == -1) || (d.value == 0)) {
                         return colorUnavailable;
                     }
                     return colorScale(d.value);
                 })
 
-                .on("mouseover", function(d) {
+                .on("mouseover", function (d) {
                     svg.append("line")
                         .attr("class", "mol")
                         .attr("x1", d.row * w + labelWidth + TandGPadding + heatmapMargin.left)
@@ -453,20 +523,20 @@ function DataProcessing(error, gdata) {
                         .style("fill", colorLine)
                         .text(d.date);
 
-                    if (clickHold == -1) {
-                        updateInfoBoxHMap(d, 0);
-                    }
+                    //if (clickHold == -1) {
+                    updateInfoBoxHMap(d, 0);
+                    //}
                 })
 
-                .on("mouseout", function(d) {
+                .on("mouseout", function (d) {
                     svg.select("line.mol").remove();
                     svg.select("text.hover").remove();
-                    if (clickHold == -1) {
-                        updateInfoBoxHMap(d, -1);
-                    }
+                    //if (clickHold == -1) {
+                    updateInfoBoxHMap(d, -1);
+                    //}
                 })
 
-                .on("click", function(d) {
+                .on("click", function (d) {
                     if (clickHold == -1) {
                         svg.append("line")
                             .attr("class", "cl")
@@ -629,15 +699,35 @@ function DataProcessing(error, gdata) {
                 .style('fill', gameColors[i])
                 .style("font-size", "20px");
         }
+
     }
 
-    function plotStar(gameData, propertyAry) {}
+    function plotStar(gameData, propertyAry) {
+    }
+
+
+    // -----------------------------------------
+    // Button onclick functions settings
+    d3.select("#mainpage_attributes").selectAll("button")
+        .on("click", function () {
+            var d = prepareDataForHeatmap(gdata, d3.select(this).attr("data-field"));
+            plotHeatmap(d);
+        })
 
 
     prepareDataForStarPlot(gdata[0][1]);
     plotStar();
-    var gD = prepareDataForHeatmap(gdata, "Peak Viewers")
-    plotHeatmap(gD);
+
+    // ------------------------------------------
+    // initial settings
+    document.getElementById("button_main_peak_viewers").click();
+
+
+    // ########################################################
+    // ########################################################
+    // ########################################################
+    // detail page figures
+
 }
 
 data_all_games = []
