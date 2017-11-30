@@ -1,14 +1,14 @@
 function makeLineChart(dataset, xName, yObjs) {
-    console.log(yObjs)
-    console.log(xName);
     var chartObj = {};
     var color = d3.scale.category10();
     chartObj.xAxisLable = "Date";
-    chartObj.yAxisLable = "Peak Viewers";
+    chartObj.yAxisLable = "Peak Viewers"; // default settings
     /*
      yObjsects format:
      {y1:{column:'',name:'name',color:'color'},y2}
      */
+
+    //console.log(dataset);
 
     chartObj.data = dataset;
     chartObj.margin = {top: 30, right: 60, bottom: 30, left: 100};
@@ -16,7 +16,10 @@ function makeLineChart(dataset, xName, yObjs) {
     chartObj.height = 480 - chartObj.margin.top - chartObj.margin.bottom;
 
 // So we can pass the x and y as strings when creating the function
-    chartObj.xFunct = function(d){return d[xName]}; 
+    chartObj.xFunct = function (d) {
+        return d[xName]
+    };
+
 // For each yObjs argument, create a yFunction
     function getYFn(column) {
         return function (d) {
@@ -43,7 +46,7 @@ function makeLineChart(dataset, xName, yObjs) {
         } else {
             return d3.format(".0f")(d);
         }
-        
+
     };
 
     chartObj.xFormatter = chartObj.formatAsDate;
@@ -58,8 +61,8 @@ function makeLineChart(dataset, xName, yObjs) {
     chartObj.max = function (fn) {
         return d3.max(chartObj.data, fn);
     };
-    console.log( chartObj.data)
-    console.log(chartObj.yFuncts.map(chartObj.max))
+    //console.log(chartObj.data)
+    //console.log(chartObj.yFuncts.map(chartObj.max))
     chartObj.yScale = d3.scale.linear().range([chartObj.height, 0]).domain([0, d3.max(chartObj.yFuncts.map(chartObj.max))]);
 
 //Create axis
@@ -74,12 +77,13 @@ function makeLineChart(dataset, xName, yObjs) {
             return chartObj.yScale(yObjs[yObj].yFunct(d));
         };
     }
+
     for (var yObj in yObjs) {
         yObjs[yObj].line = d3.svg.line().interpolate("cardinal").x(function (d) {
             return chartObj.xScale(chartObj.xFunct(d));
         }).y(getYScaleFn(yObj));
     }
-    
+
 
     chartObj.svg;
 
@@ -93,7 +97,9 @@ function makeLineChart(dataset, xName, yObjs) {
         chartObj.xScale.range([0, chartObj.width]);
         chartObj.yScale.range([chartObj.height, 0]);
 
-        if (!chartObj.svg) {return false;}
+        if (!chartObj.svg) {
+            return false;
+        }
 
         /* Else Update the axis with the new scale */
         chartObj.svg.select('.x.axis').attr("transform", "translate(0," + chartObj.height + ")").call(chartObj.xAxis);
@@ -106,7 +112,7 @@ function makeLineChart(dataset, xName, yObjs) {
         for (var y  in yObjs) {
             yObjs[y].path.attr("d", yObjs[y].line);
         }
-        
+
 
         d3.selectAll(".focus.line").attr("y2", chartObj.height);
 
@@ -127,20 +133,56 @@ function makeLineChart(dataset, xName, yObjs) {
         return chartObj;
     };
 
-// Render the chart
+    function updateInfoBoxOppchart(infoData, settings) {
+        var divInfobox = d3.selectAll("#infoboxOppchart");
+
+        if (settings == -1) {
+            // state -1 : mouse out
+            // remove all previous data
+            divInfobox.selectAll("div.state_0").remove();
+        } else if (settings == 0) {
+            // state 0 : no clickhold -> show the information of rect that mouse is hovering on
+
+            divInfobox.selectAll("div.state_0").remove();
+
+            divInfobox.append("div")
+                .style("padding", "10px")
+                .attr("class", "state_0 mdl-shadow--2dp");
+
+            var content = divInfobox.selectAll("div.state_0");
+            content.append("p").text("Info:")
+            content.append("p").text("Date: " + chartObj.xFunct(infoData).toDateString());
+            for (var y  in yObjs) {
+                content.append("p").text(y + " " + chartObj.yAxisLable + ":" + chartObj.yFormatter(yObjs[y].yFunct(infoData)));
+            }
+            /*
+            content.append("p").text("Game: " + infoData.game)*/
+
+        }
+
+    }
+
+    // Render the chart
     chartObj.render = function () {
         //Create SVG element
         chartObj.svg = chartObj.chartDiv.append("svg").attr("class", "chart-area").attr("width", chartObj.width + (chartObj.margin.left + chartObj.margin.right)).attr("height", chartObj.height + (chartObj.margin.top + chartObj.margin.bottom)).append("g").attr("transform", "translate(" + chartObj.margin.left + "," + chartObj.margin.top + ")");
 
         // Draw Lines
         for (var y  in yObjs) {
-            yObjs[y].path = chartObj.svg.append("path").datum(chartObj.data).attr("class", "line").attr("d", yObjs[y].line).style("stroke", color(y)).attr("data-series", y).on("mouseover", function () {
-                focus.style("display", null);
-            }).on("mouseout", function () {
-                focus.transition().delay(700).style("display", "none");
-            }).on("mousemove", mousemove);
+            console.log(chartObj.data)
+            yObjs[y].path = chartObj.svg.append("path")
+                .datum(chartObj.data)
+                .attr("class", "line")
+                .attr("d", yObjs[y].line)
+                .style("stroke", color(y))
+                .attr("data-series", y)
+                .on("mouseover", function () {
+                    focus.style("display", null);
+                }).on("mouseout", function () {
+                    focus.transition().delay(700).style("display", "none");
+                }).on("mousemove", mousemove);
         }
-        
+
 
         // Draw Axis
         chartObj.svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + chartObj.height + ")").call(chartObj.xAxis).append("text").attr("class", "label").attr("x", chartObj.width / 2).attr("y", 30).style("text-anchor", "middle").text(chartObj.xAxisLable);
@@ -153,7 +195,7 @@ function makeLineChart(dataset, xName, yObjs) {
         for (var y  in yObjs) {
             yObjs[y].tooltip = focus.append("g");
             yObjs[y].tooltip.append("circle").attr("r", 5);
-            yObjs[y].tooltip.append("rect").attr("x", 8).attr("y","-5").attr("width",22).attr("height",'0.75em');
+            yObjs[y].tooltip.append("rect").attr("x", 8).attr("y", "-5").attr("width", 22).attr("height", '0.75em');
             yObjs[y].tooltip.append("text").attr("x", 9).attr("dy", ".35em");
         }
 
@@ -172,18 +214,37 @@ function makeLineChart(dataset, xName, yObjs) {
         }
 
         // Overlay to capture hover
-        chartObj.svg.append("rect").attr("class", "overlay").attr("width", chartObj.width).attr("height", chartObj.height).on("mouseover", function () {
-            focus.style("display", null);
-        }).on("mouseout", function () {
-            focus.style("display", "none");
-        }).on("mousemove", mousemove);
+        chartObj.svg.append("rect")
+            .attr("class", "overlay")
+            .attr("width", chartObj.width)
+            .attr("height", chartObj.height)
+            .on("mouseover", function () {
+                var x0 = chartObj.xScale.invert(d3.mouse(this)[0]), i = chartObj.bisectYear(dataset, x0, 1),
+                    d0 = chartObj.data[i - 1], d1 = chartObj.data[i];
+                try {
+                    var d = x0 - chartObj.xFunct(d0) > chartObj.xFunct(d1) - x0 ? d1 : d0;
+                } catch (e) {
+                    return;
+                }
+                focus.style("display", null);
+                updateInfoBoxOppchart(d, 0);
+            })
+            .on("mouseout", function (d) {
+                focus.style("display", "none");
+                updateInfoBoxOppchart(d, -1);
+            })
+            .on("mousemove", mousemove);
 
         return chartObj;
+
         function mousemove() {
-            var x0 = chartObj.xScale.invert(d3.mouse(this)[0]), i = chartObj.bisectYear(dataset, x0, 1), d0 = chartObj.data[i - 1], d1 = chartObj.data[i];
+            var x0 = chartObj.xScale.invert(d3.mouse(this)[0]), i = chartObj.bisectYear(dataset, x0, 1),
+                d0 = chartObj.data[i - 1], d1 = chartObj.data[i];
             try {
                 var d = x0 - chartObj.xFunct(d0) > chartObj.xFunct(d1) - x0 ? d1 : d0;
-            } catch (e) { return;}
+            } catch (e) {
+                return;
+            }
             minY = chartObj.height;
             for (var y  in yObjs) {
                 yObjs[y].tooltip.attr("transform", "translate(" + chartObj.xScale(chartObj.xFunct(d)) + "," + chartObj.yScale(yObjs[y].yFunct(d)) + ")");
@@ -193,8 +254,12 @@ function makeLineChart(dataset, xName, yObjs) {
 
             focus.select(".focus.line").attr("transform", "translate(" + chartObj.xScale(chartObj.xFunct(d)) + ")").attr("y1", minY);
             focus.select(".focus.year").text("Date: " + chartObj.xFunct(d).toDateString());
+
+            updateInfoBoxOppchart(d, 0);
         }
 
     };
     return chartObj;
 }
+
+
