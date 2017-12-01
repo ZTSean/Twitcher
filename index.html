@@ -54,7 +54,7 @@
             <div class="page-content">
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
-                    <div class="mdl-cell mdl-cell--2-col"><h6 class="mdl-typography--title">Attributes</h6></div>
+                    <div class="mdl-cell mdl-cell--2-col">Attributes<span id="main_attribute_tip" class="glyphicon glyphicon-question-sign"></span></div>
                     <div class="mdl-cell mdl-cell--8-col" id="mainpage_attributes">
                         <div class="btn-group" role="group">
                             <!-- data-field is consistent with the header in .csv file-->
@@ -84,7 +84,7 @@
                 </div>
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
-                    <div class="mdl-cell mdl-cell--2-col">Time Span</div>
+                    <div class="mdl-cell mdl-cell--2-col">Time Span <span id="main_timespan_tip" class="glyphicon glyphicon-question-sign"></span></div>
                     <div class="mdl-cell mdl-cell--4-col">
                         <div class="input-group date main-start">
                             <span class="input-group-addon">From</span>
@@ -131,6 +131,13 @@
                     </div>
                 </div>
             </div>
+
+            <span class="mdl-tooltip mdl-tooltip--large" data-mdl-for="main_attribute_tip">
+                Test
+            </span>
+            <span class="mdl-tooltip mdl-tooltip--large" data-mdl-for="main_timespan_tip">
+                Test
+            </span>
         </section>
         <!-- Comparsion page -->
         <section class="mdl-layout__tab-panel" id="compare_page">
@@ -141,7 +148,7 @@
                     <div class="mdl-cell mdl-cell--3-col">
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="single">
                             <input type="checkbox" id="single" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label">Single Day Display</span>
+                            <span class="mdl-checkbox__label">Single Day Display<span id="detail_single_tip" class="glyphicon glyphicon-question-sign"></span></span>
                         </label>
                     </div>
                     <div class="mdl-cell mdl-cell--7-col">
@@ -156,7 +163,7 @@
                 </div>
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
-                    <div class="mdl-cell mdl-cell--2-col">Time Span</div>
+                    <div class="mdl-cell mdl-cell--2-col">Time Span <span id="detail_time_tip" class="glyphicon glyphicon-question-sign"></span></div>
                     <div class="mdl-cell mdl-cell--4-col">
                         <div class="input-group date detail-bar-start">
                             <span class="input-group-addon">From</span>
@@ -188,7 +195,7 @@
                         </div>
 
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Games</div>
+                            <div class="mdl-cell mdl-cell--2-col">Games <span id="detail_left_games_tip" class="glyphicon glyphicon-question-sign"></span></div>
                             <div class="mdl-cell mdl-cell--10-col">
                                 <div class="btn-group left_games" role="group">
                                     <button type="button"
@@ -217,7 +224,7 @@
                         </div>
 
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Attributes</div>
+                            <div class="mdl-cell mdl-cell--2-col">Attributes<span id="detail_left_attribute_tip" class="glyphicon glyphicon-question-sign"></span></div>
                             <div class="mdl-cell mdl-cell--10-col">
                                 <div class="btn-group left_attributes" role="group">
                                     <button type="button"
@@ -246,7 +253,7 @@
                         </div>
 
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Games</div>
+                            <div class="mdl-cell mdl-cell--2-col">Games<span id="detail_right_games_tip" class="glyphicon glyphicon-question-sign"></span></div>
                             <div class="mdl-cell mdl-cell--10-col">
                                 <div class="btn-group right_games" role="group">
                                     <button type="button"
@@ -274,7 +281,7 @@
                         </div>
 
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Attributes</div>
+                            <div class="mdl-cell mdl-cell--2-col">Attributes<span id="detail_right_attribute_tip" class="glyphicon glyphicon-question-sign"></span></div>
                             <div class="mdl-cell mdl-cell--10-col">
                                 <div class="btn-group right_attributes" role="group">
                                     <button type="button"
@@ -330,6 +337,24 @@
             </div>
 
 
+            <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="detail_single_tip">
+                Test
+            </div>
+            <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="detail_time_tip">
+                Test
+            </div>
+            <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="detail_left_games_tip">
+                Test
+            </div>
+            <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="detail_left_attribute_tip">
+                Test
+            </div>
+            <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="detail_right_games_tip">
+                Test
+            </div>
+            <div class="mdl-tooltip mdl-tooltip--large" data-mdl-for="detail_right_attribute_tip">
+                Test
+            </div>
         </section>
     </main>
 </div>

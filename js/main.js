@@ -1,5 +1,5 @@
 function DataProcessing(error, gdata) {
-    //final variables 
+    //final variables
     document.body.style.backgroundColor = "white";
 
     // start and end data of general dataset
@@ -209,13 +209,13 @@ function DataProcessing(error, gdata) {
                 .text(function(d) { return "Game: " + d.game; })
             content.append("p")
                 .text(function(d) { return "Date: " + (d.date != undefined && d.date.length > 0 ? d.date : ""); })
-                
+
             content.append("p")
                 .text(function(d) { return "Value: " + (d.value != undefined && d.value > 0 ? d.value + "" : "N/A"); })
-                
+
             content.append("p")
                 .text(function(d) { return "Esports Schedule: " + (d.esportsSchedule != undefined && d.esportsSchedule.length > 0 ? d.esportsSchedule : ""); });
-        
+
             }
             */
 
@@ -551,7 +551,7 @@ function DataProcessing(error, gdata) {
                                 .attr("width", widthRect)
                                 .attr("height", totalH-startH)
                                 .style("fill",colorLine)
-                                .style("fill-opacity",0.1); 
+                                .style("fill-opacity",0.1);
                             */
                         clickHold = 1;
                         updateInfoBoxHMap(d, 2);
@@ -582,7 +582,7 @@ function DataProcessing(error, gdata) {
                             .attr("font-size", "15px")
                             .style("fill", colorLine)
                             .text(d.date);
-                        //savedX1 = d.row * w + labelWidth + TandGPadding;    
+                        //savedX1 = d.row * w + labelWidth + TandGPadding;
                         clickHold = 0;
                         updateInfoBoxHMap(d, 1);
                     }
@@ -630,7 +630,7 @@ function DataProcessing(error, gdata) {
 
             var text = svg.selectAll(".heatmap_text_" + games[i]).data([gameData[i][0]]);
 
-            // create text if the text in svg for each is not created 
+            // create text if the text in svg for each is not created
             text.enter()
                 .append("text")
                 .attr("text-anchor", "middle")
@@ -844,7 +844,7 @@ function DataProcessing(error, gdata) {
     // detail page figures
     // initialization ------------------------------------------
     var SSTimeS = new Date("2016/9/8");
-    var SETimeS = new Date("2016/10/8");
+    var SETimeS = new Date("2016/11/8");
 
 
     // barchart ------------------------------------------------
@@ -873,7 +873,7 @@ function DataProcessing(error, gdata) {
             toSort.push(parseInt(gdata[gameNumber][j][property]));
         }
         var sorted = toSort.sort(function (a, b) {
-            return a - b
+            return a - b;
         });
         var start = 0; // the first number in the array with value != 0 or -1
         for (var i = 0; i < sorted.length; i++) {
@@ -1194,7 +1194,7 @@ function DataProcessing(error, gdata) {
             .labelMargin(labelMargin);
 
         // remove previous drawing with for the same game
-        d3.select('#starplot').selectAll('#star_'+number).remove();
+        d3.select('#starplot').selectAll('.star_'+number).remove();
         d3.select('#sarplot').selectAll('#interaction_'+number).remove();
 
         d3.select('#starplot').selectAll("div").data([0]).enter().append('div')
@@ -1202,24 +1202,27 @@ function DataProcessing(error, gdata) {
 
         var wrapper = d3.select('#starplot').select(".wrapper");
 
-        var svg = wrapper.append('svg')
+        wrapper.selectAll('svg').data([0]).enter().append('svg')
             .attr('class', 'chart')
-            .attr('id', 'star_'+number)
+            //.attr('id', 'star_'+number)
             .attr('width', width + margin.left + margin.right)
-            .attr('height', width + margin.top + margin.bottom)
+            .attr('height', width + margin.top + margin.bottom);
+
+        var svg = wrapper.select('svg');
 
         var starG = svg.append('g')
+            .attr("class", "star_"+number)
             .datum(gameData)
             .call(star)
-            .call(star.interaction)
+            .call(star.interaction);
 
         var interactionLabel = wrapper.append('div')
             .attr('class', 'interaction label')
             .attr('id', 'interaction_' + number);
 
         var circle = svg.append('circle')
-            .attr('class', 'interaction circle')
-            .attr('r', 5)
+            .attr('class', 'interaction circle star_'+number)
+            .attr('r', 5);
 
         var interaction = wrapper.selectAll('.interaction')
             .style('display', 'none');
@@ -1227,14 +1230,14 @@ function DataProcessing(error, gdata) {
         svg.selectAll('.star-interaction')
             .on('mouseover', function (d) {
                 svg.selectAll('.star-label')
-                    .style('display', 'none')
+                    .style('display', 'none');
 
                 interaction
-                    .style('display', 'block')
+                    .style('display', 'block');
 
                 circle
                     .attr('cx', d.x)
-                    .attr('cy', d.y)
+                    .attr('cy', d.y);
 
                 $interactionLabel = $(interactionLabel.node());
 
@@ -1353,6 +1356,9 @@ function DataProcessing(error, gdata) {
                 // set default attributes
 
                 plot2HB(leftAttribute, rightAttribute, data1[1], data2[1]);
+                console.log(data1[0]);
+
+                console.log(data2[0]);
                 plotStar(data1[0], leftSelectedGame, 1);
                 plotStar(data2[0], rightSelectedGame, 2);
             }
@@ -1371,6 +1377,15 @@ function DataProcessing(error, gdata) {
         var isSingleForStarplot = document.getElementById("single").checked;
         $('.input-group.date.detail-star-single input').prop('disabled', !isSingleForStarplot);
 
+        if (isSingleForStarplot) {
+            SSTimeS = $('.input-group.date.detail-star-single').datepicker("getDate");
+            SETimeS = $('.input-group.date.detail-star-single').datepicker("getDate");
+        }
+        else {
+            SSTimeS = $('.input-group.date.detail-bar-start').datepicker("getDate");
+            SETimeS = $('.input-group.date.detail-bar-end').datepicker("getDate");
+        }
+
         // re-plot starplot
         var d1 = prepareDataForDetailPage(leftSelectedGame, star1);
         var d2 = prepareDataForDetailPage(rightSelectedGame, star2);
@@ -1381,14 +1396,13 @@ function DataProcessing(error, gdata) {
     });
 
 
+
+
     // datepicker set up for comparison page
-    $('.input-group.date.single').datepicker({
+    $('.input-group.date.detail-star-single').datepicker({
         autoclose: true,
         defaultViewDate: {year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate()}
     });
-
-    $('.input-group.date.detail-bar-start').datepicker('setDate', StartTime);
-    $('.input-group.date.detail-bar-end').datepicker('setDate', EndTime);
 
 
     $('.input-group.date.detail-bar-start').datepicker({
@@ -1401,12 +1415,18 @@ function DataProcessing(error, gdata) {
         defaultViewDate: {year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate()}
     });
 
-    $('.input-group.date.single').on("changeDate", function (e) {
+    $('.input-group.date.detail-star-single').datepicker('setDate', SSTimeS);
+    $('.input-group.date.detail-bar-start').datepicker('setDate', SSTimeS);
+    $('.input-group.date.detail-bar-end').datepicker('setDate', SETimeS);
+
+    $('.input-group.date.detail-star-single').on("changeDate", function (e) {
         // re-plot star plot according to the checkbox
-        SSTime = e.date;
-        var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
-        console.log(d);
-        plotHeatmap(d);
+        SSTimeS = e.date;
+        var d1 = prepareDataForDetailPage(leftSelectedGame, star1);
+        var d2 = prepareDataForDetailPage(rightSelectedGame, star2);
+        plot2HB(leftAttribute, rightAttribute, d1[1], d2[1]);
+        plotStar(d1[0], leftSelectedGame, 1);
+        plotStar(d2[0], rightSelectedGame, 2);
     });
 
     $('.input-group.date.detail-bar-start').on("changeDate", function (e) {
