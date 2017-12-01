@@ -169,7 +169,6 @@ function makeLineChart(dataset, xName, yObjs) {
 
         // Draw Lines
         for (var y  in yObjs) {
-            console.log(chartObj.data)
             yObjs[y].path = chartObj.svg.append("path")
                 .datum(chartObj.data)
                 .attr("class", "line")

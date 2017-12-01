@@ -337,7 +337,7 @@ function DataProcessing(error, gdata) {
             // create horizontal line for eventline if not exist
             svg.selectAll(".heatmap_eventline_" + games[i])
                 .data([gameData[i][0]], function (d) {
-                    return d.col + ':' + d.row + ':' + w;
+                    return d.col + ':' + d.row+':'+w;
                 })
                 .enter()
                 .append("line")
@@ -355,7 +355,7 @@ function DataProcessing(error, gdata) {
 
             // create event bubble or rect if not exist ---------------------------------
             var eventlineBubbles = svg.selectAll(".heatmap_event_" + games[i]).data(gameData[i], function (d) {
-                return d.col + ':' + d.row + ':' + w;
+                return d.col + ':' + d.row+':'+w;
             });
 
             function handleEventHover(d, i) {
@@ -438,7 +438,7 @@ function DataProcessing(error, gdata) {
 
             var heatmapRects = svg.selectAll(".heatmap_rect_" + games[i])
                 .data(gameData[i], function (d) {
-                    return d.col + ':' + d.row + ":" + w;
+                    return d.col + ':' + d.row +":" +w;
                 })
                 .enter()
                 .append("rect")
@@ -671,12 +671,8 @@ function DataProcessing(error, gdata) {
             SSTimeOC = SETimeOC;
             SETimeOC = temp;
         }
-        if (SETimeOC > EndTime) {
-            SETimeOC = EndTime;
-        }
-        if (SSTimeOC < StartTime) {
-            SSTimeOC = StartTime
-        }
+        if (SETimeOC > EndTime) { SETimeOC = EndTime; }
+        if (SSTimeOC < StartTime) { SSTimeOC = StartTime }
 
         var startPt = parseInt((SSTimeOC - StartTime) / 86400000);
         var endPt = parseInt((SETimeOC - StartTime) / 86400000);
@@ -746,13 +742,13 @@ function DataProcessing(error, gdata) {
         return opp;
     }
 
-    var oppdata = prepareDataForOppChart(SSTimeOC, SETimeOC);
+    var oppdata = prepareDataForOppChart(SSTimeOC,SETimeOC);
     var chart = makeLineChart(oppdata, 'date', {
-        'Overwatch': {column: 'OWPV'},
-        'CSGO': {column: 'CSGOPV'},
-        'PUBG': {column: 'PUBGPV'},
-        'Destiny': {column: 'DPV'},
-        'Destiny2': {column: 'D2PV'}
+        'Overwatch': { column: 'OWPV' },
+        'CSGO': { column: 'CSGOPV' },
+        'PUBG': { column: 'PUBGPV' },
+        'Destiny': { column: 'DPV' },
+        'Destiny2': { column: 'D2PV' }
     });
     chart.bind("#oppchart");
     chart.render();
@@ -791,11 +787,11 @@ function DataProcessing(error, gdata) {
                     break;
             }
             var tmp = {
-                'Overwatch': {column: 'OW' + suffix},
-                'CSGO': {column: 'CSGO' + suffix},
-                'PUBG': {column: 'PUBG' + suffix},
-                'Destiny': {column: 'D' + suffix},
-                'Destiny2': {column: 'D2' + suffix}
+                'Overwatch': { column: 'OW' + suffix },
+                'CSGO': { column: 'CSGO'+suffix },
+                'PUBG': { column: 'PUBG'+suffix },
+                'Destiny': { column: 'D'+suffix },
+                'Destiny2': { column: 'D2'+suffix }
             };
 
             d3.select("#oppchart").selectAll("div").remove();
@@ -813,8 +809,8 @@ function DataProcessing(error, gdata) {
     // main page datepicker set up
     $('.input-group.date.main_start').datepicker({
         autoclose: true,
-        defaultViewDate: {year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate()}
-    }).on("changeDate", function (e) {
+        defaultViewDate: { year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate() }
+    }).on("changeDate", function(e) {
         SSTime = e.date;
         $('.input-group.date.main_end').datepicker('setStartDate', SSTime);
         var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
@@ -825,8 +821,8 @@ function DataProcessing(error, gdata) {
 
     $('.input-group.date.main_end').datepicker({
         autoclose: true,
-        defaultViewDate: {year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate()}
-    }).on("changeDate", function (e) {
+        defaultViewDate: { year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate() }
+    }).on("changeDate", function(e) {
         // update selected end date
         SETime = e.date;
         $('.input-group.date.main_start').datepicker('setEndDate', SETime);
@@ -849,12 +845,10 @@ function DataProcessing(error, gdata) {
 
     // barchart ------------------------------------------------
 
-    var star1 = d3.starPlot();
-    var star2 = d3.starPlot();
+    var star = d3.starPlot();
     var leftAttribute = "PeakViewers"; // set default left barchart attribute
     var rightAttribute = "PeakViewers"; // set default right barchart attribute
-    var leftSelectedGame = 0;
-    var rightSelectedGame = 1;
+    var selectedGame = 0;
     var isSingleForStarplot = false;
 
     var byProperty = function (prop) {
@@ -908,7 +902,7 @@ function DataProcessing(error, gdata) {
     }
 
     //0-Overwatch, 1-CSGO, 2-PUBG, 3-Destiny, 4-Destiny2
-    function prepareDataForDetailPage(gameNumber, star) {
+    function prepareDataForDetailPage(gameNumber) {
         if (SETimeS < SSTimeS) {
             var temp = SSTimeS;
             SSTimeS = SETimeS;
@@ -935,15 +929,245 @@ function DataProcessing(error, gdata) {
         data = gdata[gameNumber];
         starTempData = []
         barChartData = []
+        /*
+        //overwatch
+        if (gameNumber == 0) {
+            for (var i = startPt; i <= endPt2; i++) {
+                //console.log(parseInt(data[i]["Game Rank (Total)"]));
+                var temp = {
+                    date: data[i]["Date"],
+                    AverageViewers: isNaN(parseInt(data[i]["Average Viewers"])) ? 0 : parseInt(data[i]["Average Viewers"]),
+                    PeakViewers: isNaN(parseInt(data[i]["Peak Viewers"])) ? 0 : parseInt(data[i]["Peak Viewers"]),
+                    PeakChannels: isNaN(parseInt(data[i]["Peak Channels"])) ? 0 : parseInt(data[i]["Peak Channels"]),
+                    PeakPlayers: isNaN(parseInt(data[i]["Peak Players"])) ? 0 : parseInt(data[i]["Peak Players"]),
+                    GameRankTotal: isNaN(parseInt(data[i]["Game Rank (Total)"])) ? 0 : parseInt(data[i]["Game Rank (Total)"]),
+                    GameRankEsports: isNaN(parseInt(data[i]["Game Rank (Esports)"])) ? 0 : parseInt(data[i]["Game Rank (Esports)"]),
+                    info: {
+                        updates: data[i]["Game Updates"],
+                        events: data[i]["Events"],
+                        competitiveSeasons: data[i]["Competitive Seasons"],
+                        esports: data[i]["Esports Schedule"]
+                    }
+                };
+                barChartData.push(temp);
+                if (i <= endPt) {
+                    starTempData.push(temp);
+                }
+            }
 
+            var ary1 = starTempData.map(function (o) {
+                return o.AverageViewers;
+            });
+            var dt1 = starDataHelper(ary1, "Average Viewers", gameNumber);
+            var ary2 = starTempData.map(function (o) {
+                return o.PeakViewers;
+            });
+            var dt2 = starDataHelper(ary2, "Peak Viewers", gameNumber);
+            var ary3 = starTempData.map(function (o) {
+                return o.PeakChannels;
+            });
+            var dt3 = starDataHelper(ary3, "Peak Channels", gameNumber);
+            starData = {
+                AverageViewers: {avg: dt1[0], percent: dt1[1]},
+                PeakViewers: {avg: dt2[0], percent: dt2[1]},
+                PeakChannels: {avg: dt3[0], percent: dt3[1]}
+            }
+
+            var scale = d3.scale.linear()
+                .domain([0, 1])
+                .range([0, 100]);
+
+            var scales = [scale];
+
+            star.properties([
+                'AverageViewers',
+                'PeakViewers',
+                'PeakChannels',
+            ])
+                .scales(scales)
+                .labels([
+                    'Average Viewers',
+                    'Peak Viewers',
+                    'Peak Channels',
+                ])
+                .title(function (d) {
+                    return games[selectedGame];
+                });
+        }
+
+        //CSGO
+        if ((gameNumber == 1) || (gameNumber == 2)) {
+            for (var i = startPt; i <= endPt2; i++) {
+                var temp = {
+                    date: data[i]["Date"],
+                    AverageViewers: parseInt(data[i]["Average Viewers"]),
+                    PeakViewers: parseInt(data[i]["Peak Viewers"]),
+                    PeakChannels: parseInt(data[i]["Peak Channels"]),
+                    PeakPlayers: parseInt(data[i]["Peak Players"]),
+                    info: {
+                        updates: data[i]["Game Updates"],
+                        esports: data[i]["Esports Schedule"]
+                    }
+                };
+                barChartData.push(temp);
+                if (i <= endPt) {
+                    starTempData.push(temp);
+                }
+            }
+
+            var ary1 = starTempData.map(function (o) {
+                return o.AverageViewers;
+            });
+            var dt1 = starDataHelper(ary1, "Average Viewers", gameNumber);
+            var ary2 = starTempData.map(function (o) {
+                return o.PeakViewers;
+            });
+            var dt2 = starDataHelper(ary2, "Peak Viewers", gameNumber);
+            var ary3 = starTempData.map(function (o) {
+                return o.PeakChannels;
+            });
+            var dt3 = starDataHelper(ary3, "Peak Channels", gameNumber);
+            var ary4 = starTempData.map(function (o) {
+                return o.PeakPlayers;
+            });
+            var dt4 = starDataHelper(ary4, "Peak Players", gameNumber);
+            starData = {
+                AverageViewers: {avg: dt1[0], percent: dt1[1]},
+                PeakViewers: {avg: dt2[0], percent: dt2[1]},
+                PeakChannels: {avg: dt3[0], percent: dt3[1]},
+                PeakPlayers: {avg: dt4[0], percent: dt4[1]}
+            }
+
+            var scale = d3.scale.linear()
+                .domain([0, 1])
+                .range([0, 100]);
+
+            var scales = [scale];
+
+            star.properties([
+                'AverageViewers',
+                'PeakViewers',
+                'PeakChannels',
+                'PeakPlayers'
+            ])
+                .scales(scales)
+                .labels([
+                    'Average Viewers',
+                    'Peak Viewers',
+                    'Peak Channels',
+                    'Peak Players'
+                ])
+                .title(function (d) {
+                    if (gameNumber == 1) {
+                        return "CSGO";
+                    }
+                    if (gameNumber == 2) {
+                        return "PUBG";
+                    }
+                });
+        }
+
+        //destiny and destiny 2
+        if ((gameNumber == 4) || (gameNumber == 3)) {
+            for (var i = startPt; i <= endPt2; i++) {
+                var temp = {
+                    date: data[i]["Date"],
+                    AverageViewers: parseInt(data[i]["Average Viewers"]),
+                    PeakViewers: parseInt(data[i]["Peak Viewers"]),
+                    PeakChannels: parseInt(data[i]["Peak Channels"]),
+                    info: {
+                        updates: data[i]["Game Updates"],
+                    }
+                };
+                barChartData.push(temp);
+                if (i <= endPt) {
+                    starTempData.push(temp);
+                }
+            }
+
+            var ary1 = starTempData.map(function (o) {
+                return o.AverageViewers;
+            });
+            var dt1 = starDataHelper(ary1, "Average Viewers", gameNumber);
+            var ary2 = starTempData.map(function (o) {
+                return o.PeakViewers;
+            });
+            var dt2 = starDataHelper(ary2, "Peak Viewers", gameNumber);
+            var ary3 = starTempData.map(function (o) {
+                return o.PeakChannels;
+            });
+            var dt3 = starDataHelper(ary3, "Peak Channels", gameNumber);
+            var ary4 = starTempData.map(function (o) {
+                return o.PeakChannels;
+            });
+            var dt4 = starDataHelper(ary4, "Peak Players", gameNumber);
+            var ary5 = starTempData.map(function (o) {
+                return o.PeakChannels;
+            });
+            var dt5 = starDataHelper(ary5, "Game Rank (Total)", gameNumber);
+            var ary6 = starTempData.map(function (o) {
+                return o.PeakChannels;
+            });
+            var dt6 = starDataHelper(ary6, "Game Rank (Esports)", gameNumber);
+
+
+            starData = {
+                AverageViewers: {avg: dt1[0], percent: dt1[1]},
+                PeakViewers: {avg: dt2[0], percent: dt2[1]},
+                PeakChannels: {avg: dt3[0], percent: dt3[1]},
+                PeakPlayers: {avg: dt4[0], percent: dt4[1]},
+                GameRankTotal: {avg: dt5[0], percent: dt5[1]},
+                GameRankEsports: {avg: dt6[0], percent: dt6[1]}
+            }
+
+            var scale = d3.scale.linear()
+                .domain([0, 1])
+                .range([0, 100]);
+
+            var scales = [scale];
+
+            star.properties([
+                'AverageViewers',
+                'PeakViewers',
+                'PeakChannels',
+                'PeakPlayers',
+                'GameRankTotal',
+                'GameRankEsports'
+            ])
+                .scales(scales)
+                .labels([
+                    'Average Viewers',
+                    'Peak Viewers',
+                    'Peak Channels',
+                    'Peak Players',
+                    'Game Rank (Total)',
+                    'Game Rank (Esports)'
+                ])
+                .title(function (d) {
+                    if (gameNumber == 3) {
+                        return "Destiny";
+                    }
+                    if (gameNumber == 4) {
+                        return "Destiny2";
+                    }
+                });
+        }
+        */
         for (var i = startPt; i <= endPt2; i++) {
+            //console.log(parseInt(data[i]["Game Rank (Total)"]));
             var temp = {
                 date: data[i]["Date"],
-                AverageViewers: parseInt(data[i]["Average Viewers"]),
-                PeakViewers: parseInt(data[i]["Peak Viewers"]),
-                PeakChannels: parseInt(data[i]["Peak Channels"]),
+                AverageViewers: isNaN(parseInt(data[i]["Average Viewers"])) ? 0 : parseInt(data[i]["Average Viewers"]),
+                PeakViewers: isNaN(parseInt(data[i]["Peak Viewers"])) ? 0 : parseInt(data[i]["Peak Viewers"]),
+                PeakChannels: isNaN(parseInt(data[i]["Peak Channels"])) ? 0 : parseInt(data[i]["Peak Channels"]),
+                PeakPlayers: isNaN(parseInt(data[i]["Peak Players"])) ? 0 : parseInt(data[i]["Peak Players"]),
+                GameRankTotal: isNaN(parseInt(data[i]["Game Rank (Total)"])) ? 0 : parseInt(data[i]["Game Rank (Total)"]),
+                GameRankEsports: isNaN(parseInt(data[i]["Game Rank (Esports)"])) ? 0 : parseInt(data[i]["Game Rank (Esports)"]),
                 info: {
                     updates: data[i]["Game Updates"],
+                    events: data[i]["Events"],
+                    competitiveSeasons: data[i]["Competitive Seasons"],
+                    esports: data[i]["Esports Schedule"]
                 }
             };
             barChartData.push(temp);
@@ -956,19 +1180,40 @@ function DataProcessing(error, gdata) {
             return o.AverageViewers;
         });
         var dt1 = starDataHelper(ary1, "Average Viewers", gameNumber);
+
         var ary2 = starTempData.map(function (o) {
             return o.PeakViewers;
         });
         var dt2 = starDataHelper(ary2, "Peak Viewers", gameNumber);
+
         var ary3 = starTempData.map(function (o) {
             return o.PeakChannels;
         });
         var dt3 = starDataHelper(ary3, "Peak Channels", gameNumber);
 
+        var ary4 = starTempData.map(function (o) {
+            return o.PeakPlayers;
+        });
+        var dt4 = starDataHelper(ary4, "Peak Players", gameNumber);
+
+        var ary5 = starTempData.map(function (o) {
+            return o.GameRankTotal;
+        });
+        var dt5 = starDataHelper(ary5, "Game Rank (Total)", gameNumber);
+
+        var ary6 = starTempData.map(function (o) {
+            return o.GameRankEsports;
+        });
+        var dt6 = starDataHelper(ary6, "Game Rank (Esports)", gameNumber);
+
+
         starData = {
             AverageViewers: {avg: dt1[0], percent: dt1[1]},
             PeakViewers: {avg: dt2[0], percent: dt2[1]},
             PeakChannels: {avg: dt3[0], percent: dt3[1]},
+            PeakPlayers: {avg: dt4[0], percent: dt4[1]},
+            GameRankTotal: {avg: dt5[0], percent: dt5[1]},
+            GameRankEsports: {avg: dt6[0], percent: dt6[1]}
         }
 
         var scale = d3.scale.linear()
@@ -981,16 +1226,22 @@ function DataProcessing(error, gdata) {
             'AverageViewers',
             'PeakViewers',
             'PeakChannels',
+            'PeakPlayers',
+            'GameRankTotal',
+            'GameRankEsports'
         ])
             .scales(scales)
             .labels([
                 'Average Viewers',
                 'Peak Viewers',
                 'Peak Channels',
+                'Peak Players',
+                'Game Rank (Total)',
+                'Game Rank (Esports)'
             ])
-            .title(function (){
-                return games[gameNumber];
-            });
+            .title(function (d) { return games[gameNumber]; });
+
+
         return [starData, barChartData];
     }
 
@@ -1028,7 +1279,7 @@ function DataProcessing(error, gdata) {
 
     //attribute1 - left display; attribute2 - right display;
     //data - processed data from prepareData
-    function plot2HB(attribute1, attribute2, data1, data2) {
+    function plot2HB(attribute1, attribute2, data) {
         var margin = {
             top: 32,
             right: 100,
@@ -1037,10 +1288,11 @@ function DataProcessing(error, gdata) {
         };
 
         var divBarchartLength = document.getElementById("barchart").offsetWidth;
+        console.log(divBarchartLength);
         var labelArea = 100;
         var width = (divBarchartLength - margin.left - labelArea - margin.right) / 2;
         bar_height = 20,
-            height = bar_height * data1.length;
+            height = bar_height * data.length;
         var rightOffset = margin.left + width + labelArea;
 
         var lCol = attribute1;
@@ -1059,14 +1311,14 @@ function DataProcessing(error, gdata) {
             .attr('width', divBarchartLength)
             .attr('height', height + margin.top + margin.bottom);
 
-        xFrom.domain([0, d3.max(data1, function (d) {
+        xFrom.domain([0, d3.max(data, function (d) {
             return d[lCol];
         })]);
-        xTo.domain([0, d3.max(data2, function (d) {
+        xTo.domain([0, d3.max(data, function (d) {
             return d[rCol];
         })]);
 
-        y.domain(data1.map(function (d) {
+        y.domain(data.map(function (d) {
             return d.date;
         }));
 
@@ -1089,7 +1341,7 @@ function DataProcessing(error, gdata) {
         }
 
         chart.selectAll("rect.left")
-            .data(data1)
+            .data(data)
             .enter().append("rect")
             .attr("x", function (d) {
                 return margin.left + width - xFrom(d[lCol]);
@@ -1101,13 +1353,13 @@ function DataProcessing(error, gdata) {
             })
             .attr("height", y.rangeBand())
             .on("mouseover", function (d) {
-                d.game = games[leftSelectedGame]; // !!! game name order inside games matters
+                d.game = games[selectedGame]; // !!! game name order inside games matters
                 handleBarHover(d, leftAttribute);
             })
             .on("mouseout", handleBarOut);
 
         chart.selectAll("text.leftscore")
-            .data(data1)
+            .data(data)
             .enter().append("text")
             .attr("x", function (d) {
                 return margin.left + width - xFrom(d[lCol]) - 40;
@@ -1123,7 +1375,7 @@ function DataProcessing(error, gdata) {
                 return d[lCol];
             });
         chart.selectAll("text.name")
-            .data(data1)
+            .data(data)
             .enter().append("text")
             .attr("x", (labelArea / 2) + width + margin.left)
             .attr("y", function (d) {
@@ -1137,7 +1389,7 @@ function DataProcessing(error, gdata) {
             });
 
         chart.selectAll("rect.right")
-            .data(data2)
+            .data(data)
             .enter().append("rect")
             .attr("x", rightOffset)
             .attr("y", yPosByIndex)
@@ -1147,13 +1399,13 @@ function DataProcessing(error, gdata) {
             })
             .attr("height", y.rangeBand())
             .on("mouseover", function (d) {
-                d.game = games[rightSelectedGame]; // !!! game name order inside games matters
+                d.game = games[selectedGame]; // !!! game name order inside games matters
                 handleBarHover(d, rightAttribute);
             })
             .on("mouseout", handleBarOut);
 
         chart.selectAll("text.score")
-            .data(data2)
+            .data(data)
             .enter().append("text")
             .attr("x", function (d) {
                 return xTo(d[rCol]) + rightOffset + 50;
@@ -1174,7 +1426,7 @@ function DataProcessing(error, gdata) {
     // -------------------------------------------------
     // star plot drawing
 
-    function plotStar(gameData, game, number) {
+    function plotStar(gameData) {
         var margin = {
             top: 32,
             right: 50,
@@ -1182,8 +1434,6 @@ function DataProcessing(error, gdata) {
             left: 50
         };
 
-
-        var star = number == 1 ? star1 : star2;
         var divStarplotLength = document.getElementById("starplot").offsetWidth;
 
         var width = divStarplotLength - margin.left - margin.right;
@@ -1193,20 +1443,15 @@ function DataProcessing(error, gdata) {
         star.margin(margin)
             .labelMargin(labelMargin);
 
-        // remove previous drawing with for the same game
-        d3.select('#starplot').selectAll('#star_'+number).remove();
-        d3.select('#sarplot').selectAll('#interaction_'+number).remove();
+        // remove previous drawing
+        d3.select("#starplot").selectAll("div").remove()
 
-        d3.select('#starplot').selectAll("div").data([0]).enter().append('div')
+        var wrapper = d3.select('#starplot').append('div')
             .attr('class', 'wrapper');
-
-        var wrapper = d3.select('#starplot').select(".wrapper");
-
         var svg = wrapper.append('svg')
             .attr('class', 'chart')
-            .attr('id', 'star_'+number)
             .attr('width', width + margin.left + margin.right)
-            .attr('height', width + margin.top + margin.bottom)
+            .attr('height', height + margin.top + margin.bottom)
 
         var starG = svg.append('g')
             .datum(gameData)
@@ -1215,7 +1460,6 @@ function DataProcessing(error, gdata) {
 
         var interactionLabel = wrapper.append('div')
             .attr('class', 'interaction label')
-            .attr('id', 'interaction_' + number);
 
         var circle = svg.append('circle')
             .attr('class', 'interaction circle')
@@ -1226,6 +1470,7 @@ function DataProcessing(error, gdata) {
 
         svg.selectAll('.star-interaction')
             .on('mouseover', function (d) {
+                console.log(d);
                 svg.selectAll('.star-label')
                     .style('display', 'none')
 
@@ -1237,6 +1482,7 @@ function DataProcessing(error, gdata) {
                     .attr('cy', d.y)
 
                 $interactionLabel = $(interactionLabel.node());
+                console.log($interactionLabel);
 
                 interactionLabel
                     .text(d.key + ': ' + d.datum[d.key]["avg"])
@@ -1267,6 +1513,7 @@ function DataProcessing(error, gdata) {
             yExtent:225.53074360871938
         */
         var divInfobox = d3.selectAll(".infobox_star");
+        console.log(d);
 
         if (settings == -1) {
             // state -1 : mouse out
@@ -1291,145 +1538,158 @@ function DataProcessing(error, gdata) {
     // -------------------------------------------------------
     // Button onclick functions settings
 
-    function handleCompareUpdate() {
-        // selectedGame should be updated when you switch to the game detailed page by tabs
-        console.log(leftSelectedGame + " " + rightSelectedGame);
-        console.log(leftAttribute + " " + rightAttribute);
-        var d1 = prepareDataForDetailPage(leftSelectedGame, star1);
-        var d2 = prepareDataForDetailPage(rightSelectedGame, star2);
-        plot2HB(leftAttribute, rightAttribute, d1[1], d2[1]);
-
-        // plot star
-        plotStar(d1[0], leftSelectedGame, 1);
-        plotStar(d2[0], rightSelectedGame, 2);
-    }
-
     // detail page: change barchart left side with selected attribute
-    d3.select(".left_games").selectAll("button")
+    d3.select(".left_line").selectAll("button")
         .on("click", function () {
-            // update left game
-            leftSelectedGame = d3.select(this).attr("data-field");
-            handleCompareUpdate();
-        });
-
-    d3.select(".left_attributes").selectAll("button")
-        .on("click", function () {
+            // selectedGame should be updated when you switch to the game detailed page by tabs
+            var d = prepareDataForDetailPage(selectedGame);
             // update left attribute
             leftAttribute = d3.select(this).attr("data-field");
-            handleCompareUpdate();
+            console.log("Update left attribute to: " + leftAttribute);
+            plot2HB(leftAttribute, rightAttribute, d[1]);
         });
 
-    d3.select(".right_games").selectAll("button")
+    // detail page: change barchart right side with selected attribute
+    d3.select(".right_line").selectAll("button")
         .on("click", function () {
-            // update right game
-            rightSelectedGame = d3.select(this).attr("data-field");
-            handleCompareUpdate();
-        });
-
-    d3.select(".right_attributes").selectAll("button")
-        .on("click", function () {
-            // update right game
+            var d = prepareDataForDetailPage(selectedGame);
+            // update left attribute
             rightAttribute = d3.select(this).attr("data-field");
-            handleCompareUpdate();
+            console.log("Update right attribute to: " + rightAttribute);
+            plot2HB(leftAttribute, rightAttribute, d[1]);
         });
 
     // change selectedGame when change the detail page of the game by clicking the tab
     d3.select("#tabs").selectAll("a")
         .on("click", function () {
             console.log("Switch to game: " + d3.select(this).attr("data-id"));
-            var tab = d3.select(this).attr("data-id");
+            selectedGame = parseInt(d3.select(this).attr("data-id"));
 
-            if (tab == 0) {
+            if (selectedGame == -1) {
                 // draw main page
-                //var d = prepareDataForHeatmap(gdata, d3.select(this).attr("data-field"));
-                //plotHeatmap(d);
+                var d = prepareDataForHeatmap(gdata, d3.select(this).attr("data-field"));
+                plotHeatmap(d);
 
             } else {
-                // draw comparison page
+                // draw detail page
 
-                var data1 = prepareDataForDetailPage(leftSelectedGame, star1);
-                var data2 = prepareDataForDetailPage(rightSelectedGame, star2);
+                var data = prepareDataForDetailPage(selectedGame);
+                console.log(data);
                 // possible data member name: PeakViewers, PeakChannels, AverageViewers, PeakPlayers, GameRankTotal, GameRankEsports
                 // set default attributes
 
-                plot2HB(leftAttribute, rightAttribute, data1[1], data2[1]);
-                plotStar(data1[0], leftSelectedGame, 1);
-                plotStar(data2[0], rightSelectedGame, 2);
+                plot2HB(leftAttribute, rightAttribute, data[1]);
+                plotStar(data[0]);
+
             }
 
         });
 
-    // set initial status for star plot date picker
-    if (!document.getElementById("single").checked) {
-        $('.input-group.date.detail-star-single input').prop('disabled', true);
-    }
-
-
     // detail page radio button set up
-    $("#single").on("click", function (e) {
+    $("#single").on("click", function(e) {
+        var isChecked = document.getElementById("single").checked;
 
-        var isSingleForStarplot = document.getElementById("single").checked;
-        $('.input-group.date.detail-star-single input').prop('disabled', !isSingleForStarplot);
+        isSingleForStarplot = true;
+
+        document.getElementById("period").checked = false;
+
+
+        $('.input-group.date.detail-star-single input').prop('disabled', false);
+        // disable datepicker for period
+        $('.input-group.date.detail-star-start input').prop('disabled', true);
+        $('.input-group.date.detail-star-end input').prop('disabled', true);
 
         // re-plot starplot
-        var d1 = prepareDataForDetailPage(leftSelectedGame, star1);
-        var d2 = prepareDataForDetailPage(rightSelectedGame, star2);
-        //console.log(d1[0]);
-        //console.log(d2[0]);
-        plotStar(d1[0], leftSelectedGame, 1);
-        plotStar(d2[0], rightSelectedGame, 2);
+        var d = prepareDataForDetailPage(selectedGame);
+        plotStar(d[0]);
+    });
+
+    $("#period").on("click", function(e) {
+        document.getElementById("single").checked = false;
+
+        isSingleForStarplot = false;
+
+        // enable datepicker for period
+        $('.input-group.date.detail-star-start input').prop('disabled', false);
+        $('.input-group.date.detail-star-end input').prop('disabled', false);
+
+        $('.input-group.date.detail-star-single input').prop('disabled', true);
+
+        // re-plot starplot
+        var d = prepareDataForDetailPage(selectedGame);
+        plotStar(d[0]);
     });
 
 
-    // datepicker set up for comparison page
-    $('.input-group.date.single').datepicker({
+    // detail page datepicker set up ----------- star single
+    $('.input-group.date.detail-star-single').datepicker({
         autoclose: true,
-        defaultViewDate: {year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate()}
+        defaultViewDate: { year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate() }
+    }).on("changeDate", function(e) {
+        SSTime = e.date;
+        //var d = prepareDataForDetailPage(selectedGame);
+        plotStar(d[0]);
     });
 
-    $('.input-group.date.detail-bar-start').datepicker('setDate', StartTime);
-    $('.input-group.date.detail-bar-end').datepicker('setDate', EndTime);
+    // detail page datepicker set up ----------- star period
+    $('.input-group.date.detail-star-start').datepicker({
+        autoclose: true,
+        defaultViewDate: { year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate() }
+    }).on("changeDate", function(e) {
+        SSTime = e.date;
+        //$('.input-group.date.detail-star-start').datepicker('setStartDate', SSTime);
+        console.log(selectedGame);
+        //var d = prepareDataForDetailPage(selectedGame);
+        //plotStar(d[0]);
+    });
 
 
+    $('.input-group.date.detail-star-end').datepicker({
+        autoclose: true,
+        defaultViewDate: { year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate() }
+    }).on("changeDate", function(e) {
+        // update selected end date
+        SETime = e.date;
+        console.log(selectedGame);
+        //$('.input-group.date.detail-star-start').datepicker('setEndDate', SETime);
+        var d = prepareDataForDetailPage(selectedGame);
+        plotStar(d[0]);
+    });
+
+    // detail page datepicker set up ----------- bar
     $('.input-group.date.detail-bar-start').datepicker({
         autoclose: true,
-        defaultViewDate: {year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate()}
+        defaultViewDate: { year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate() }
+    }).on("changeDate", function(e) {
+        SSTimeS = e.date;
+        //$('.input-group.date.detail-end').datepicker('setStartDate', SSTimeS);
+        var d = prepareDataForDetailPage(selectedGame);
+        plot2HB(leftAttribute, rightAttribute, d[1]);
     });
+
 
     $('.input-group.date.detail-bar-end').datepicker({
         autoclose: true,
-        defaultViewDate: {year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate()}
-    });
-
-    $('.input-group.date.single').on("changeDate", function (e) {
-        // re-plot star plot according to the checkbox
-        SSTime = e.date;
-        var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
-        console.log(d);
-        plotHeatmap(d);
-    });
-
-    $('.input-group.date.detail-bar-start').on("changeDate", function (e) {
-        // update selected start date
-        SSTimeS = e.date;
-
-        // re-draw barchart
-        $('.input-group.date.detail-bar-end').datepicker('setEndDate', SETimeS);
-        handleCompareUpdate();
-
-        // re-draw star plot
-    });
-
-    $('.input-group.date.detail-bar-end').on("changeDate", function (e) {
-        // update selected start date
+        defaultViewDate: { year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate() }
+    }).on("changeDate", function(e) {
+        // update selected end date
         SETimeS = e.date;
-
-        // re-draw barchart
-        $('.input-group.date.detail-bar-end').datepicker('setStartDate', SSTimeS);
-        handleCompareUpdate();
-
-        // re-draw star plot
+        //$('.input-group.date.detail_start').datepicker('setEndDate', SETimeS);
+        var d = prepareDataForDetailPage(selectedGame);
+        console.log(d[1])
+        //plot2HB(leftAttribute, rightAttribute, d[1]);
     });
+
+    $('.input-group.date').datepicker('setStartDate', StartTime);
+    $('.input-group.date.detail-star-start').datepicker('setDate', StartTime);
+    $('.input-group.date.detail-star-single').datepicker('setDate', StartTime);
+    $('.input-group.date.detail-bar-start').datepicker('setDate', StartTime);
+    $('.input-group.date').datepicker('setEndDate', EndTime);
+    $('.input-group.date.detail-star-single').datepicker('setDate', EndTime);
+    $('.input-group.date.detail-star-end').datepicker('setDate', EndTime);
+    $('.input-group.date.detail-bar-end').datepicker('setDate', EndTime);
+
+
 }
 
 data_all_games = [];

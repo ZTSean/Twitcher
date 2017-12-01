@@ -44,8 +44,14 @@
             <span class="mdl-layout-title">Twitcher</span>
         </div>
         <div id="tabs" class="mdl-layout__tab-bar mdl-js-ripple-effect">
-            <a href="#main_page" class="mdl-layout__tab is-active" data-id="0">Overview</a>
-            <a href="#compare_page" class="mdl-layout__tab" data-id="1">More fun</a>
+            <a href="#main_page" class="mdl-layout__tab is-active" data-id="-1">Overview</a>
+            <a href="#overwatch_detail" class="mdl-layout__tab" data-id="0">More fun</a>
+            <!--
+            <a href="#destiny_detail" class="mdl-layout__tab" data-id="3">Destiny</a>
+            <a href="#destiny2_detail" class="mdl-layout__tab" data-id="4">Destiny 2</a>
+            <a href="#csgo_detail" class="mdl-layout__tab" data-id="1">CS-GO</a>
+            <a href="#pubg_detail" class="mdl-layout__tab" data-id="2">PlayUnknown:BattleGrounds</a>
+            -->
         </div>
     </header>
     <main class="mdl-layout__content">
@@ -132,16 +138,23 @@
                 </div>
             </div>
         </section>
-        <!-- Comparsion page -->
-        <section class="mdl-layout__tab-panel" id="compare_page">
+        <!-- Detailed Page for Overwatch -->
+        <section class="mdl-layout__tab-panel" id="overwatch_detail">
             <div class="page-content">
-                <!--------------------- option part ------------------------- -->
+                <!-- Your content goes here -->
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--1-col"></div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <b>Star Plot</b>
+                    </div>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
                     <div class="mdl-cell mdl-cell--3-col">
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="single">
-                            <input type="checkbox" id="single" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label">Single Day Display</span>
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="single">
+                            <input type="radio" id="single" class="mdl-radio__button" name="options" value="1">
+                            <span class="mdl-radio__label">Single Day Display</span>
                         </label>
                     </div>
                     <div class="mdl-cell mdl-cell--7-col">
@@ -151,6 +164,41 @@
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </div>
                         </div>
+                    </div>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+                <div class="mdl-grid">
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="period">
+                            <input type="radio" id="period" class="mdl-radio__button" name="options" checked>
+                            <span class="mdl-radio__label">Time Span</span>
+                        </label>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col">
+                        <div class="input-group date detail-star-start">
+                            <span class="input-group-addon">From</span>
+                            <input type="text" class="form-control">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col">
+                        <div class="input-group date detail-star-end">
+                            <span class="input-group-addon">To</span>
+                            <input type="text" class="form-control">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--1-col"></div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <b>Comparative Chart</b>
                     </div>
                     <div class="mdl-layout-spacer"></div>
                 </div>
@@ -179,125 +227,63 @@
                 </div>
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
-                    <!-- Left attribute for barchart -->
-                    <div class="mdl-cell mdl-cell--6-col">
-                        <div class="mdl-grid">
-                            <div class="mdl-layout-spacer"></div>
-                            <div class="mdl-cell mdl-cell-8">Left</div>
-                            <div class="mdl-layout-spacer"></div>
-                        </div>
-
-                        <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Games</div>
-                            <div class="mdl-cell mdl-cell--10-col">
-                                <div class="btn-group left_games" role="group">
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="0">
-                                        Overwatch
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="1">
-                                        CSGO
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="2">
-                                        PlayUnknown
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="3">
-                                        Destiny
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="4">
-                                        Destiny2
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Attributes</div>
-                            <div class="mdl-cell mdl-cell--10-col">
-                                <div class="btn-group left_attributes" role="group">
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                                            data-field="PeakViewers">Peak Viewer
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                                            data-field="AverageViewers">Avg Viewer
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                                            data-field="PeakChannels">Peak Channels
-                                    </button>
-                                </div>
-                            </div>
+                    <div class="mdl-cell mdl-cell--2-col">Left Line</div>
+                    <div class="mdl-cell mdl-cell--8-col">
+                        <div class="btn-group left_line" role="group">
+                            <button type="button"
+                                    class="button_main_peak_viewers mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="PeakViewers">Peak Viewer
+                            </button>
+                            <button type="button"
+                                    class="button_main_average_viewers mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="AverageViewers">Avg Viewer
+                            </button>
+                            <button type="button"
+                                    class="button_main_peak_channels mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="PeakChannels">Peak Channels
+                            </button>
+                            <button type="button"
+                                    class="button_main_peak_players mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="PeakPlayers">Peak Players
+                            </button>
+                            <button type="button"
+                                    class="button_main_rank_total mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="GameRankTotal">Game Rank
+                            </button>
                         </div>
                     </div>
-
-                    <!-- Right attribute for barchart -->
-                    <div class="mdl-cell mdl-cell--6-col">
-                        <div class="mdl-grid">
-                            <div class="mdl-layout-spacer"></div>
-                            <div class="mdl-cell mdl-cell-8">Right</div>
-                            <div class="mdl-layout-spacer"></div>
-                        </div>
-
-                        <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Games</div>
-                            <div class="mdl-cell mdl-cell--10-col">
-                                <div class="btn-group right_games" role="group">
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="0">
-                                        Overwatch
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="1">
-                                        CSGO
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="2">
-                                        PlayUnknown
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="3">
-                                        Destiny
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="4">
-                                        Destiny2
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Attributes</div>
-                            <div class="mdl-cell mdl-cell--10-col">
-                                <div class="btn-group right_attributes" role="group">
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                                            data-field="PeakViewers">Peak Viewer
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                                            data-field="AverageViewers">Avg Viewer
-                                    </button>
-                                    <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                                            data-field="PeakChannels">Peak Channels
-                                    </button>
-                                </div>
-                            </div>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+                <div class="mdl-grid">
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-cell mdl-cell--2-col">Right Line</div>
+                    <div class="mdl-cell mdl-cell--8-col">
+                        <div class="btn-group right_line" role="group">
+                            <button type="button"
+                                    class="button_main_peak_viewers mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="PeakViewers">Peak Viewer
+                            </button>
+                            <button type="button"
+                                    class="button_main_average_viewers mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="AverageViewers">Avg Viewer
+                            </button>
+                            <button type="button"
+                                    class="button_main_peak_channels mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="PeakChannels">Peak Channels
+                            </button>
+                            <button type="button"
+                                    class="button_main_peak_players mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="PeakPlayers">Peak Players
+                            </button>
+                            <button type="button"
+                                    class="button_main_rank_total mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                    data-field="GameRankTotal">Game Rank
+                            </button>
                         </div>
                     </div>
-
                     <div class="mdl-layout-spacer"></div>
                 </div>
 
-                <!---------------------------- Plot part ----------------------->
                 <!-- Star Plot -->
                 <div>
                     <div class="mdl-grid">
@@ -330,6 +316,30 @@
             </div>
 
 
+        </section>
+        <!-- Detailed Page for Destiny -->
+        <section class="mdl-layout__tab-panel" id="destiny_detail">
+            <div class="page-content">
+                <!-- Your content goes here -->
+            </div>
+        </section>
+        <!-- Detailed Page for Destiny 2 -->
+        <section class="mdl-layout__tab-panel" id="destiny2_detail">
+            <div class="page-content">
+                <!-- Your content goes here -->
+            </div>
+        </section>
+        <!-- Detailed Page for CS-GO -->
+        <section class="mdl-layout__tab-panel" id="csgo_detail">
+            <div class="page-content">
+                <!-- Your content goes here -->
+            </div>
+        </section>
+        <!-- Detailed Page for PlayUknown: BattleGrounds -->
+        <section class="mdl-layout__tab-panel" id="pubg_detail">
+            <div class="page-content">
+                <!-- Your content goes here -->
+            </div>
         </section>
     </main>
 </div>

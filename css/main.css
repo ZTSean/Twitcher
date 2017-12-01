@@ -34,6 +34,30 @@ button:hover {
     margin-bottom: 40px;
 }
 
+.chart .right {
+    stroke: white;
+    fill: #fa8072;
+}
+
+.chart .left {
+    stroke: white;
+    fill: #66cccc;
+}
+
+.chart rect:hover {
+    fill: #31698a;
+}
+
+.chart text {
+    fill: #815fc0;
+    font: Helvetica;
+}
+
+.chart text.name {
+    fill: #815fc0;
+    font: Helvetica;
+}
+
 .star-title {
     font-size: 14px;
 }
