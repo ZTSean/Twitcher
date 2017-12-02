@@ -76,6 +76,7 @@ function DataProcessing(error, gdata) {
                     date: gData[j][i]["Date"],
                     gameUpdates: gData[j][i]["Game Updates"],
                     esportsSchedule: gData[j][i]["Esports Schedule"],
+                    competitiveSeasons: gData[j][i]["Competitive Seasons"],
                     game: games[j],
                     attribute: attribute
                 });
@@ -287,16 +288,17 @@ function DataProcessing(error, gdata) {
         //width of each column in the heatmap
 
         var h = 50, //rect height
-            eLh = 50, //event line height
-            LH = h + eLh, //total height for each game
+            eLh = 30, //event line height
+            //LH = h + eLh, //total height for each game's rect
             labelWidth = h, //width of the game label
             width = divHeatmapLength, // width of whole graph
             TandGPadding = 70, //space between text and graph
             HmapLength = Math.max(0, width - labelWidth - TandGPadding - heatmapMargin.left - heatmapMargin.right),
             w = HmapLength / nBloc, //rect width
-            totalH = LH * gameData.length, //total height of the map
+            gameMargin = 15, // margin after each game's plot
             dateH = 5; //start height for date text
-        var height = LH * gameData.length + heatmapMargin.top + heatmapMargin.bottom; // height of whole graph
+        var totalH = (h + gameMargin) * gameData.length + 9 * eLh ; //total height of the map: no margin
+        var height = totalH + heatmapMargin.top + heatmapMargin.bottom; // height of whole graph
         var eventlineWidth = 3;
         var eventBubbleRadius = 5;
 
@@ -307,7 +309,6 @@ function DataProcessing(error, gdata) {
             colorHigh = 'red',
             colorLine = "#9966ff",
             colorUnavailable = "#ebebe0",
-            colorEventline = "#9966ff",
             colorEventBubble = "purple";
 
 
@@ -331,109 +332,124 @@ function DataProcessing(error, gdata) {
         var clickHold = -1;
         //var savedX1 = -1;
 
-        //Draw heatmap for data of each game
-        for (i = 0; i < games.length; i++) {
-            // create eventline if not exist -----------
-            // create horizontal line for eventline if not exist
-            svg.selectAll(".heatmap_eventline_" + games[i])
-                .data([gameData[i][0]], function (d) {
-                    return d.col + ':' + d.row + ':' + w;
-                })
-                .enter()
-                .append("line")
-                .attr("x1", labelWidth + TandGPadding + heatmapMargin.left)
-                .attr("y1", function (d) {
-                    return eLh / 2 + d.col * LH + heatmapMargin.top;
-                })
-                .attr("x2", labelWidth + TandGPadding + HmapLength)
-                .attr("y2", function (d) {
-                    return eLh / 2 + d.col * LH + heatmapMargin.top;
-                })
-                .attr("stroke-width", eventlineWidth)
-                .attr("stroke", colorEventline);
+        var cumulativeHeight = heatmapMargin.top;
 
-
-            // create event bubble or rect if not exist ---------------------------------
-            var eventlineBubbles = svg.selectAll(".heatmap_event_" + games[i]).data(gameData[i], function (d) {
-                return d.col + ':' + d.row + ':' + w;
-            });
+        var eventNames = ["gameUpdates", "competitiveSeasons", "esportsSchedule"];
+        // eventName: 0 => updates, 1 => competitive season 2 => esports
+        function drawEventBubbles (data, game, eventNameId, gameColor) {
 
             function handleEventHover(d, i) {
                 // Use D3 to select element, change color and size
                 d3.select(this)
-                    .attr("r", eventBubbleRadius * 4)
-                    .style("fill", "black");
+                    .style("stroke", "black")
+                    .style("stroke-width", 1);
 
                 updateInfoBoxHMap(d, 4);
             }
 
             function handleEventOut(d, i) {
-                var count = 0;
-                if (d.gameUpdates != undefined && d.gameUpdates.length > 0) count++;
-                if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
-
                 // Use D3 to select element, change color back to normal
+
                 d3.select(this)
-                    .attr("r", eventBubbleRadius * count)
-                    .style("fill", colorEventBubble);
+                    .style("stroke", "")
+                    .style("stroke-width", "");
 
                 updateInfoBoxHMap(d, -1);
             }
 
-            // remove previous events
-            eventlineBubbles.exit().remove();
+            // // remove all previous event bubble ---------------------------------
+            svg.selectAll(".heatmap_event_" + game).remove();
 
-            // enter: create new bubbles
+            // create new bubbles shapes depends on the event type
+            var eventlineBubbles = svg.selectAll(".heatmap_event_" + game).data(data);
+
+            if (eventNameId == 0) {
+                // triangle for udpates
+                // enter: create new bubbles
+                eventlineBubbles.enter()
+                    .append("path")
+                    .filter(function (d) { // filter out those data without events
+                        return (d[eventNames[eventNameId]] != undefined && d[eventNames[eventNameId]].length > 0);
+                    })
+                    .attr("d", d3.svg.symbol().type("triangle-up"))
+                    .attr("transform", function(d) { return "translate(" +
+                        (labelWidth + TandGPadding + w * d.row + heatmapMargin.left) + "," +
+                        (eLh / 2 + cumulativeHeight) + ")"; })
+                    .style("fill", gameColor)
+
+                    // handle hover event
+                    .on("mouseover", handleEventHover)
+                    .on("mouseout", handleEventOut);
+
+            } else if (eventNameId == 1) {
+                // circle for competitive season
+                eventlineBubbles.enter()
+                    .append("path")
+                    .filter(function (d) { // filter out those data without events
+                        return (d[eventNames[eventNameId]] != undefined && d[eventNames[eventNameId]].length > 0);
+                    })
+                    .attr("d", d3.svg.symbol().type("circle"))
+                    .attr("transform", function(d) { return "translate(" +
+                        (labelWidth + TandGPadding + w * d.row + heatmapMargin.left) + "," +
+                        (eLh / 2 + cumulativeHeight) + ")"; })
+                    .style("fill", gameColor)
+
+                    // handle hover event
+                    .on("mouseover", handleEventHover)
+                    .on("mouseout", handleEventOut);
+            } else if (eventNameId == 2) {
+                // diamond for esports
+
+                eventlineBubbles.enter()
+                    .append("path")
+                    .filter(function (d) { // filter out those data without events
+                        return (d[eventNames[eventNameId]] != undefined && d[eventNames[eventNameId]].length > 0);
+                    })
+                    .attr("d", d3.svg.symbol().type("diamond"))
+                    .attr("transform", function(d) {
+                        return "translate(" +
+                        (labelWidth + TandGPadding + w * d.row + heatmapMargin.left) + "," +
+                            (eLh / 2 + cumulativeHeight) + ")"; })
+                    .style("fill", gameColor)
+
+                    // handle hover event
+                    .on("mouseover", handleEventHover)
+                    .on("mouseout", handleEventOut)
+
+                    .append('line')
+                    .style("stroke-dasharray","3,3")//dashed array for line
+                    .style("stroke", gameColor)
+                    .attr('x1', function(d){ return labelWidth + TandGPadding + w * d.row + heatmapMargin.left; })
+                    .attr('y1', function(d){ return cumulativeHeight})
+                    .attr('x2', function(d){ return labelWidth + TandGPadding + w * d.row + heatmapMargin.left; })
+                    .attr('y2', function(d){ return cumulativeHeight + eLh / 2; });
+            }
+
+
+            // draw dash line from the symbol center to the rect
             eventlineBubbles.enter()
-                .append("circle")
+                .append('line')
                 .filter(function (d) { // filter out those data without events
-                    return (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) ||
-                        (d.gameUpdates != undefined && d.gameUpdates.length > 0);
-                })
-                .attr("r", function (d) {
-                    var count = 0;
-                    if (d.gameUpdates != undefined && d.gameUpdates.length > 0) count++;
-                    if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
-                    return count * eventBubbleRadius;
-                })
-                .attr("cx", function (d) {
-                    return labelWidth + TandGPadding + w * d.col + heatmapMargin.left;
-                })
-                .attr("cy", function (d) {
-                    return eLh / 2 + d.col * LH + heatmapMargin.top;
-                })
-                .style("fill", colorEventBubble)
-
-                // handle hover event
-                .on("mouseover", handleEventHover)
-                .on("mouseout", handleEventOut);
+                        return (d[eventNames[eventNameId]] != undefined && d[eventNames[eventNameId]].length > 0);
+                    })
+                .style("stroke-dasharray","5,5")//dashed array for line
+                .style("stroke", gameColor)
+                .attr('x1', function(d){ return labelWidth + TandGPadding + w * d.row + heatmapMargin.left; })
+                .attr('y1', function(d){ return cumulativeHeight - eventNameId * eLh; })
+                .attr('x2', function(d){ return labelWidth + TandGPadding + w * d.row + heatmapMargin.left; })
+                .attr('y2', function(d){ return cumulativeHeight + eLh / 2; });
 
 
-            // update bubbles
-            eventlineBubbles.filter(function (d) { // filter out those data without events
-                return (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) ||
-                    (d.gameUpdates != undefined && d.gameUpdates.length > 0);
-            })
-                .attr("r", function (d) {
-                    var count = 0;
-                    if (d.gameUpdates != undefined && d.gameUpdates.length > 0) count++;
-                    if (d.esportsSchedule != undefined && d.esportsSchedule.length > 0) count++;
-                    return count * eventBubbleRadius;
-                })
-                .attr("cx", function (d) {
-                    return labelWidth + TandGPadding + w * d.row + heatmapMargin.left;
-                })
-                .attr("cy", function (d) {
-                    return eLh / 2 + d.col * LH + heatmapMargin.top;
-                })
-                .style("fill", colorEventBubble)
+            cumulativeHeight += eLh;
 
-                // handle hover event
-                .on("mouseover", handleEventHover)
-                .on("mouseout", handleEventOut);
+        }
 
+        //Draw heatmap for data of each game
+        for (i = 0; i < games.length; i++) {
 
-            // create heatmap if not exist
+            // draw heatmap rects first the cumulative height will change
+
+            // create heatmap rects if not exist ------------------------------
             svg.selectAll(".heatmap_rect_" + games[i]).remove();
 
             var heatmapRects = svg.selectAll(".heatmap_rect_" + games[i])
@@ -446,7 +462,7 @@ function DataProcessing(error, gdata) {
                     return d.row * w + labelWidth + TandGPadding + heatmapMargin.left;
                 })
                 .attr("y", function (d) {
-                    return eLh + d.col * LH + heatmapMargin.top;
+                    return cumulativeHeight;
                 })
                 .attr("width", function (d) {
                     return w;
@@ -587,46 +603,8 @@ function DataProcessing(error, gdata) {
                         updateInfoBoxHMap(d, 1);
                     }
                 });
-        }
 
-        /*var imgs = svg.selectAll(".heatmap").data([0]);
-            imgs.enter()
-            .append("svg:image")
-            .attr("xlink:href", "Resource/ow_logo.png")
-            .attr("x", "10")
-            .attr("y", "0")
-            .attr("width", h)
-            .attr("height", h);
-
-        var imgs2 = svg.selectAll(".heatmap").data([0]);
-            imgs2.enter()
-            .append("svg:image")
-            .attr("xlink:href", "Resource/csgo_logo.jpg")
-            .attr("x", "0")
-            .attr("y", 2*h)
-            .attr("width", h+20)
-            .attr("height", h);
-
-        var imgs3 = svg.selectAll(".heatmap").data([0]);
-            imgs3.enter()
-            .append("svg:image")
-            .attr("xlink:href", "Resource/pubg_logo.png")
-            .attr("x", "0")
-            .attr("y", 4*h)
-            .attr("width", h+20)
-            .attr("height", h);
-
-        var imgs4 = svg.selectAll(".heatmap").data([0]);
-            imgs4.enter()
-            .append("svg:image")
-            .attr("xlink:href", "Resource/destiny_logo.jpg")
-            .attr("x", "0")
-            .attr("y", 6*h)
-            .attr("width", h)
-            .attr("height", h);*/
-
-
-        for (i = 0; i < gameData.length; i++) {
+            // draw game name text : same height
 
             var text = svg.selectAll(".heatmap_text_" + games[i]).data([gameData[i][0]]);
 
@@ -638,7 +616,7 @@ function DataProcessing(error, gdata) {
                 .attr("class", "gameLabel")
                 .attr("dy", ".30em")
                 .attr("x", (labelWidth + TandGPadding) / 2)
-                .attr("y", i * LH + h / 2 + eLh + heatmapMargin.top)
+                .attr("y", h / 2 + cumulativeHeight)
                 .attr("fill-opacity", 0.95)
                 .attr("class", "heatmap_text_" + games[i])
                 .text(games[i])
@@ -652,12 +630,29 @@ function DataProcessing(error, gdata) {
                 .attr("class", "gameLabel")
                 .attr("dy", ".30em")
                 .attr("x", (labelWidth + TandGPadding) / 2)
-                .attr("y", i * LH + h / 2 + eLh + heatmapMargin.top)
+                .attr("y", h / 2 + cumulativeHeight)
                 .attr("fill-opacity", 0.95)
                 .text(games[i])
                 .style('fill', gameColors[i])
                 .style("font-size", "20px");
+
+
+            // update cumulative height
+            cumulativeHeight += h;
+
+            // draw event lines
+            drawEventBubbles(gameData[i], games[i], 0, gameColors[i]);
+            if (i == 0 ) { // ovewatch
+                drawEventBubbles(gameData[i], games[i], 1, gameColors[i]);
+                drawEventBubbles(gameData[i], games[i], 2, gameColors[i]);
+            } else if (i == 1 || i == 2) {
+                drawEventBubbles(gameData[i], games[i], 2, gameColors[i]);
+            }
+
+            cumulativeHeight += gameMargin;
         }
+
+
 
     }
 
@@ -811,32 +806,37 @@ function DataProcessing(error, gdata) {
     document.getElementById("button_main_peak_viewers").click();
 
     // main page datepicker set up
-    $('.input-group.date.main_start').datepicker({
+    $('.input-group.date.main-start').datepicker({
         autoclose: true,
         defaultViewDate: {year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate()}
-    }).on("changeDate", function (e) {
+    });
+
+    $('.input-group.date.main-end').datepicker({
+        autoclose: true,
+        defaultViewDate: {year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate()}
+    });
+
+    $('.input-group.date').datepicker('setStartDate', StartTime);
+    $('.input-group.date.main-start').datepicker('setDate', StartTime);
+    $('.input-group.date').datepicker('setEndDate', EndTime);
+    $('.input-group.date.main-end').datepicker('setDate', EndTime);
+
+    $('.input-group.date.main-start').on("changeDate", function (e) {
         SSTime = e.date;
-        $('.input-group.date.main_end').datepicker('setStartDate', SSTime);
+        $('.input-group.date.main-end').datepicker('setStartDate', SSTime);
         var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
         console.log(d);
         plotHeatmap(d);
     });
 
-
-    $('.input-group.date.main_end').datepicker({
-        autoclose: true,
-        defaultViewDate: {year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate()}
-    }).on("changeDate", function (e) {
+    $('.input-group.date.main-end').on("changeDate", function (e) {
         // update selected end date
         SETime = e.date;
-        $('.input-group.date.main_start').datepicker('setEndDate', SETime);
+        $('.input-group.date.main-start').datepicker('setEndDate', SETime);
         var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
         plotHeatmap(d);
     });
-    $('.input-group.date').datepicker('setStartDate', StartTime);
-    $('.input-group.date.main-start').datepicker('setDate', StartTime);
-    $('.input-group.date').datepicker('setEndDate', EndTime);
-    $('.input-group.date.main-end').datepicker('setDate', EndTime);
+
 
     // ########################################################
     // ########################################################

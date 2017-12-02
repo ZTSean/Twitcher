@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="110d8dff-7d67-4e95-8812-ba5b2d9b9e52" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change beforePath="$PROJECT_DIR$/js/d3-starPlot.js" afterPath="$PROJECT_DIR$/js/d3-starPlot.js" />
       <change beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -18,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="891">
-              <caret line="139" column="19" lean-forward="false" selection-start-line="139" selection-start-column="19" selection-end-line="139" selection-end-column="19" />
+            <state relative-caret-position="307">
+              <caret line="150" column="96" lean-forward="false" selection-start-line="150" selection-start-column="90" selection-end-line="150" selection-end-column="96" />
               <folding>
                 <element signature="n#div#0;n#div#2;n#div#0;n#div#0;n#section#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
                 <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#2;n#div#0;n#section#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -36,21 +34,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index2HBarChart.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index2HBarChart.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1278">
-              <caret line="411" column="12" lean-forward="false" selection-start-line="411" selection-start-column="8" selection-end-line="411" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="d3-starPlot.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/d3-starPlot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="919">
-              <caret line="107" column="20" lean-forward="false" selection-start-line="107" selection-start-column="19" selection-end-line="107" selection-end-column="20" />
+            <state relative-caret-position="519">
+              <caret line="113" column="26" lean-forward="false" selection-start-line="113" selection-start-column="22" selection-end-line="113" selection-end-column="26" />
               <folding>
                 <element signature="e#61#139#0" expanded="false" />
                 <element signature="e#863#1234#0" expanded="false" />
@@ -75,57 +63,72 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="608">
+              <caret line="437" column="86" lean-forward="false" selection-start-line="437" selection-start-column="86" selection-end-line="437" selection-end-column="86" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="main_version_1.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/main_version_1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="1682" column="4" lean-forward="true" selection-start-line="1682" selection-start-column="4" selection-end-line="1689" selection-end-column="73" />
+            <state relative-caret-position="-1065">
+              <caret line="356" column="65" lean-forward="false" selection-start-line="356" selection-start-column="51" selection-end-line="356" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="indexOppTry.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/indexOppTry.html">
+      <file leaf-file-name="Destiny.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/Destiny.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1084">
-              <caret line="76" column="32" lean-forward="false" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="32" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="multiline.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/multiline.js">
+      <file leaf-file-name="Destiny2.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/Destiny2.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="140" column="29" lean-forward="false" selection-start-line="140" selection-start-column="29" selection-end-line="140" selection-end-column="29" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/main.js">
+      <file leaf-file-name="Overwatch.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/Overwatch.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="932" column="9" lean-forward="false" selection-start-line="932" selection-start-column="9" selection-end-line="932" selection-end-column="9" />
+            <state relative-caret-position="0">
+              <caret line="0" column="125" lean-forward="false" selection-start-line="0" selection-start-column="106" selection-end-line="0" selection-end-column="125" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="indexStarplot.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/indexStarplot.html">
+      <file leaf-file-name="PUBG.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/PUBG.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="350" column="67" lean-forward="true" selection-start-line="343" selection-start-column="12" selection-end-line="350" selection-end-column="67" />
-              <folding>
-                <element signature="e#1785#2536#0" expanded="false" />
-                <element signature="e#2595#3089#0" expanded="false" />
-                <element signature="e#6435#9157#0" expanded="false" />
-                <element signature="e#9251#11541#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CSGO.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/CSGO.csv">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="21" column="49" lean-forward="false" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -134,28 +137,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>right</find>
-      <find>default</find>
-      <find>datepicker</find>
-      <find>selection</find>
-      <find>tabs</find>
-      <find>date</find>
-      <find>plot</find>
-      <find>scale</find>
-      <find>title</find>
-      <find>plot2hb</find>
-      <find>isSingleForStarplot</find>
-      <find>click</find>
-      <find>setimes</find>
-      <find>single</find>
-      <find>plotstar</find>
-      <find>prepareDataForDetailPage</find>
-      <find>detail</find>
-      <find>SETIME</find>
-      <find>preparedatafordetailpage</find>
-      <find>SSTimeS</find>
-      <find>starttime</find>
-      <find>StartTime</find>
       <find>sstimes</find>
       <find>attributes</find>
       <find>attribute</find>
@@ -164,6 +145,28 @@
       <find>main_attribute_tip</find>
       <find>main_time_tip</find>
       <find>&lt;div class=&quot;mdl-cell mdl-cell--2-co</find>
+      <find>opp</find>
+      <find>event</find>
+      <find>overwatch</find>
+      <find>single</find>
+      <find>set</find>
+      <find>S</find>
+      <find>SSTIMES</find>
+      <find>main_</find>
+      <find>date</find>
+      <find>prep</find>
+      <find>eventline</find>
+      <find>line</find>
+      <find>prepareDataForHeatmap</find>
+      <find>gdata</find>
+      <find>eventlineBubbles</find>
+      <find>detail</find>
+      <find>competi</find>
+      <find>heatmap</find>
+      <find>heatmap_</find>
+      <find>console.</find>
+      <find>heatmap_event_</find>
+      <find>plotheatmap</find>
     </findStrings>
     <replaceStrings>
       <replace>prepareDataForDetailPage</replace>
@@ -184,8 +187,8 @@
         <option value="$PROJECT_DIR$/css/main.css" />
         <option value="$PROJECT_DIR$/js/multiline.js" />
         <option value="$PROJECT_DIR$/js/d3-starPlot.js" />
-        <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/main.js" />
       </list>
     </option>
   </component>
@@ -326,12 +329,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1511991104561</updated>
-      <workItem from="1511991106587" duration="76444000" />
+      <workItem from="1511991106587" duration="90409000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76444000" />
+    <option name="totallyTimeSpent" value="90409000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -393,54 +396,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/CSGO.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="49" lean-forward="false" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index_version_1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="870">
-          <caret line="58" column="1" lean-forward="false" selection-start-line="58" selection-start-column="1" selection-end-line="58" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/indexOppTry.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1084">
-          <caret line="76" column="32" lean-forward="false" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/multiline.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="140" column="29" lean-forward="false" selection-start-line="140" selection-start-column="29" selection-end-line="140" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/main_version_1.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="1682" column="4" lean-forward="true" selection-start-line="1682" selection-start-column="4" selection-end-line="1689" selection-end-column="73" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/indexStarplot.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
@@ -454,18 +409,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/indexOppTry.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1084">
+          <caret line="76" column="32" lean-forward="false" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index2HBarChart.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1278">
-          <caret line="411" column="12" lean-forward="false" selection-start-line="411" selection-start-column="8" selection-end-line="411" selection-end-column="12" />
+        <state relative-caret-position="1950">
+          <caret line="130" column="50" lean-forward="false" selection-start-line="130" selection-start-column="45" selection-end-line="130" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/multiline.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="140" column="29" lean-forward="false" selection-start-line="140" selection-start-column="29" selection-end-line="140" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/d3-starPlot.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="919">
-          <caret line="107" column="20" lean-forward="false" selection-start-line="107" selection-start-column="19" selection-end-line="107" selection-end-column="20" />
+        <state relative-caret-position="519">
+          <caret line="113" column="26" lean-forward="false" selection-start-line="113" selection-start-column="22" selection-end-line="113" selection-end-column="26" />
           <folding>
             <element signature="e#61#139#0" expanded="false" />
             <element signature="e#863#1234#0" expanded="false" />
@@ -479,18 +450,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/main.js">
+    <entry file="file://$PROJECT_DIR$/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="932" column="9" lean-forward="false" selection-start-line="932" selection-start-column="9" selection-end-line="932" selection-end-column="9" />
+        <state relative-caret-position="870">
+          <caret line="58" column="1" lean-forward="false" selection-start-line="58" selection-start-column="1" selection-end-line="58" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index_version_1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Overwatch.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="125" lean-forward="false" selection-start-line="0" selection-start-column="106" selection-end-line="0" selection-end-column="125" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Destiny2.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Destiny.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="891">
-          <caret line="139" column="19" lean-forward="false" selection-start-line="139" selection-start-column="19" selection-end-line="139" selection-end-column="19" />
+        <state relative-caret-position="307">
+          <caret line="150" column="96" lean-forward="false" selection-start-line="150" selection-start-column="90" selection-end-line="150" selection-end-column="96" />
           <folding>
             <element signature="n#div#0;n#div#2;n#div#0;n#div#0;n#section#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#2;n#div#0;n#section#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -500,6 +503,38 @@
             <element signature="n#div#4;n#div#0;n#section#1;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#4;n#div#0;n#section#1;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/PUBG.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/CSGO.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="49" lean-forward="false" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/main_version_1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1065">
+          <caret line="356" column="65" lean-forward="false" selection-start-line="356" selection-start-column="51" selection-end-line="356" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="437" column="86" lean-forward="false" selection-start-line="437" selection-start-column="86" selection-end-line="437" selection-end-column="86" />
+          <folding />
         </state>
       </provider>
     </entry>
