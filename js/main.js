@@ -97,7 +97,8 @@ function DataProcessing(error, gdata) {
     }
 
     function updateInfoBoxHMap(infoData, settings) {
-        var info = gdata[infoData.col][infoData.x];
+        var info = null;
+        if (infoData != null) info = gdata[infoData.col][infoData.x];
         var divInfobox = d3.selectAll("#infoboxHeatmap");
         var svg = d3.select("#heatmap").select("svg");
 
@@ -697,7 +698,7 @@ function DataProcessing(error, gdata) {
     }
 
     // opp chart----------------------------------------
-    function oppCalculateHelper(gameNumber, i, left) {
+    function oppCalculateHelper(gameNumber, i) {
 
         var x = parseInt(gdata[gameNumber][i]["Peak Viewers"]);
         var y = parseInt(gdata[gameNumber][i]["Peak Channels"]);
@@ -728,74 +729,38 @@ function DataProcessing(error, gdata) {
             opp.push({
                 date: new Date(gdata[0][i]["Date"]),
                 OWPV: isNaN(parseInt(gdata[0][i]["Peak Viewers"])) ? 0 : parseInt(gdata[0][i]["Peak Viewers"]),
-                OWPC: isNaN(parseInt(gdata[0][i]["Peak Channels"])) ? 0 : parseInt(gdata[0][i]["Peak Channels"]),
-                OWAV: isNaN(parseInt(gdata[0][i]["Average Viewers"])) ? 0 : parseInt(gdata[0][i]["Average Viewers"]),
-                OWPP: isNaN(parseInt(gdata[0][i]["Peak Players"])) ? 0 : parseInt(gdata[0][i]["Peak Players"]),
-                OWGRT: isNaN(parseInt(gdata[0][i]["Game Rank (Total)"])) ? 0 : parseInt(gdata[0][i]["Game Rank (Total)"]),
-                OWGRE: isNaN(parseInt(gdata[0][i]["Game Rank (Esports)"])) ? 0 : parseInt(gdata[0][i]["Game Rank (Esports)"]),
+                OWC: isNaN(parseInt(gdata[0][i]["Peak Channels"])) ? 0 : parseInt(gdata[0][i]["Peak Channels"]),
+                OWPVC: oppCalculateHelper(0, i),
 
                 CSGOPV: isNaN(parseInt(gdata[1][i]["Peak Viewers"])) ? 0 : parseInt(gdata[1][i]["Peak Viewers"]),
-                CSGOPC: isNaN(parseInt(gdata[1][i]["Peak Channels"])) ? 0 : parseInt(gdata[1][i]["Peak Channels"]),
-                CSGOAV: isNaN(parseInt(gdata[1][i]["Average Viewers"])) ? 0 : parseInt(gdata[1][i]["Average Viewers"]),
-                CSGOPP: isNaN(parseInt(gdata[1][i]["Peak Players"])) ? 0 : parseInt(gdata[1][i]["Peak Players"]),
-                CSGOGRT: isNaN(parseInt(gdata[1][i]["Game Rank (Total)"])) ? 0 : parseInt(gdata[1][i]["Game Rank (Total)"]),
-                CSGOGRE: isNaN(parseInt(gdata[1][i]["Game Rank (Esports)"])) ? 0 : parseInt(gdata[1][i]["Game Rank (Esports)"]),
+                CSGOC: isNaN(parseInt(gdata[1][i]["Peak Channels"])) ? 0 : parseInt(gdata[1][i]["Peak Channels"]),
+                CSGOPVC: oppCalculateHelper(1, i),
 
                 PUBGPV: isNaN(parseInt(gdata[2][i]["Peak Viewers"])) ? 0 : parseInt(gdata[2][i]["Peak Viewers"]),
-                PUBGPC: isNaN(parseInt(gdata[2][i]["Peak Channels"])) ? 0 : parseInt(gdata[2][i]["Peak Channels"]),
-                PUBGAV: isNaN(parseInt(gdata[2][i]["Average Viewers"])) ? 0 : parseInt(gdata[2][i]["Average Viewers"]),
-                PUBGPP: isNaN(parseInt(gdata[2][i]["Peak Players"])) ? 0 : parseInt(gdata[2][i]["Peak Players"]),
-                PUBGGRT: isNaN(parseInt(gdata[2][i]["Game Rank (Total)"])) ? 0 : parseInt(gdata[2][i]["Game Rank (Total)"]),
-                PUBGGRE: isNaN(parseInt(gdata[2][i]["Game Rank (Esports)"])) ? 0 : parseInt(gdata[2][i]["Game Rank (Esports)"]),
+                PUBGC: isNaN(parseInt(gdata[2][i]["Peak Channels"])) ? 0 : parseInt(gdata[2][i]["Peak Channels"]),
+                PUBGPVC: oppCalculateHelper(2, i),
+
 
                 DPV: isNaN(parseInt(gdata[3][i]["Peak Viewers"])) ? 0 : parseInt(gdata[3][i]["Peak Viewers"]),
-                DPC: isNaN(parseInt(gdata[3][i]["Peak Channels"])) ? 0 : parseInt(gdata[3][i]["Peak Channels"]),
-                DAV: isNaN(parseInt(gdata[3][i]["Average Viewers"])) ? 0 : parseInt(gdata[3][i]["Average Viewers"]),
-                DPP: isNaN(parseInt(gdata[3][i]["Peak Players"])) ? 0 : parseInt(gdata[3][i]["Peak Players"]),
-                DGRT: isNaN(parseInt(gdata[3][i]["Game Rank (Total)"])) ? 0 : parseInt(gdata[3][i]["Game Rank (Total)"]),
-                DGRE: isNaN(parseInt(gdata[3][i]["Game Rank (Esports)"])) ? 0 : parseInt(gdata[3][i]["Game Rank (Esports)"]),
+                DC: isNaN(parseInt(gdata[3][i]["Peak Channels"])) ? 0 : parseInt(gdata[3][i]["Peak Channels"]),
+                DPVC: oppCalculateHelper(3, i),
+
 
                 D2PV: isNaN(parseInt(gdata[4][i]["Peak Viewers"])) ? 0 : parseInt(gdata[4][i]["Peak Viewers"]),
-                D2PC: isNaN(parseInt(gdata[4][i]["Peak Channels"])) ? 0 : parseInt(gdata[4][i]["Peak Channels"]),
-                D2AV: isNaN(parseInt(gdata[4][i]["Average Viewers"])) ? 0 : parseInt(gdata[4][i]["Average Viewers"]),
-                D2PP: isNaN(parseInt(gdata[4][i]["Peak Players"])) ? 0 : parseInt(gdata[4][i]["Peak Players"]),
-                D2GRT: isNaN(parseInt(gdata[4][i]["Game Rank (Total)"])) ? 0 : parseInt(gdata[4][i]["Game Rank (Total)"]),
-                D2GRE: isNaN(parseInt(gdata[4][i]["Game Rank (Esports)"])) ? 0 : parseInt(gdata[4][i]["Game Rank (Esports)"])
-            })
-            /* opp.push({
-                 date: new Date(gdata[0][i]["Date"]),
-                 OWPV: parseFloat(gdata[0][i]["Peak Viewers"]),
-                 OWC: parseInt(gdata[0][i]["Peak Channels"]),
-                 CSGOPV: parseInt(gdata[1][i]["Peak Viewers"]),
-                 CSGOC: parseInt(gdata[1][i]["Peak Channels"]),
-                 PUBGPV: parseInt(gdata[2][i]["Peak Viewers"]),
-                 PUBGC: parseInt(gdata[2][i]["Peak Channels"]),
-                 DPV: parseInt(gdata[3][i]["Peak Viewers"]),
-                 DC: parseInt(gdata[3][i]["Peak Channels"]),
-                 D2PV: parseInt(gdata[4][i]["Peak Viewers"]),
-                 D2C: parseInt(gdata[4][i]["Peak Channels"]),
-             })*/
-            /*opp.push({
-                id: games[num],
-                x: i,
-                values: {
-                    date: new Date(gdata[num][i]["Date"]),
-                    viewer: nViewers,
-                    channel: nChannels
-                }
-            })*/
-            ;
+                D2C: isNaN(parseInt(gdata[4][i]["Peak Channels"])) ? 0 : parseInt(gdata[4][i]["Peak Channels"]),
+                D2PVC: oppCalculateHelper(4, i)
+            });
         }
         return opp;
     }
 
     var oppdata = prepareDataForOppChart(SSTime, SETime);
     var chart = makeLineChart(oppdata, 'date', {
-        'Overwatch': {column: 'OWPV'},
-        'CSGO': {column: 'CSGOPV'},
-        'PUBG': {column: 'PUBGPV'},
-        'Destiny': {column: 'DPV'},
-        'Destiny2': {column: 'D2PV'}
+        'Overwatch': {column: 'OWPVC'},
+        'CSGO': {column: 'CSGOPVC'},
+        'PUBG': {column: 'PUBGPVC'},
+        'Destiny': {column: 'DPVC'},
+        'Destiny2': {column: 'D2PVC'}
     });
     chart.bind("#oppchart");
     chart.render();
@@ -808,38 +773,22 @@ function DataProcessing(error, gdata) {
             var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
             plotHeatmap(d);
 
-            // update oppo map
-            var suffix = "PV";
-            console.log(selectedAttributeMain);
-            switch (selectedAttributeMain) {
-                case "Peak Viewers":
-                    suffix = "PV";
-                    break;
-                case "Peak Channels":
-                    suffix = "PC";
-                    break;
-                case "Average Viewers":
-                    suffix = "AV";
-                    break;
-                case "Peak Players":
-                    suffix = "PP";
-                    break;
-                case "Game Rank (Total)":
-                    suffix = "GRT";
-                    break;
-                case "Game Rank (Esports)":
-                    suffix = "GRE";
-                    break;
-                default:
-                    suffix = "PV";
-                    break;
-            }
+            // clear the infobox and line selected in the heatmap
+            var svg = d3.select("#heatmap").select("svg");
+            svg.select("line.cl").remove();
+            svg.select("line.cl").remove();
+            svg.select("text.click").remove();
+            svg.select("text.click").remove();
+            updateInfoBoxHMap(null, 3)
+
+            // update opp map
+            var suffix = "PVC";
             var tmp = {
-                'Overwatch': {column: 'OW' + suffix},
-                'CSGO': {column: 'CSGO' + suffix},
-                'PUBG': {column: 'PUBG' + suffix},
-                'Destiny': {column: 'D' + suffix},
-                'Destiny2': {column: 'D2' + suffix}
+                'Overwatch': {column: 'OWPVC'},
+                'CSGO': {column: 'CSGOPVC'},
+                'PUBG': {column: 'PUBGPVC'},
+                'Destiny': {column: 'DPVC'},
+                'Destiny2': {column: 'D2PVC'}
             };
 
 
@@ -875,6 +824,19 @@ function DataProcessing(error, gdata) {
         $('.input-group.date.main-end').datepicker('setStartDate', SSTime);
         var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
         plotHeatmap(d);
+
+        // update opp map
+        d3.select("#oppchart").selectAll("div").remove();
+        var oppdata = prepareDataForOppChart(SSTime, SETime);
+        var chart = makeLineChart(oppdata, 'date', {
+            'Overwatch': {column: 'OWPVC'},
+            'CSGO': {column: 'CSGOPVC'},
+            'PUBG': {column: 'PUBGPVC'},
+            'Destiny': {column: 'DPVC'},
+            'Destiny2': {column: 'D2PVC'}
+        });
+        chart.bind("#oppchart");
+        chart.render();
     });
 
     $('.input-group.date.main-end').on("changeDate", function (e) {
@@ -883,6 +845,19 @@ function DataProcessing(error, gdata) {
         $('.input-group.date.main-start').datepicker('setEndDate', SETime);
         var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
         plotHeatmap(d);
+
+        // update opp map
+        d3.select("#oppchart").selectAll("div").remove();
+        var oppdata = prepareDataForOppChart(SSTime, SETime);
+        var chart = makeLineChart(oppdata, 'date', {
+            'Overwatch': {column: 'OWPVC'},
+            'CSGO': {column: 'CSGOPVC'},
+            'PUBG': {column: 'PUBGPVC'},
+            'Destiny': {column: 'DPVC'},
+            'Destiny2': {column: 'D2PVC'}
+        });
+        chart.bind("#oppchart");
+        chart.render();
     });
 
 
