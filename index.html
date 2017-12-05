@@ -54,7 +54,9 @@
             <div class="page-content">
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
-                    <div class="mdl-cell mdl-cell--2-col">Attributes<span id="main_attribute_tip" class="glyphicon glyphicon-question-sign"></span></div>
+                    <div class="mdl-cell mdl-cell--2-col">Attributes<span id="main_attribute_tip"
+                                                                          class="glyphicon glyphicon-question-sign"></span>
+                    </div>
                     <div class="mdl-cell mdl-cell--8-col" id="mainpage_attributes">
                         <div class="btn-group" role="group">
                             <!-- data-field is consistent with the header in .csv file-->
@@ -84,7 +86,9 @@
                 </div>
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
-                    <div class="mdl-cell mdl-cell--2-col">Time Period <span id="main_timespan_tip" class="glyphicon glyphicon-question-sign"></span></div>
+                    <div class="mdl-cell mdl-cell--2-col">Time Period <span id="main_stimespan_tip"
+                                                                            class="glyphicon glyphicon-question-sign"></span>
+                    </div>
                     <div class="mdl-cell mdl-cell--4-col">
                         <div class="input-group date main-start">
                             <span class="input-group-addon">From</span>
@@ -109,6 +113,31 @@
                 <div>
                     <div class="mdl-grid">
                         <div class="mdl-cell mdl-cell--9-col">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--1-col"></div>
+                                <div class="mdl-cell mdl-cell--3-col">
+
+                                    <div class="input-group date main-start">
+                                        <span class="input-group-addon">From<span id="main_timespan_tip"
+                                                                                  class="glyphicon glyphicon-question-sign"></span></span>
+                                        <input type="text" class="form-control">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col">
+                                </div>
+                                <div class="mdl-cell mdl-cell--2-col">
+                                    <div class="input-group date main-end">
+                                        <span class="input-group-addon">To</span>
+                                        <input type="text" class="form-control">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="heatmap"></div>
                         </div>
                         <!-- Info box-->
@@ -148,7 +177,8 @@
                     <div class="mdl-cell mdl-cell--3-col">
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="single">
                             <input type="checkbox" id="single" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label">Single Day Display<span id="detail_single_tip" class="glyphicon glyphicon-question-sign"></span></span>
+                            <span class="mdl-checkbox__label">Single Day Display<span id="detail_single_tip"
+                                                                                      class="glyphicon glyphicon-question-sign"></span></span>
                         </label>
                     </div>
                     <div class="mdl-cell mdl-cell--7-col">
@@ -163,7 +193,9 @@
                 </div>
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
-                    <div class="mdl-cell mdl-cell--2-col">Time Period <span id="detail_time_tip" class="glyphicon glyphicon-question-sign"></span></div>
+                    <div class="mdl-cell mdl-cell--2-col">Time Period <span id="detail_time_tip"
+                                                                            class="glyphicon glyphicon-question-sign"></span>
+                    </div>
                     <div class="mdl-cell mdl-cell--4-col">
                         <div class="input-group date detail-bar-start">
                             <span class="input-group-addon">From</span>
@@ -195,27 +227,34 @@
                         </div>
 
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Games <span id="detail_left_games_tip" class="glyphicon glyphicon-question-sign"></span></div>
+                            <div class="mdl-cell mdl-cell--2-col">Games <span id="detail_left_games_tip"
+                                                                              class="glyphicon glyphicon-question-sign"></span>
+                            </div>
                             <div class="mdl-cell mdl-cell--10-col">
                                 <div class="btn-group left_games" role="group">
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="0">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="0">
                                         Overwatch
                                     </button>
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="1">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="1">
                                         CSGO
                                     </button>
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="2">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="2">
                                         PlayUnknown
                                     </button>
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="3">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="3">
                                         Destiny
                                     </button>
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="4">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="4">
                                         Destiny2
                                     </button>
                                 </div>
@@ -224,7 +263,9 @@
                         </div>
 
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Attributes<span id="detail_left_attribute_tip" class="glyphicon glyphicon-question-sign"></span></div>
+                            <div class="mdl-cell mdl-cell--2-col">Attributes<span id="detail_left_attribute_tip"
+                                                                                  class="glyphicon glyphicon-question-sign"></span>
+                            </div>
                             <div class="mdl-cell mdl-cell--10-col">
                                 <div class="btn-group left_attributes" role="group">
                                     <button type="button"
@@ -253,27 +294,34 @@
                         </div>
 
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Games<span id="detail_right_games_tip" class="glyphicon glyphicon-question-sign"></span></div>
+                            <div class="mdl-cell mdl-cell--2-col">Games<span id="detail_right_games_tip"
+                                                                             class="glyphicon glyphicon-question-sign"></span>
+                            </div>
                             <div class="mdl-cell mdl-cell--10-col">
                                 <div class="btn-group right_games" role="group">
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="0">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="0">
                                         Overwatch
                                     </button>
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="1">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="1">
                                         CSGO
                                     </button>
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="2">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="2">
                                         PlayUnknown
                                     </button>
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="3">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="3">
                                         Destiny
                                     </button>
                                     <button type="button"
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-field="4">
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                                            data-field="4">
                                         Destiny2
                                     </button>
                                 </div>
@@ -281,7 +329,9 @@
                         </div>
 
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--2-col">Attributes<span id="detail_right_attribute_tip" class="glyphicon glyphicon-question-sign"></span></div>
+                            <div class="mdl-cell mdl-cell--2-col">Attributes<span id="detail_right_attribute_tip"
+                                                                                  class="glyphicon glyphicon-question-sign"></span>
+                            </div>
                             <div class="mdl-cell mdl-cell--10-col">
                                 <div class="btn-group right_attributes" role="group">
                                     <button type="button"
@@ -356,7 +406,71 @@
                 Test
             </div>
         </section>
+
+
     </main>
+
+    <button id="help" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+            style="bottom: 50px; right: 50px; position:absolute; z-index: 2147483647">
+        ?
+    </button>
+    <dialog id="help_dialog" class="mdl-dialog" style="width: 900px;">
+        <h4 class="mdl-dialog__title">Help</h4>
+        <div class="mdl-dialog__content">
+            <p>
+                <b>Twitch</b> - an online platform for live-streaming videos, primarily used for users to broadcast
+                their video game gameplay videos and for others to be able to view these broadcasts.
+                <br/>
+                <b>Viewers</b> - Individuals who are tuned in to watch the live-streaming videos, similar to Youtube or
+                television viewers.
+                <br/>
+                <b>Channels/Streamers</b> - The content creators on the Twitch platform. Individuals who
+                stream/broadcast their gameplay videos for others to view. Streamers have channels, like tv channels.
+                Their channel is categorized by the game that they are currently playing.
+                <br/>
+                <b>Players</b> - All players that are playing the video games, not just those that are streaming on
+                Twitch.
+
+            </p>
+            <hr>
+
+            <p>
+            <h6><b>Attributes</b></h6>
+
+            <b>Peak Viewer</b> - The highest amount of concurrent viewers on Twitch for a certain game during a 24-hour
+            period across all of its channels.
+            <br>
+            <b>Average Viewer</b> - The average amount of viewers on Twitch for a certain game in a 24-hour period
+            across all of its channels.
+            <br>
+            <b>Peak Channel</b> - The highest amount of concurrent channels on Twitch for a certain game during a
+            24-hour period.
+            <br>
+            <b>Peak Players</b> - The highest amount of concurrent players in a certain game during a 24-hour period.
+            <br/>
+            <b>Game Rank</b> - Twitch’s monthly ranking of the “Most Watched Games on Twitch”
+            <br>
+            </p>
+            <hr>
+
+            <p>
+            <h6><b>Graphs</b></h6>
+
+            <b>Heat Map</b> - Allows you to see trends throughout the year between games.
+            <br>
+            <b>Steaming Opportunity Line Graph</b>- Allows you to see the average number of viewers per channel.
+            <br>
+            <b>Star Plot</b> - Allow you to compare game populations over one another.
+            <br>
+            <b>Horizontal Bar Chart</b> - Allows you to compare different attributes of multiple games and see the
+            corresponding raw data.
+
+            </p>
+        </div>
+        <div class="mdl-dialog__actions">
+            <button type="button" class="mdl-button close">Close</button>
+        </div>
+    </dialog>
 </div>
 <script src="./js/multiline.js" charset="utf-8"></script>
 <script type="text/javascript" src="./js/d3-starPlot.js"></script>

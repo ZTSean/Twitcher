@@ -1,4 +1,4 @@
-function makeLineChart(dataset, xName, yObjs) {
+function makeLineChart(dataset, xName, yObjs, w) {
     var chartObj = {};
     var color = d3.scale.category10();
     chartObj.xAxisLable = "Date";
@@ -12,8 +12,8 @@ function makeLineChart(dataset, xName, yObjs) {
 
     chartObj.data = dataset;
     chartObj.margin = {top: 30, right: 60, bottom: 30, left: 100};
-    chartObj.width = 750 - chartObj.margin.left - chartObj.margin.right;
-    chartObj.height = 480 - chartObj.margin.top - chartObj.margin.bottom;
+    chartObj.width = w - chartObj.margin.left - chartObj.margin.right;
+    chartObj.height = w*480/750 - chartObj.margin.top - chartObj.margin.bottom;
 
 // So we can pass the x and y as strings when creating the function
     chartObj.xFunct = function (d) {
@@ -165,7 +165,12 @@ function makeLineChart(dataset, xName, yObjs) {
     // Render the chart
     chartObj.render = function () {
         //Create SVG element
-        chartObj.svg = chartObj.chartDiv.append("svg").attr("class", "chart-area").attr("width", chartObj.width + (chartObj.margin.left + chartObj.margin.right)).attr("height", chartObj.height + (chartObj.margin.top + chartObj.margin.bottom)).append("g").attr("transform", "translate(" + chartObj.margin.left + "," + chartObj.margin.top + ")");
+        chartObj.svg = chartObj.chartDiv.append("svg")
+            .attr("class", "chart-area")
+            .attr("width", chartObj.width + (chartObj.margin.left + chartObj.margin.right))
+            .attr("height", chartObj.height + (chartObj.margin.top + chartObj.margin.bottom))
+            .append("g")
+            .attr("transform", "translate(" + 125 + "," + chartObj.margin.top + ")");
 
         // Draw Lines
         for (var y  in yObjs) {

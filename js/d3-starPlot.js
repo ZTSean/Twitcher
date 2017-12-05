@@ -1,5 +1,5 @@
 d3.starPlot = function() {
-  var width = 200,
+  var width = 1000,
       margin = {
         top: 0,
         right: 0,

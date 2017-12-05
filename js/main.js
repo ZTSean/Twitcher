@@ -11,7 +11,9 @@ function DataProcessing(error, gdata) {
     var selectedAttributeMain = "PeakViews";
 
     var games = ["Overwatch", "CSGO", "PUBG", "Destiny", "Destiny2"]; // corresponding to the order of the file being processed in the queue
-    var gameColors = ["#5F8316", "#98CA32", "#B3BF0D", "#F7D302", "#DAC134"];
+    //var gameColors = ["#5F8316", "#98CA32", "#B3BF0D", "#F7D302", "#DAC134"];
+    var gameColors = ["#5F8316", "#5F8316", "#5F8316", "#5F8316", "#5F8316"];
+    //var gameColors = ["purple", "purple", "purple", "purple", "purple"];
 
     //can be changed based on user selection
     //selected start time and selected end time
@@ -290,14 +292,14 @@ function DataProcessing(error, gdata) {
         //width of each column in the heatmap
 
         var h = 50, //rect height
-            eLh = 30, //event line height
+            eLh = 20, //event line height
             //LH = h + eLh, //total height for each game's rect
             labelWidth = h, //width of the game label
             width = divHeatmapLength, // width of whole graph
             TandGPadding = 70, //space between text and graph
             HmapLength = Math.max(0, width - labelWidth - TandGPadding - heatmapMargin.left - heatmapMargin.right),
             w = HmapLength / nBloc, //rect width
-            gameMargin = 15, // margin after each game's plot
+            gameMargin = 55, // margin after each game's plot
             dateH = 5; //start height for date text
         var totalH = (h + gameMargin) * gameData.length + 9 * eLh; //total height of the map: no margin
         var height = totalH + heatmapMargin.top + heatmapMargin.bottom; // height of whole graph
@@ -401,7 +403,8 @@ function DataProcessing(error, gdata) {
 
 
         // eventName: 0 => updates, 1 => competitive season 2 => esports
-        function drawEventBubbles(data, game, eventNameIds, gameColor, height) {
+        // eventName: 0 => updates, 1 => competitive season 2 => esports
+        function drawEventBubbles(data, game, eventNameId, gameColor, height) {
 
             function handleEventHover(d, i) {
                 // Use D3 to select element, change color and size
@@ -416,68 +419,68 @@ function DataProcessing(error, gdata) {
                 // Use D3 to select element, change color back to normal
 
                 d3.select(this)
-                    .style("stroke", "")
-                    .style("stroke-width", "");
+                //.style("stroke", gameColor);
+                    .style("stroke", "");
 
                 updateInfoBoxHMap(d, -1);
             }
 
-            for (var eventNameId in eventNameIds) {
-                // remove all previous event bubble ---------------------------------
-                svg.selectAll(".heatmap_event_" + game).selectAll(".eventid_" + eventNameId).remove();
+            // // remove all previous event bubble ---------------------------------
+            svg.selectAll(".heatmap_event_" + game).selectAll(".eventid_" + eventNameId).remove();
 
-                // create new bubbles shapes depends on the event type
-                svg.selectAll(".heatmap_event_" + game).data([0]).enter().append("g").attr("class", "heatmap_event_" + game);
+            // create new bubbles shapes depends on the event type
+            svg.selectAll(".heatmap_event_" + game).data([0]).enter().append("g").attr("class", "heatmap_event_" + game);
 
-                var eventlineBubbles = svg.selectAll("g.heatmap_event_" + game).selectAll("path.eventid_" + eventNameId).data(data);
-                var minRow = Math.min.apply(Math, data.map(function (o) {
-                    return o.row;
-                }));
+            var eventlineBubbles = svg.selectAll("g.heatmap_event_" + game).selectAll("path.eventid_" + eventNameId).data(data);
+            var minRow = Math.min.apply(Math, data.map(function (o) {
+                return o.row;
+            }));
 
+            eventlineBubbles.enter()
+                .append("path")
+                .filter(function (d) { // filter out those data without events
+                    return (d[eventNames[eventNameId]] != undefined && d[eventNames[eventNameId]].length > 0);
+                })
+                .attr("class", "eventid_" + eventNameId)
+                .attr("d", d3.svg.symbol().type(function (d) {
+                    return eventSymbols[eventNameId];
+                }))
+                .attr("transform", function (d) {
+                    return "translate(" +
+                        (labelWidth + TandGPadding + w * (d.row - minRow) + heatmapMargin.left) + "," +
+                        (eLh / 2 + cumulativeHeight) + ")";
+                })
+                .style("fill-opacity", 0.45)
+                //.style("stroke", gameColor)
+                .style("fill", gameColor)
 
-                eventlineBubbles.enter()
-                    .append("path")
-                    .filter(function (d) { // filter out those data without events
-                        return (d[eventNames[eventNameId]] != undefined && d[eventNames[eventNameId]].length > 0);
-                    })
-                    .attr("class", "eventid_" + eventNameId)
-                    .attr("d", d3.svg.symbol().type(function (d) {
-                        return eventSymbols[eventNameId];
-                    }))
-                    .attr("transform", function (d) {
-                        return "translate(" +
-                            (labelWidth + TandGPadding + w * (d.row - minRow) + heatmapMargin.left) + "," +
-                            (eLh / 2 + cumulativeHeight) + ")";
-                    })
-                    .style("fill", gameColor)
+                // handle hover event
+                .on("mouseover", handleEventHover)
+                .on("mouseout", handleEventOut)
 
-                    // handle hover event
-                    .on("mouseover", handleEventHover)
-                    .on("mouseout", handleEventOut)
-
-
-                // draw dash line from the symbol center to the rect
-                eventlineBubbles.enter()
-                    .append('line')
-                    .filter(function (d) { // filter out those data without events
-                        return (d[eventNames[eventNameId]] != undefined && d[eventNames[eventNameId]].length > 0);
-                    })
-                    .attr("class", "eventid_" + eventNameId)
-                    .style("stroke-dasharray", "5,5")//dashed array for line
-                    .style("stroke", gameColor)
-                    .attr('x1', function (d) {
-                        return labelWidth + TandGPadding + w * (d.row - minRow) + heatmapMargin.left;
-                    })
-                    .attr('y1', function (d) {
-                        return height;
-                    })
-                    .attr('x2', function (d) {
-                        return labelWidth + TandGPadding + w * (d.row - minRow) + heatmapMargin.left;
-                    })
-                    .attr('y2', function (d) {
-                        return cumulativeHeight + eLh / 2;
-                    });
-            }
+            /*
+            // draw dash line from the symbol center to the rect
+            eventlineBubbles.enter()
+                .append('line')
+                .filter(function (d) { // filter out those data without events
+                    return (d[eventNames[eventNameId]] != undefined && d[eventNames[eventNameId]].length > 0);
+                })
+                .attr("class", "eventid_" + eventNameId)
+                .style("stroke-dasharray", "5,5")//dashed array for line
+                .style("stroke", gameColor)
+                .attr('x1', function (d) {
+                    return labelWidth + TandGPadding + w * (d.row - minRow) + heatmapMargin.left;
+                })
+                .attr('y1', function (d) {
+                    return height;
+                })
+                .attr('x2', function (d) {
+                    return labelWidth + TandGPadding + w * (d.row - minRow) + heatmapMargin.left;
+                })
+                .attr('y2', function (d) {
+                    return cumulativeHeight + eLh / 2;
+                });
+            */
 
 
             cumulativeHeight += eLh;
@@ -687,14 +690,22 @@ function DataProcessing(error, gdata) {
             var tmpHeight = cumulativeHeight;
             var eventlist = [0];
 
+            drawEventBubbles(gameData[i], games[i], 0, gameColors[i], tmpHeight);
             if (i == 0) { // ovewatch
+                /*
                 eventlist.push(1);
                 eventlist.push(2);
+                */
+                drawEventBubbles(gameData[i], games[i], 1, gameColors[i], tmpHeight);
+                drawEventBubbles(gameData[i], games[i], 2, gameColors[i], tmpHeight);
             } else if (i == 1 || i == 2) {
                 // CSGO | PUBG
+                /*
                 eventlist.push(2);
+                */
+                drawEventBubbles(gameData[i], games[i], 2, gameColors[i], tmpHeight);
             }
-            drawEventBubbles(gameData[i], games[i], eventlist, gameColors[i], tmpHeight);
+
 
             cumulativeHeight += gameMargin;
         }
@@ -766,7 +777,7 @@ function DataProcessing(error, gdata) {
         'PUBG': {column: 'PUBGPVC'},
         'Destiny': {column: 'DPVC'},
         'Destiny2': {column: 'D2PVC'}
-    });
+    }, document.getElementById("oppchart").offsetWidth);
     chart.bind("#oppchart");
     chart.render();
 
@@ -798,7 +809,7 @@ function DataProcessing(error, gdata) {
 
 
             d3.select("#oppchart").selectAll("div").remove();
-            chart = makeLineChart(oppdata, 'date', tmp);
+            chart = makeLineChart(oppdata, 'date', tmp, document.getElementById("oppchart").offsetWidth);
             chart.bind("#oppchart");
             chart.render();
         });
@@ -838,7 +849,7 @@ function DataProcessing(error, gdata) {
             'PUBG': {column: 'PUBGPVC'},
             'Destiny': {column: 'DPVC'},
             'Destiny2': {column: 'D2PVC'}
-        });
+        }, document.getElementById("oppchart").offsetWidth);
         chart.bind("#oppchart");
         chart.render();
     });
@@ -859,7 +870,7 @@ function DataProcessing(error, gdata) {
             'PUBG': {column: 'PUBGPVC'},
             'Destiny': {column: 'DPVC'},
             'Destiny2': {column: 'D2PVC'}
-        });
+        }, document.getElementById("oppchart").offsetWidth);
         chart.bind("#oppchart");
         chart.render();
     });
@@ -1213,11 +1224,12 @@ function DataProcessing(error, gdata) {
         var star = number == 1 ? star1 : star2;
         var divStarplotLength = document.getElementById("starplot").offsetWidth;
 
+
         var width = divStarplotLength - margin.left - margin.right;
-        var height = 275 - margin.top - margin.bottom;
+        var height = divStarplotLength - margin.top - margin.bottom;
         var labelMargin = 8;
 
-        star.margin(margin)
+            star.margin(margin)
             .labelMargin(labelMargin);
 
         // remove previous drawing with for the same game
@@ -1484,3 +1496,17 @@ queue()
     .awaitAll(DataProcessing); //only function name is needed
 
 // ----------------
+var explanation = "test";
+
+var dialog = document.querySelector('dialog');
+var showDialogButton = document.querySelector('#help');
+if (! dialog.showModal) {
+    dialogPolyfill.registerDialog(dialog);
+}
+showDialogButton.addEventListener('click', function() {
+    document.getElementById("help_dialog").width = document.body.clientWidth;
+    dialog.showModal();
+});
+dialog.querySelector('.close').addEventListener('click', function() {
+    dialog.close();
+});
