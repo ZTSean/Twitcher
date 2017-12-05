@@ -103,3 +103,7 @@ button:hover {
     fill-opacity: 0.6;
     stroke: #444;
 }
+
+body {
+    font-family: Helvetica;
+}

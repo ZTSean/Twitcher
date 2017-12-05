@@ -286,7 +286,7 @@ function DataProcessing(error, gdata) {
 
         var nBloc = gameData[0].length
 
-        var heatmapMargin = {top: 70, right: 30, bottom: 30, left: 5}
+        var heatmapMargin = {top: 70, right: 30, bottom: 50, left: 5}
 
         //height of each row in the heatmap
         //width of each column in the heatmap
@@ -338,63 +338,6 @@ function DataProcessing(error, gdata) {
             .attr("height", height)
 
         var svg = d3.select("#heatmap").select("svg");
-
-        // create legend if not exist ------------------------------------
-        var legend_heatmap = svg.selectAll("#legend_heatmap").data([0]).enter()
-            .append("g")
-            .attr("id", "legend_heatmap");
-
-        // create legend for game color
-        var legend_heatmap_game_color = legend_heatmap.selectAll(".legend-game-color").data([0, 1, 2, 3, 4]).enter()
-            .append('g')
-            .attr('class', 'legend-game-color')
-            .attr('transform', function (d, i) {
-                var hor = i * (legendRectSize + legendSpacing + 100) + heatmapMargin.left;
-                return 'translate(' + hor + ',' + 0 + ')';
-            });
-
-        legend_heatmap_game_color.append('rect')
-            .attr('width', legendRectSize)
-            .attr('height', legendRectSize)
-            .style('fill', function (d, i) {
-                return gameColors[i];
-            })
-            .style('stroke', function (d, i) {
-                return gameColors[i];
-            });
-
-        legend_heatmap_game_color.append('text')
-            .attr('x', legendRectSize + legendSpacing)
-            .attr('y', legendRectSize - legendSpacing)
-            .text(function (d, i) {
-                return games[i];
-            });
-
-        // create legend for game event shape
-        var legend_heatmap_event_type = legend_heatmap.selectAll(".legend-event-type").data([0, 1, 2]).enter()
-            .append('g')
-            .attr('class', 'legend-event-type')
-            .attr('transform', function (d, i) {
-                var hor = i * (legendRectSize + legendSpacing + 150) + heatmapMargin.left;
-                var ver = legendRectSize + 2 * legendSpacing;
-                return 'translate(' + hor + ',' + ver + ')';
-            });
-
-        legend_heatmap_event_type.append('path')
-            .attr("d", d3.svg.symbol().size(150).type(function (d, i) {
-                return eventSymbols[i];
-            }))
-            .attr("transform", function (d) {
-                return "translate(" + legendRectSize / 2 + "," + legendRectSize / 2 + ")";
-            })
-            .style("fill", "purple");
-
-        legend_heatmap_event_type.append('text')
-            .attr('x', legendRectSize + legendSpacing)
-            .attr('y', legendRectSize - legendSpacing)
-            .text(function (d, i) {
-                return eventNamesForLegend[i];
-            });
 
         var clickHold = -1;
         //var savedX1 = -1;
@@ -710,7 +653,72 @@ function DataProcessing(error, gdata) {
             cumulativeHeight += gameMargin;
         }
 
+        // create legend if not exist ------------------------------------
+        var legendHeatmapValue = [HmapAvg - 1.5 * HmapStd, HmapAvg, HmapAvg + 1.5 * HmapStd];
+        var colorHeatmap = [colorLow, colorMed, colorHigh];
+        var legend_heatmap = svg.selectAll("#legend_heatmap").data([0]).enter()
+            .append("g")
+            .attr("id", "legend_heatmap");
 
+        // create legend for game color
+        var legend_heatmap_game_color = legend_heatmap.selectAll(".legend-game-color").data([0, 1, 2]).enter()
+            .append('g')
+            .attr('class', 'legend-game-color')
+            .attr('transform', function (d, i) {
+                var hor = i * (legendRectSize + legendSpacing + 100) + heatmapMargin.left + 50;
+                return 'translate(' + hor + ',' + cumulativeHeight + ')';
+            });
+
+        legend_heatmap_game_color.append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', function (d, i) {
+                return colorHeatmap[i];
+            })
+            .style('stroke', function (d, i) {
+                return colorHeatmap[i];
+            });
+
+        legend_heatmap_game_color.append('text')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing)
+            .text(function (d, i) {
+                var text = "";
+                if (i == 0) {
+                    text = nFormatter(legendHeatmapValue[i] > 0 ? legendHeatmapValue[i] : 0, 1) + " ~ " + nFormatter(legendHeatmapValue[i+1], 1);
+                } else if (i == 1) {
+                    text = "Around " + nFormatter(legendHeatmapValue[i], 1);
+                } else if (i == 2) {
+                    text = nFormatter(legendHeatmapValue[i-1], 1) + " ~ " + nFormatter(legendHeatmapValue[i], 1);
+                }
+                return text;
+            });
+
+        // create legend for game event shape
+        var legend_heatmap_event_type = legend_heatmap.selectAll(".legend-event-type").data([0, 1, 2]).enter()
+            .append('g')
+            .attr('class', 'legend-event-type')
+            .attr('transform', function (d, i) {
+                var hor = i * (legendRectSize + legendSpacing + 150) + heatmapMargin.left + 50;
+                var ver = legendRectSize + 4 * legendSpacing + cumulativeHeight;
+                return 'translate(' + hor + ',' + ver + ')';
+            });
+
+        legend_heatmap_event_type.append('path')
+            .attr("d", d3.svg.symbol().size(150).type(function (d, i) {
+                return eventSymbols[i];
+            }))
+            .attr("transform", function (d) {
+                return "translate(" + legendRectSize / 2 + "," + legendRectSize / 2 + ")";
+            })
+            .style("fill", "purple");
+
+        legend_heatmap_event_type.append('text')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing)
+            .text(function (d, i) {
+                return eventNamesForLegend[i];
+            });
     }
 
     // opp chart----------------------------------------
@@ -1220,26 +1228,28 @@ function DataProcessing(error, gdata) {
             left: 50
         };
 
-
+        var id = number == 1 ? "left" : "right";
         var star = number == 1 ? star1 : star2;
-        var divStarplotLength = document.getElementById("starplot").offsetWidth;
+        var divStarplotLength = document.getElementById("starplot_" + id ).offsetWidth;
 
 
         var width = divStarplotLength - margin.left - margin.right;
         var height = divStarplotLength - margin.top - margin.bottom;
         var labelMargin = 8;
 
-            star.margin(margin)
+        star.margin(margin)
             .labelMargin(labelMargin);
 
-        // remove previous drawing with for the same game
-        d3.select('#starplot').selectAll('.star_' + number).remove();
-        d3.select('#sarplot').selectAll('#interaction_' + number).remove();
+        star.width = width;
 
-        d3.select('#starplot').selectAll("div").data([0]).enter().append('div')
+        // remove previous drawing with for the same game
+        d3.select('#starplot_' + id).selectAll('.star_' + number).remove();
+        d3.select('#starplot_' + id).selectAll('#interaction_' + number).remove();
+
+        d3.select('#starplot_' + id).selectAll("div").data([0]).enter().append('div')
             .attr('class', 'wrapper');
 
-        var wrapper = d3.select('#starplot').select(".wrapper");
+        var wrapper = d3.select('#starplot_' + id).select(".wrapper");
 
         wrapper.selectAll('svg').data([0]).enter().append('svg')
             .attr('class', 'chart')
@@ -1510,3 +1520,23 @@ showDialogButton.addEventListener('click', function() {
 dialog.querySelector('.close').addEventListener('click', function() {
     dialog.close();
 });
+
+function nFormatter(num, digits) {
+    var si = [
+        { value: 1, symbol: "" },
+        { value: 1E3, symbol: "k" },
+        { value: 1E6, symbol: "M" },
+        { value: 1E9, symbol: "G" },
+        { value: 1E12, symbol: "T" },
+        { value: 1E15, symbol: "P" },
+        { value: 1E18, symbol: "E" }
+    ];
+    var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+    var i;
+    for (i = si.length - 1; i > 0; i--) {
+        if (num >= si[i].value) {
+            break;
+        }
+    }
+    return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+}
