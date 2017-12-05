@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="110d8dff-7d67-4e95-8812-ba5b2d9b9e52" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/js/main_version_2.js" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
+      <change beforePath="$PROJECT_DIR$/js/multiline.js" afterPath="$PROJECT_DIR$/js/multiline.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,13 +22,33 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="849" column="57" lean-forward="false" selection-start-line="849" selection-start-column="57" selection-end-line="849" selection-end-column="57" />
+            <state relative-caret-position="3075">
+              <caret line="273" column="13" lean-forward="false" selection-start-line="273" selection-start-column="13" selection-end-line="273" selection-end-column="13" />
               <folding>
                 <element signature="n#!!block;n#meanAndStd#0;n#!!block;n#DataProcessing#0" expanded="false" />
                 <element signature="n#!!block;n#prepareDataForHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
-                <element signature="n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
+                <element signature="n#!!block;n#drawEventBubbles#0;n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="indexTry.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/indexTry.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2889">
+              <caret line="224" column="55" lean-forward="false" selection-start-line="224" selection-start-column="49" selection-end-line="224" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main_version_2.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/main_version_2.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-5736">
+              <caret line="273" column="13" lean-forward="false" selection-start-line="273" selection-start-column="13" selection-end-line="273" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -51,8 +74,8 @@
       <file leaf-file-name="multiline.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/multiline.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="122" column="6" lean-forward="true" selection-start-line="122" selection-start-column="6" selection-end-line="122" selection-end-column="6" />
+            <state relative-caret-position="435">
+              <caret line="155" column="73" lean-forward="false" selection-start-line="155" selection-start-column="73" selection-end-line="155" selection-end-column="73" />
               <folding />
             </state>
           </provider>
@@ -71,7 +94,7 @@
       <file leaf-file-name="indexOppTry.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/indexOppTry.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
+            <state relative-caret-position="535">
               <caret line="64" column="20" lean-forward="false" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
               <folding />
             </state>
@@ -83,26 +106,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-4363">
               <caret line="8" column="14" lean-forward="false" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Overwatch.csv" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/Overwatch.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="125" lean-forward="false" selection-start-line="0" selection-start-column="106" selection-end-line="0" selection-end-column="125" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Destiny2.csv" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/Destiny2.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -132,14 +135,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>prepareData</find>
-      <find>tr(&quot;wi</find>
-      <find>prepareDatafor</find>
-      <find>rect</find>
-      <find>plotheatmap</find>
-      <find>console.</find>
-      <find>prepareDataForHeatmap</find>
-      <find>xName</find>
       <find>line</find>
       <find>preparedataforheatmap</find>
       <find>d.row</find>
@@ -147,12 +142,10 @@
       <find>eventnameid</find>
       <find>drawEventBubbles</find>
       <find>console</find>
-      <find>draw</find>
       <find>drawEventbu</find>
       <find>bind</find>
       <find>prepareDataforoppchart</find>
       <find>pre</find>
-      <find>attributes</find>
       <find>attribute</find>
       <find>on(&quot;click</find>
       <find>updateinfobox</find>
@@ -160,8 +153,18 @@
       <find>oppo</find>
       <find>opp</find>
       <find>mu</find>
-      <find>update</find>
       <find>makeline</find>
+      <find>eventbubble</find>
+      <find>eventid</find>
+      <find>draw</find>
+      <find>draweventbubble</find>
+      <find>makeLineChart</find>
+      <find>yAxisLable</find>
+      <find>update</find>
+      <find>plotheatmap</find>
+      <find>attributes</find>
+      <find>heatmap</find>
+      <find>HMfont</find>
     </findStrings>
     <replaceStrings>
       <replace>prepareDataForDetailPage</replace>
@@ -184,8 +187,8 @@
         <option value="$PROJECT_DIR$/js/d3-starPlot.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/data/PUBG.csv" />
-        <option value="$PROJECT_DIR$/js/multiline.js" />
         <option value="$PROJECT_DIR$/js/main.js" />
+        <option value="$PROJECT_DIR$/js/multiline.js" />
       </list>
     </option>
   </component>
@@ -273,13 +276,13 @@
     <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/js" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/js" />
       <recent name="$PROJECT_DIR$/css" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/js" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -331,12 +334,12 @@
       <option name="presentableId" value="Default" />
       <updated>1511991104561</updated>
       <workItem from="1511991106587" duration="95811000" />
-      <workItem from="1512249315964" duration="17575000" />
+      <workItem from="1512249315964" duration="19731000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113386000" />
+    <option name="totallyTimeSpent" value="115542000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -448,14 +451,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/indexTry.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="151" column="21" lean-forward="false" selection-start-line="151" selection-start-column="15" selection-end-line="151" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/Overwatch.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -504,10 +499,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/multiline.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/indexOppTry.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
+        <state relative-caret-position="535">
           <caret line="64" column="20" lean-forward="false" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/multiline.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="155" column="73" lean-forward="false" selection-start-line="155" selection-start-column="73" selection-end-line="155" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/main_version_2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5736">
+          <caret line="273" column="13" lean-forward="false" selection-start-line="273" selection-start-column="13" selection-end-line="273" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -528,30 +547,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/multiline.css">
+    <entry file="file://$PROJECT_DIR$/indexTry.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/multiline.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="122" column="6" lean-forward="true" selection-start-line="122" selection-start-column="6" selection-end-line="122" selection-end-column="6" />
+        <state relative-caret-position="2889">
+          <caret line="224" column="55" lean-forward="false" selection-start-line="224" selection-start-column="49" selection-end-line="224" selection-end-column="55" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="849" column="57" lean-forward="false" selection-start-line="849" selection-start-column="57" selection-end-line="849" selection-end-column="57" />
+        <state relative-caret-position="3075">
+          <caret line="273" column="13" lean-forward="false" selection-start-line="273" selection-start-column="13" selection-end-line="273" selection-end-column="13" />
           <folding>
             <element signature="n#!!block;n#meanAndStd#0;n#!!block;n#DataProcessing#0" expanded="false" />
             <element signature="n#!!block;n#prepareDataForHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
-            <element signature="n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
+            <element signature="n#!!block;n#drawEventBubbles#0;n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
           </folding>
         </state>
       </provider>

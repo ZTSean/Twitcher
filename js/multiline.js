@@ -2,7 +2,7 @@ function makeLineChart(dataset, xName, yObjs) {
     var chartObj = {};
     var color = d3.scale.category10();
     chartObj.xAxisLable = "Date";
-    chartObj.yAxisLable = "Peak Viewers"; // default settings
+    chartObj.yAxisLable = "Peak Viewers/Peak Channels"; // default settings
     /*
      yObjsects format:
      {y1:{column:'',name:'name',color:'color'},y2}
@@ -153,7 +153,7 @@ function makeLineChart(dataset, xName, yObjs) {
             content.append("p").text("Info:")
             content.append("p").text("Date: " + chartObj.xFunct(infoData).toDateString());
             for (var y  in yObjs) {
-                content.append("p").text(y + " " + chartObj.yAxisLable + ":" + chartObj.yFormatter(yObjs[y].yFunct(infoData)));
+                content.append("p").text(y + " Peak Viewers/Peak Channels:" + chartObj.yFormatter(yObjs[y].yFunct(infoData)));
             }
             /*
             content.append("p").text("Game: " + infoData.game)*/
