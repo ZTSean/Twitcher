@@ -847,9 +847,9 @@ function DataProcessing(error, gdata) {
         defaultViewDate: {year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate()}
     });
 
-    $('.input-group.date').datepicker('setStartDate', StartTime);
+    //$('.input-group.date').datepicker('setStartDate', StartTime);
     $('.input-group.date.main-start').datepicker('setDate', StartTime);
-    $('.input-group.date').datepicker('setEndDate', EndTime);
+    //$('.input-group.date').datepicker('setEndDate', EndTime);
     $('.input-group.date.main-end').datepicker('setDate', EndTime);
 
     $('.input-group.date.main-start').on("changeDate", function (e) {
