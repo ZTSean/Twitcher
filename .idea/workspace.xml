@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="110d8dff-7d67-4e95-8812-ba5b2d9b9e52" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/js/d3-starPlot.js" afterPath="$PROJECT_DIR$/js/d3-starPlot.js" />
+      <change beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="851" column="6" lean-forward="false" selection-start-line="851" selection-start-column="6" selection-end-line="851" selection-end-column="6" />
+            <state relative-caret-position="220">
+              <caret line="1495" column="27" lean-forward="false" selection-start-line="1495" selection-start-column="19" selection-end-line="1495" selection-end-column="27" />
               <folding>
                 <element signature="n#!!block;n#meanAndStd#0;n#!!block;n#DataProcessing#0" expanded="false" />
                 <element signature="n#!!block;n#drawEventBubbles#0;n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
@@ -53,17 +55,15 @@
       <file leaf-file-name="d3-starPlot.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/d3-starPlot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="659">
-              <caret line="88" column="16" lean-forward="false" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
+            <state relative-caret-position="205">
+              <caret line="190" column="0" lean-forward="true" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
               <folding>
-                <element signature="e#61#139#0" expanded="false" />
                 <element signature="e#863#1234#0" expanded="false" />
                 <element signature="e#1260#1711#0" expanded="false" />
                 <element signature="e#4264#4281#0" expanded="false" />
-                <element signature="e#4748#4911#0" expanded="false" />
-                <element signature="e#5325#5406#0" expanded="false" />
-                <element signature="e#5449#5552#0" expanded="false" />
-                <element signature="e#5591#5686#0" expanded="false" />
+                <element signature="e#5358#5439#0" expanded="false" />
+                <element signature="e#5482#5585#0" expanded="false" />
+                <element signature="e#5624#5719#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -72,7 +72,7 @@
       <file leaf-file-name="indexTry.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/indexTry.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3360">
+            <state relative-caret-position="659">
               <caret line="224" column="55" lean-forward="false" selection-start-line="224" selection-start-column="49" selection-end-line="224" selection-end-column="55" />
               <folding />
             </state>
@@ -89,7 +89,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="579">
@@ -151,12 +151,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>from</find>
-      <find>margin.left</find>
-      <find>peak</find>
-      <find>2px</find>
-      <find>.style(&quot;margin-righ</find>
-      <find>font-size:</find>
       <find>Twit</find>
       <find>Twitcher</find>
       <find>head</find>
@@ -181,6 +175,12 @@
       <find>sstimes</find>
       <find>setime</find>
       <find>setstartdat</find>
+      <find>color</find>
+      <find>star1</find>
+      <find>chart</find>
+      <find>plotstar</find>
+      <find>chart.width</find>
+      <find>barchart</find>
     </findStrings>
     <replaceStrings>
       <replace>prepareDataForDetailPage</replace>
@@ -202,10 +202,10 @@
         <option value="$PROJECT_DIR$/data/PUBG.csv" />
         <option value="$PROJECT_DIR$/css/multiline.css" />
         <option value="$PROJECT_DIR$/css/main.css" />
-        <option value="$PROJECT_DIR$/js/d3-starPlot.js" />
         <option value="$PROJECT_DIR$/js/multiline.js" />
-        <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/main.js" />
+        <option value="$PROJECT_DIR$/js/d3-starPlot.js" />
       </list>
     </option>
   </component>
@@ -352,12 +352,12 @@
       <workItem from="1511991106587" duration="95811000" />
       <workItem from="1512249315964" duration="31718000" />
       <workItem from="1512519574293" duration="5088000" />
-      <workItem from="1512583284327" duration="2963000" />
+      <workItem from="1512583284327" duration="3524000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135580000" />
+    <option name="totallyTimeSpent" value="136141000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -428,14 +428,12 @@
         <state relative-caret-position="735">
           <caret line="88" column="16" lean-forward="false" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
           <folding>
-            <element signature="e#61#139#0" expanded="false" />
             <element signature="e#863#1234#0" expanded="false" />
             <element signature="e#1260#1711#0" expanded="false" />
             <element signature="e#4264#4281#0" expanded="false" />
-            <element signature="e#4748#4911#0" expanded="false" />
-            <element signature="e#5325#5406#0" expanded="false" />
-            <element signature="e#5449#5552#0" expanded="false" />
-            <element signature="e#5591#5686#0" expanded="false" />
+            <element signature="e#5358#5439#0" expanded="false" />
+            <element signature="e#5482#5585#0" expanded="false" />
+            <element signature="e#5624#5719#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -511,14 +509,12 @@
         <state relative-caret-position="735">
           <caret line="88" column="16" lean-forward="false" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
           <folding>
-            <element signature="e#61#139#0" expanded="false" />
             <element signature="e#863#1234#0" expanded="false" />
             <element signature="e#1260#1711#0" expanded="false" />
             <element signature="e#4264#4281#0" expanded="false" />
-            <element signature="e#4748#4911#0" expanded="false" />
-            <element signature="e#5325#5406#0" expanded="false" />
-            <element signature="e#5449#5552#0" expanded="false" />
-            <element signature="e#5591#5686#0" expanded="false" />
+            <element signature="e#5358#5439#0" expanded="false" />
+            <element signature="e#5482#5585#0" expanded="false" />
+            <element signature="e#5624#5719#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -685,14 +681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/indexTry.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3360">
-          <caret line="224" column="55" lean-forward="false" selection-start-line="224" selection-start-column="49" selection-end-line="224" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/indexOppTry.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="960">
@@ -733,40 +721,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/d3-starPlot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="659">
-          <caret line="88" column="16" lean-forward="false" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
-          <folding>
-            <element signature="e#61#139#0" expanded="false" />
-            <element signature="e#863#1234#0" expanded="false" />
-            <element signature="e#1260#1711#0" expanded="false" />
-            <element signature="e#4264#4281#0" expanded="false" />
-            <element signature="e#4748#4911#0" expanded="false" />
-            <element signature="e#5325#5406#0" expanded="false" />
-            <element signature="e#5449#5552#0" expanded="false" />
-            <element signature="e#5591#5686#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/multiline.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="331">
           <caret line="247" column="67" lean-forward="false" selection-start-line="247" selection-start-column="67" selection-end-line="247" selection-end-column="67" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="851" column="6" lean-forward="false" selection-start-line="851" selection-start-column="6" selection-end-line="851" selection-end-column="6" />
-          <folding>
-            <element signature="n#!!block;n#meanAndStd#0;n#!!block;n#DataProcessing#0" expanded="false" />
-            <element signature="n#!!block;n#drawEventBubbles#0;n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
-            <element signature="e#19451#29911#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -792,6 +751,41 @@
             <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#5;n#div#0;n#section#1;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#dialog#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/indexTry.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="659">
+          <caret line="224" column="55" lean-forward="false" selection-start-line="224" selection-start-column="49" selection-end-line="224" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/d3-starPlot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="190" column="0" lean-forward="true" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+          <folding>
+            <element signature="e#863#1234#0" expanded="false" />
+            <element signature="e#1260#1711#0" expanded="false" />
+            <element signature="e#4264#4281#0" expanded="false" />
+            <element signature="e#5358#5439#0" expanded="false" />
+            <element signature="e#5482#5585#0" expanded="false" />
+            <element signature="e#5624#5719#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="1495" column="27" lean-forward="false" selection-start-line="1495" selection-start-column="19" selection-end-line="1495" selection-end-column="27" />
+          <folding>
+            <element signature="n#!!block;n#meanAndStd#0;n#!!block;n#DataProcessing#0" expanded="false" />
+            <element signature="n#!!block;n#drawEventBubbles#0;n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
+            <element signature="e#19451#29911#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -191,6 +191,7 @@ d3.starPlot = function() {
 
   chart.width = function(_) {
     if (!arguments.length) return width;
+    console.log("update width");
     width = _;
     radius = width / 2;
     origin = [radius, radius];

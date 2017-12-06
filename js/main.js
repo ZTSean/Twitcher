@@ -1252,7 +1252,7 @@ function DataProcessing(error, gdata) {
         star.margin(margin)
             .labelMargin(labelMargin);
 
-        star.width = width;
+        star = star.width(width);
 
         // remove previous drawing with for the same game
         d3.select('#starplot_' + id).selectAll('.star_' + number).remove();
