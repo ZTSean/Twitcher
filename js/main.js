@@ -144,7 +144,9 @@ function DataProcessing(error, gdata) {
             content.append("p").text("Game: " + infoData.game)
             content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
             content.append("p").text(infoData.attribute + ": " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
-            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
+            content.append("p").text("Game Updates: " + (infoData.gameUpdates != undefined && infoData.gameUpdates.length > 0 ? infoData.gameUpdates + "" : "N/A"))
+            content.append("p").text("Competitive Seasons: " + (infoData.competitiveSeasons != undefined && infoData.competitiveSeasons.length > 0 ? infoData.competitiveSeasons + "" : "N/A"))
+            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : "N/A"));
 
         } else if (settings == 1) {
             // state 1: 1 clickhold -> show the information of the clicked rect
@@ -182,7 +184,9 @@ function DataProcessing(error, gdata) {
             content.append("p").text("Game: " + infoData.game)
             content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
             content.append("p").text(infoData.attribute + ": " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
-            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
+            content.append("p").text("Game Updates: " + (infoData.gameUpdates != undefined && infoData.gameUpdates.length > 0 ? infoData.gameUpdates + "" : "N/A"))
+            content.append("p").text("Competitive Seasons: " + (infoData.competitiveSeasons != undefined && infoData.competitiveSeasons.length > 0 ? infoData.competitiveSeasons + "" : "N/A"))
+            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : "N/A"));
 
             // create button for reset
 
@@ -235,7 +239,9 @@ function DataProcessing(error, gdata) {
             content.append("p").text("Game: " + infoData.game)
             content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
             content.append("p").text(infoData.attribute + ": " + (infoData.value != undefined && infoData.value > 0 ? infoData.value + "" : "N/A"))
-            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
+            content.append("p").text("Game Updates: " + (infoData.gameUpdates != undefined && infoData.gameUpdates.length > 0 ? infoData.gameUpdates + "" : "N/A"))
+            content.append("p").text("Competitive Seasons: " + (infoData.competitiveSeasons != undefined && infoData.competitiveSeasons.length > 0 ? infoData.competitiveSeasons + "" : "N/A"))
+            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : "N/A"));
 
             content.append("button")
                 .attr("class", "btn btn-secondary")
@@ -265,8 +271,9 @@ function DataProcessing(error, gdata) {
             content.append("p").text("Event Detail:")
             content.append("p").text("Game: " + infoData.game)
             content.append("p").text("Date: " + (infoData.date != undefined && infoData.date.length > 0 ? infoData.date : ""))
-            content.append("p").text("Game Updates: " + (infoData.gameUpdates != undefined && infoData.gameUpdates.length > 0 ? infoData.gameUpdates : ""))
-            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : ""));
+            content.append("p").text("Game Updates: " + (infoData.gameUpdates != undefined && infoData.gameUpdates.length > 0 ? infoData.gameUpdates + "" : "N/A"))
+            content.append("p").text("Competitive Seasons: " + (infoData.competitiveSeasons != undefined && infoData.competitiveSeasons.length > 0 ? infoData.competitiveSeasons + "" : "N/A"))
+            content.append("p").text("Esports Schedule: " + (infoData.esportsSchedule != undefined && infoData.esportsSchedule.length > 0 ? infoData.esportsSchedule : "N/A"));
 
 
         }
@@ -847,7 +854,8 @@ function DataProcessing(error, gdata) {
 
     $('.input-group.date.main-start').on("changeDate", function (e) {
         SSTime = e.date;
-        $('.input-group.date.main-end').datepicker('setStartDate', SSTime);
+        /*
+        $('.input-group.date.main-end').datepicker('setStartDate', SSTime);*/
         var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
         plotHeatmap(d);
 
@@ -868,7 +876,8 @@ function DataProcessing(error, gdata) {
     $('.input-group.date.main-end').on("changeDate", function (e) {
         // update selected end date
         SETime = e.date;
-        $('.input-group.date.main-start').datepicker('setEndDate', SETime);
+        /*
+        $('.input-group.date.main-start').datepicker('setEndDate', SETime);*/
         var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
         plotHeatmap(d);
 
@@ -1458,7 +1467,7 @@ function DataProcessing(error, gdata) {
 
     $('.input-group.date.detail-bar-start').datepicker({
         autoclose: true,
-        defaultViewDate: {year: EndTime.getFullYear(), month: EndTime.getMonth(), day: EndTime.getDate()}
+        defaultViewDate: {year: StartTime.getFullYear(), month: StartTime.getMonth(), day: StartTime.getDate()}
     });
 
     $('.input-group.date.detail-bar-end').datepicker({
@@ -1485,7 +1494,9 @@ function DataProcessing(error, gdata) {
         SSTimeS = e.date;
 
         // re-draw barchart
+        /*
         $('.input-group.date.detail-bar-end').datepicker('setEndDate', SETimeS);
+        */
         handleCompareUpdate();
 
         // re-draw star plot
@@ -1495,8 +1506,10 @@ function DataProcessing(error, gdata) {
         // update selected start date
         SETimeS = e.date;
 
+        /*
         // re-draw barchart
         $('.input-group.date.detail-bar-end').datepicker('setStartDate', SSTimeS);
+        */
         handleCompareUpdate();
 
         // re-draw star plot

@@ -199,8 +199,8 @@ function makeLineChart(dataset, xName, yObjs, w) {
         for (var y  in yObjs) {
             yObjs[y].tooltip = focus.append("g");
             yObjs[y].tooltip.append("circle").attr("r", 5);
-            yObjs[y].tooltip.append("rect").attr("x", 8).attr("y", "-5").attr("width", 22).attr("height", '0.75em');
-            yObjs[y].tooltip.append("text").attr("x", 9).attr("dy", ".35em");
+            //yObjs[y].tooltip.append("rect").attr("x", 8).attr("y", "-5").attr("width", 22).attr("height", '0.75em');
+            //yObjs[y].tooltip.append("text").attr("x", 9).attr("dy", ".35em");
         }
 
         // Year label
@@ -252,7 +252,7 @@ function makeLineChart(dataset, xName, yObjs, w) {
             minY = chartObj.height;
             for (var y  in yObjs) {
                 yObjs[y].tooltip.attr("transform", "translate(" + chartObj.xScale(chartObj.xFunct(d)) + "," + chartObj.yScale(yObjs[y].yFunct(d)) + ")");
-                yObjs[y].tooltip.select("text").text(chartObj.yFormatter(yObjs[y].yFunct(d)));
+                //yObjs[y].tooltip.select("text").text(chartObj.yFormatter(yObjs[y].yFunct(d)));
                 minY = Math.min(minY, chartObj.yScale(yObjs[y].yFunct(d)));
             }
 
