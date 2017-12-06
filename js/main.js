@@ -12,8 +12,8 @@ function DataProcessing(error, gdata) {
 
     var games = ["Overwatch", "CSGO", "PUBG", "Destiny", "Destiny2"]; // corresponding to the order of the file being processed in the queue
     //var gameColors = ["#5F8316", "#98CA32", "#B3BF0D", "#F7D302", "#DAC134"];
-    var gameColors = ["#5F8316", "#5F8316", "#5F8316", "#5F8316", "#5F8316"];
-    //var gameColors = ["purple", "purple", "purple", "purple", "purple"];
+    //var gameColors = ["#5F8316", "#5F8316", "#5F8316", "#5F8316", "#5F8316"];
+    var gameColors = ["5F40B0", "5F40B0", "5F40B0", "5F40B0", "5F40B0"];
 
     //can be changed based on user selection
     //selected start time and selected end time
@@ -286,7 +286,7 @@ function DataProcessing(error, gdata) {
 
         var nBloc = gameData[0].length
 
-        var heatmapMargin = {top: 70, right: 30, bottom: 50, left: 5}
+        var heatmapMargin = {top: 30, right: 30, bottom: 50, left: 5}
 
         //height of each row in the heatmap
         //width of each column in the heatmap
@@ -296,7 +296,7 @@ function DataProcessing(error, gdata) {
             //LH = h + eLh, //total height for each game's rect
             labelWidth = h, //width of the game label
             width = divHeatmapLength, // width of whole graph
-            TandGPadding = 70, //space between text and graph
+            TandGPadding = 40, //space between text and graph
             HmapLength = Math.max(0, width - labelWidth - TandGPadding - heatmapMargin.left - heatmapMargin.right),
             w = HmapLength / nBloc, //rect width
             gameMargin = 55, // margin after each game's plot
@@ -470,7 +470,7 @@ function DataProcessing(error, gdata) {
                 .on("mouseover", function (d) {
                     svg.append("line")
                         .attr("class", "mol")
-                        .attr("x1", (d.row - minRow) * w + labelWidth + TandGPadding + heatmapMargin.left)
+                        .attr("x1", (d.row - minRow) * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                         .attr("y1", heatmapMargin.top)
                         .attr("x2", (d.row - minRow) * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                         .attr("y2", totalH + heatmapMargin.top)
@@ -504,7 +504,7 @@ function DataProcessing(error, gdata) {
                     if (clickHold == -1) {
                         svg.append("line")
                             .attr("class", "cl")
-                            .attr("x1", (d.row - minRow) * w + labelWidth + TandGPadding + heatmapMargin.left)
+                            .attr("x1", (d.row - minRow) * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("y1", heatmapMargin.top)
                             .attr("x2", (d.row - minRow) * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("y2", totalH + heatmapMargin.top)
@@ -527,7 +527,7 @@ function DataProcessing(error, gdata) {
                     } else if (clickHold == 0) {
                         svg.append("line")
                             .attr("class", "cl")
-                            .attr("x1", (d.row - minRow) * w + labelWidth + TandGPadding)
+                            .attr("x1", (d.row - minRow) * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("y1", heatmapMargin.top)
                             .attr("x2", (d.row - minRow) * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("y2", totalH + heatmapMargin.top)
@@ -570,7 +570,7 @@ function DataProcessing(error, gdata) {
 
                         svg.append("line")
                             .attr("class", "cl")
-                            .attr("x1", (d.row - minRow) * w + labelWidth + TandGPadding + heatmapMargin.left)
+                            .attr("x1", (d.row - minRow) * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("y1", heatmapMargin.top)
                             .attr("x2", (d.row - minRow) * w + labelWidth + TandGPadding + w / 2 + heatmapMargin.left)
                             .attr("y2", totalH + heatmapMargin.top)
@@ -600,30 +600,32 @@ function DataProcessing(error, gdata) {
             // create text if the text in svg for each is not created
             text.enter()
                 .append("text")
-                .attr("text-anchor", "middle")
+                .attr("text-anchor", "start")
                 .attr("font-family", HMfont)
                 .attr("class", "gameLabel")
                 .attr("dy", ".30em")
-                .attr("x", (labelWidth + TandGPadding) / 2)
+                .attr("x", 0)
+                //.attr("x", (labelWidth + TandGPadding) / 2)
                 .attr("y", h / 2 + cumulativeHeight)
                 .attr("fill-opacity", 0.95)
                 .attr("class", "heatmap_text_" + games[i])
                 .text(games[i])
                 .style('fill', gameColors[i])
-                .style("font-size", "20px");
+                .style("font-size", "16px");
 
             // if the text has been created, update it
 
-            text.attr("text-anchor", "middle")
+            text.attr("text-anchor", "start")
                 .attr("font-family", HMfont)
                 .attr("class", "gameLabel")
                 .attr("dy", ".30em")
-                .attr("x", (labelWidth + TandGPadding) / 2)
+                .attr("x", 0)
+                //.attr("x", (labelWidth + TandGPadding) / 2)
                 .attr("y", h / 2 + cumulativeHeight)
                 .attr("fill-opacity", 0.95)
                 .text(games[i])
                 .style('fill', gameColors[i])
-                .style("font-size", "20px");
+                .style("font-size", "16px");
 
 
             // update cumulative height
@@ -792,6 +794,7 @@ function DataProcessing(error, gdata) {
     // -----------------------------------------
     // Button onclick functions settings
     d3.select("#mainpage_attributes").selectAll("button")
+        .style("margin-right", "4px")
         .on("click", function () {
             selectedAttributeMain = d3.select(this).attr("data-field");
             var d = prepareDataForHeatmap(gdata, selectedAttributeMain);
@@ -1358,6 +1361,7 @@ function DataProcessing(error, gdata) {
 
     // detail page: change barchart left side with selected attribute
     d3.select(".left_games").selectAll("button")
+        .style("margin-right", "4px")
         .on("click", function () {
             // update left game
             leftSelectedGame = d3.select(this).attr("data-field");
@@ -1365,6 +1369,7 @@ function DataProcessing(error, gdata) {
         });
 
     d3.select(".left_attributes").selectAll("button")
+        .style("margin-right", "4px")
         .on("click", function () {
             // update left attribute
             leftAttribute = d3.select(this).attr("data-field");
@@ -1372,6 +1377,7 @@ function DataProcessing(error, gdata) {
         });
 
     d3.select(".right_games").selectAll("button")
+        .style("margin-right", "4px")
         .on("click", function () {
             // update right game
             rightSelectedGame = d3.select(this).attr("data-field");
@@ -1379,6 +1385,7 @@ function DataProcessing(error, gdata) {
         });
 
     d3.select(".right_attributes").selectAll("button")
+        .style("margin-right", "4px")
         .on("click", function () {
             // update right game
             rightAttribute = d3.select(this).attr("data-field");
