@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="110d8dff-7d67-4e95-8812-ba5b2d9b9e52" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/js/d3-starPlot.js" afterPath="$PROJECT_DIR$/js/d3-starPlot.js" />
       <change beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -31,8 +29,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="1495" column="27" lean-forward="false" selection-start-line="1495" selection-start-column="19" selection-end-line="1495" selection-end-column="27" />
+            <state relative-caret-position="217">
+              <caret line="667" column="38" lean-forward="false" selection-start-line="667" selection-start-column="23" selection-end-line="667" selection-end-column="38" />
               <folding>
                 <element signature="n#!!block;n#meanAndStd#0;n#!!block;n#DataProcessing#0" expanded="false" />
                 <element signature="n#!!block;n#drawEventBubbles#0;n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />
@@ -204,8 +202,8 @@
         <option value="$PROJECT_DIR$/css/main.css" />
         <option value="$PROJECT_DIR$/js/multiline.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/js/d3-starPlot.js" />
+        <option value="$PROJECT_DIR$/js/main.js" />
       </list>
     </option>
   </component>
@@ -352,12 +350,12 @@
       <workItem from="1511991106587" duration="95811000" />
       <workItem from="1512249315964" duration="31718000" />
       <workItem from="1512519574293" duration="5088000" />
-      <workItem from="1512583284327" duration="3524000" />
+      <workItem from="1512583284327" duration="3829000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="136141000" />
+    <option name="totallyTimeSpent" value="136446000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -780,8 +778,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="1495" column="27" lean-forward="false" selection-start-line="1495" selection-start-column="19" selection-end-line="1495" selection-end-column="27" />
+        <state relative-caret-position="217">
+          <caret line="667" column="38" lean-forward="false" selection-start-line="667" selection-start-column="23" selection-end-line="667" selection-end-column="38" />
           <folding>
             <element signature="n#!!block;n#meanAndStd#0;n#!!block;n#DataProcessing#0" expanded="false" />
             <element signature="n#!!block;n#drawEventBubbles#0;n#!!block;n#plotHeatmap#0;n#!!block;n#DataProcessing#0" expanded="false" />

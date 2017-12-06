@@ -665,6 +665,8 @@ function DataProcessing(error, gdata) {
         // create legend if not exist ------------------------------------
         var legendHeatmapValue = [HmapAvg - 1.5 * HmapStd, HmapAvg, HmapAvg + 1.5 * HmapStd];
         var colorHeatmap = [colorLow, colorMed, colorHigh];
+        svg.selectAll("#legend_heatmap").remove();
+
         var legend_heatmap = svg.selectAll("#legend_heatmap").data([0]).enter()
             .append("g")
             .attr("id", "legend_heatmap");
